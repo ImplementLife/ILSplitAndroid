@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable-anydpi/ic_action_delete.xml" value="0.36875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.36875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/card.xml" value="0.29635416666666664" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_dashboard_black_48dp.xml" value="0.26197916666666665" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_delete_svg.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_launcher_background.xml" value="0.36875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_menu_camera.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/sh_separator.xml" value="0.36770833333333336" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/side_nav_bar.xml" value="0.25104166666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/activity_2.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/activity_3.xml" value="0.3385416666666667" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/activity_main.xml" value="0.19858156028368795" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/activity_main2.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/activity_nav_bottom.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/activity_nav_left.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/app_bar_activity_nav_left.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/content_2.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/content_activity_nav_left.xml" value="0.3385416666666667" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/content_main.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/fragment_dashboard.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/fragment_first.xml" value="0.33" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/fragment_gallery.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/fragment_second.xml" value="0.35260416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/nav_header_activity_nav_left.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/sample_my_view.xml" value="0.2677083333333333" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/sample_rec_view.xml" value="0.5" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view_rec.xml" value="0.6381322957198443" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/menu/activity_main_drawer.xml" value="0.3671875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/menu/activity_nav_left.xml" value="0.3671875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/menu/bottom_nav_menu.xml" value="0.3671875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.19010416666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android API 33 Platform" project-jdk-type="Android SDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="jpab" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.33" />
+      </ProjectState>
+    </option>
+  </component>
+</project>
