@@ -2,6 +2,7 @@
 <resources>
     <color name="background_primary">#EAEAEA</color>
     <color name="card_primary">#FFFFFF</color>
+    <color name="alpha">#00000000</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

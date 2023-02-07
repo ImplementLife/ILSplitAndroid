@@ -13,8 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class Repo {
-
-    private DBHelper dbHelper = new DBHelper(MainActivity.instance);
+    private DBHelper dbHelper = new DBHelper(MainActivity.getInstance());
 
     public void exe(Consumer<SQLiteDatabase> consumer) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
