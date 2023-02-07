@@ -6,12 +6,147 @@
                                                    tools:context=".ui.fragments.MainMenuFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <Button
-            android:text="Go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_go"
+    <androidx.gridlayout.widget.GridLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" tools:layout_editor_absoluteY="420dp"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+
+            app:alignmentMode="alignBounds"
+            app:columnCount="3"
+            app:rowOrderPreserved="false"
+            app:useDefaultMargins="true"
+    >
+
+        <Button
+                android:text="Contacts"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+
+                android:id="@+id/btn_contacts"
+                app:layout_row="0"
+                app:layout_column="0"
+        />
+        <Button
+                android:text="My link qr"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+
+                app:layout_row="0"
+                app:layout_column="1"
+                android:id="@+id/btn_my_link_qr"/>
+        <Button
+                android:text="QR Scan"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+
+                app:layout_row="0"
+                app:layout_column="2"
+                android:id="@+id/btn_qr_scan"/>
+        <Button
+                android:text="History"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+
+                app:layout_row="1"
+                app:layout_column="0"
+                android:id="@+id/btn_history"/>
+        <Button
+                android:text="Billings"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+
+                app:layout_row="2"
+                app:layout_column="0"
+                android:id="@+id/btn_billings"/>
+        <Button
+                android:text="Budget"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+
+                app:layout_row="3"
+                app:layout_column="0"
+                android:id="@+id/btn_budget" app:layout_gravity="fill_horizontal"/>
+        <Button
+                android:text="Discounts"
+
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+
+                app:layout_row="4"
+                app:layout_column="0"
+                android:id="@+id/btn_discounts"/>
+        <Button
+                android:text="Settings"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="1"
+                app:layout_column="1"
+                android:id="@+id/btn_settings"/>
+        <Button
+                android:text="New Req"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="1"
+                app:layout_column="2"
+                android:id="@+id/btn_new_requisition"/>
+        <Button
+                android:text="Transact's"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="2"
+                app:layout_column="1"
+                android:id="@+id/btn_transactions"/>
+        <Button
+                android:text="New Trn"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="2"
+                app:layout_column="2"
+                android:id="@+id/btn_new_transaction"/>
+        <Button
+                android:text="Notify's"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_row="3"
+                app:layout_column="1"
+                android:id="@+id/btn_notifys"/>
+        <Button
+                android:text="NFC Pay"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_row="3"
+                app:layout_column="2"
+                android:id="@+id/btn_nfc_pay"/>
+        <Button
+                android:text="Test"
+                style="@style/MainMenuGrid"
+                app:layout_columnWeight="1"
+                app:layout_row="4"
+                app:layout_column="1"
+                android:id="@+id/btn_test"/>
+    </androidx.gridlayout.widget.GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

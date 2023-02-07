@@ -23,8 +23,11 @@ public class MainMenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         MainActivity.getInstance().hideHead();
 
-        view.findViewById(R.id.btn_go).setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.contactsFragment);
+        view.findViewById(R.id.btn_contacts).setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).navigate(R.id.fragment_contacts);
+        });
+        view.findViewById(R.id.btn_test).setOnClickListener(v -> {
+            NavHostFragment.findNavController(this).navigate(R.id.fragment_test);
         });
         return view;
     }
