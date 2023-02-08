@@ -2,6 +2,7 @@ package com.impllife.split.service;
 
 import com.impllife.split.data.dto.User;
 import com.impllife.split.data.jpa.entity.Rec;
+import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.provide.Repo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,6 @@ public class ComService {
         }
         return Optional.of(userResponseEntity.getBody());
     }
-
     public void tst0() {
         /*try {
             HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:8080/tst").openConnection();
@@ -61,23 +61,25 @@ public class ComService {
             e.printStackTrace();
         }*/
     }
-
-    public boolean existUserAccount() {
-        return false;
-    }
-
     public void add(Rec rec) {
         repo.add(rec);
     }
-
     public List<Rec> read() {
         return repo.readAll();
     }
-
     public void delete() {
         repo.deleteAll();
     }
     public boolean deleteById(int id) {
         return repo.deleteById(id);
+    }
+
+
+    public void insert(Transaction... transactions) {
+        repo.insert(transactions);
+    }
+
+    public List<Transaction> getAllTransactions() {
+        return repo.getAllTransactions();
     }
 }

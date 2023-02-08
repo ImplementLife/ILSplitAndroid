@@ -4,7 +4,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Room;
 import com.impllife.split.data.jpa.entity.Rec;
+import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.ui.MainActivity;
 
 import java.util.ArrayList;
@@ -13,7 +17,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 public class Repo {
+
     private DBHelper dbHelper = new DBHelper(MainActivity.getInstance());
+
+    private AppDatabase db;
+    private TransactionDao transactionDao;
+
+    public Repo() {
+        db = Room.databaseBuilder(MainActivity.getInstance(), AppDatabase.class, "populus-database-2").build();
+        transactionDao = db.getTransactionDao();
+    }
+    public void insert(Transaction... transactions) {
+        transactionDao.insert(transactions);
+    }
+
+    public List<Transaction> getAllTransactions() {
+        return transactionDao.getAllTransactions();
+    }
 
     public void exe(Consumer<SQLiteDatabase> consumer) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();

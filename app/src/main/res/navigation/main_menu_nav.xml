@@ -17,4 +17,16 @@
               android:name="com.impllife.split.ui.fragments.TestFragment"
               android:label="fragment_test"
               tools:layout="@layout/fragment_test"/>
+    <fragment android:id="@+id/fragment_transactions_list"
+              android:name="com.impllife.split.ui.fragments.TransactionsListFragment"
+              android:label="fragment_transactions_list"
+              tools:layout="@layout/fragment_transactions_list"/>
+    <fragment android:id="@+id/fragment_transaction_info"
+              android:name="com.impllife.split.ui.fragments.TransactionInfoFragment"
+              android:label="fragment_transaction_info"
+              tools:layout="@layout/fragment_transaction_info"/>
+    <fragment android:id="@+id/fragment_transaction_new"
+              android:name="com.impllife.split.ui.fragments.TransactionNewFragment"
+              android:label="fragment_transaction_new"
+              tools:layout="@layout/fragment_transaction_new"/>
 </navigation>
