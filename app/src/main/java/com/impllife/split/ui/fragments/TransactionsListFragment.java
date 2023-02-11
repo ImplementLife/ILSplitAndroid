@@ -1,23 +1,20 @@
 package com.impllife.split.ui.fragments;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.navigation.fragment.NavHostFragment;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.ComService;
-import com.impllife.split.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class TransactionsListFragment extends Fragment {
+public class TransactionsListFragment extends NavFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,11 +24,10 @@ public class TransactionsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transactions_list, container, false);
-        MainActivity.getInstance().showHead();
-        MainActivity.getInstance().setHeadTitle("Transactions");
+        setNavTitle("Transactions");
 
         view.findViewById(R.id.btn_new).setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.fragment_transaction_new);
+            navController.navigate(R.id.fragment_transaction_new);
         });
 
         Thread thread = new Thread(() -> {

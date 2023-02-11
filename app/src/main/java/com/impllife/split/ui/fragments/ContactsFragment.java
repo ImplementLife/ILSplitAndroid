@@ -1,25 +1,21 @@
 package com.impllife.split.ui.fragments;
 
 import android.os.Bundle;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.impllife.split.R;
-import com.impllife.split.ui.MainActivity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class ContactsFragment extends Fragment {
+public class ContactsFragment extends NavFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,8 +25,7 @@ public class ContactsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
-        MainActivity.getInstance().showHead();
-        MainActivity.getInstance().setHeadTitle("Contacts");
+        setNavTitle("Contacts");
 
         Map<Integer, TabInfo> tabInfoMap = new TreeMap<>();
         tabInfoMap.put(0, new TabInfo("Peoples", ContactsPeoplesFragment.newInstance()));

@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import com.impllife.split.R;
 import com.impllife.split.ui.MainActivity;
 
 import java.util.function.Consumer;
 
-public class MainMenuFragment extends Fragment {
+public class MainMenuFragment extends NavFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,16 +22,16 @@ public class MainMenuFragment extends Fragment {
         MainActivity.getInstance().hideHead();
 
         view.findViewById(R.id.btn_contacts).setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.fragment_contacts);
+            navController.navigate(R.id.fragment_contacts);
         });
         view.findViewById(R.id.btn_transactions).setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.fragment_transactions_list);
+            navController.navigate(R.id.fragment_transactions_list);
         });
         view.findViewById(R.id.btn_new_transaction).setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.fragment_transaction_new);
+            navController.navigate(R.id.fragment_transaction_new);
         });
         view.findViewById(R.id.btn_test).setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).navigate(R.id.fragment_test);
+            navController.navigate(R.id.fragment_test);
         });
         return view;
     }

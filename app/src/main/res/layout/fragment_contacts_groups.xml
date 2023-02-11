@@ -8,15 +8,6 @@
 >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="groups"
-            android:id="@+id/textView2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
     <ImageButton
             android:src="@drawable/ic_svg_add_circle"
             app:backgroundTint="@color/alpha"

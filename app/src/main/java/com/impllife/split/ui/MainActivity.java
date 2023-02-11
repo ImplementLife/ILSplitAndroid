@@ -1,5 +1,6 @@
 package com.impllife.split.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -16,9 +17,14 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getInstance() {
         return instance;
     }
+    @SuppressLint("StaticFieldLeak")
     private static MainActivity instance;
 
     public NavController navController;
+
+    private View headBar;
+    private TextView headTitle;
+    private View btnInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +40,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         instance = this;
 
+        btnInfo = findViewById(R.id.btn_info);
+        headBar = findViewById(R.id.head);
+        headTitle = findViewById(R.id.tv_title);
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         navController = navHostFragment.getNavController();
         findViewById(R.id.btn_back).setOnClickListener(v -> navController.navigateUp());
     }
 
     public void setHeadTitle(String title) {
-        ((TextView) findViewById(R.id.tv_title)).setText(title);
+        headTitle.setText(title);
     }
     public void hideHead() {
-        findViewById(R.id.head).setVisibility(View.GONE);
+        headBar.setVisibility(View.GONE);
     }
     public void showHead() {
-        findViewById(R.id.head).setVisibility(View.VISIBLE);
+        headBar.setVisibility(View.VISIBLE);
     }
-    public void setInfoAction(Runnable exe) {
-        exe.run();
+    public void hideInfoBtn() {
+        btnInfo.setVisibility(View.INVISIBLE);
+    }
+    public void showInfoBtn() {
+        btnInfo.setVisibility(View.VISIBLE);
+    }
+    public void setInfoBtnAction(Runnable exe) {
+        btnInfo.setOnClickListener(v -> exe.run());
     }
 }
