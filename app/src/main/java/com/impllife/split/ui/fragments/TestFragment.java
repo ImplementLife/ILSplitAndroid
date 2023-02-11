@@ -17,13 +17,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestFragment extends Fragment {
-
     private LinearLayout linearLayout;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

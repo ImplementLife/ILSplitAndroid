@@ -13,12 +13,6 @@ import com.impllife.split.service.ComService;
 import java.util.Calendar;
 
 public class TransactionNewFragment extends NavFragment {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction_new, container, false);
@@ -27,14 +21,15 @@ public class TransactionNewFragment extends NavFragment {
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendar);
         Calendar calendar = Calendar.getInstance();
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            calendar.set(year, month, dayOfMonth, 0, 0, 0);
+            calendar.set(year, month, dayOfMonth/*, 0, 0, 0*/);
         });
 
         view.findViewById(R.id.btn_create).setOnClickListener(v -> {
             Thread thread = new Thread(() -> {
                 Transaction transaction = new Transaction();
                 transaction.setSum(((EditText) view.findViewById(R.id.field_sum)).getText().toString());
-                transaction.setDateCreate(calendar.getTimeInMillis());
+                transaction.setDateCreate(calendar.getTime());
+                transaction.setDescription(((EditText) view.findViewById(R.id.et_dscr)).getText().toString());
                 ComService.getInstance().insert(transaction);
                 view.post(() -> {
                     navController.navigateUp();

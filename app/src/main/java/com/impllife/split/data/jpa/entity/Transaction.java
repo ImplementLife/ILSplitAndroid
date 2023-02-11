@@ -11,9 +11,9 @@ public class Transaction {
     private int id;
     private int idOnServer;
 
-    private long dateCreate;
+    private Date dateCreate;
     private String sum;
-
+    private String description;
 
     public int getId() {
         return id;
@@ -29,10 +29,10 @@ public class Transaction {
         this.idOnServer = idOnServer;
     }
 
-    public long getDateCreate() {
+    public Date getDateCreate() {
         return dateCreate;
     }
-    public void setDateCreate(long dateCreate) {
+    public void setDateCreate(Date dateCreate) {
         this.dateCreate = dateCreate;
     }
 
@@ -41,5 +41,12 @@ public class Transaction {
     }
     public void setSum(String sum) {
         this.sum = sum;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
