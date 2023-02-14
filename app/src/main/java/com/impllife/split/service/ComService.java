@@ -1,9 +1,10 @@
 package com.impllife.split.service;
 
 import com.impllife.split.data.dto.User;
+import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Rec;
 import com.impllife.split.data.jpa.entity.Transaction;
-import com.impllife.split.data.jpa.provide.Repo;
+import com.impllife.split.data.jpa.provide.DaoFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -22,7 +23,7 @@ public class ComService {
     }
     private ComService() {}
 
-    private final Repo repo = new Repo();
+    private final DaoFactory repo = new DaoFactory();
 
     public Optional<User> tst() {
         ResponseEntity<User> userResponseEntity = null;
@@ -75,11 +76,17 @@ public class ComService {
     }
 
 
-    public void insert(Transaction... transactions) {
-        repo.insert(transactions);
+    public void insert(Transaction transactions) {
+        repo.getTransactionDao().insert(transactions);
+    }
+    public void insert(People people) {
+        repo.getPeopleDao().insert(people);
     }
 
     public List<Transaction> getAllTransactions() {
-        return repo.getAllTransactions();
+        return repo.getTransactionDao().getAll();
+    }
+    public List<People> getAllPeoples() {
+        return repo.getPeopleDao().getAll();
     }
 }
