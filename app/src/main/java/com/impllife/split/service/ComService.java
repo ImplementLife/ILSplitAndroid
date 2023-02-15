@@ -2,7 +2,6 @@ package com.impllife.split.service;
 
 import com.impllife.split.data.dto.User;
 import com.impllife.split.data.jpa.entity.People;
-import com.impllife.split.data.jpa.entity.Rec;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.provide.DaoFactory;
 import org.springframework.http.HttpStatus;
@@ -62,19 +61,6 @@ public class ComService {
             e.printStackTrace();
         }*/
     }
-    public void add(Rec rec) {
-        repo.add(rec);
-    }
-    public List<Rec> read() {
-        return repo.readAll();
-    }
-    public void delete() {
-        repo.deleteAll();
-    }
-    public boolean deleteById(int id) {
-        return repo.deleteById(id);
-    }
-
 
     public void insert(Transaction transactions) {
         repo.getTransactionDao().insert(transactions);

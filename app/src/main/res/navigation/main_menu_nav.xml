@@ -13,10 +13,6 @@
               android:name="com.impllife.split.ui.fragments.ContactsFragment"
               android:label="fragment_contacts"
               tools:layout="@layout/fragment_contacts"/>
-    <fragment android:id="@+id/fragment_test"
-              android:name="com.impllife.split.ui.fragments.TestFragment"
-              android:label="fragment_test"
-              tools:layout="@layout/fragment_test"/>
     <fragment android:id="@+id/fragment_transactions_list"
               android:name="com.impllife.split.ui.fragments.TransactionsListFragment"
               android:label="fragment_transactions_list"

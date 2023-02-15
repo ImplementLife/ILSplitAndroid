@@ -30,9 +30,6 @@ public class MainMenuFragment extends NavFragment {
         view.findViewById(R.id.btn_new_transaction).setOnClickListener(v -> {
             navController.navigate(R.id.fragment_transaction_new);
         });
-        view.findViewById(R.id.btn_test).setOnClickListener(v -> {
-            navController.navigate(R.id.fragment_test);
-        });
         return view;
     }
 
