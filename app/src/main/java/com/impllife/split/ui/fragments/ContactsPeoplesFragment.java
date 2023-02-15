@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
-import com.impllife.split.service.ComService;
+import com.impllife.split.service.DataService;
 import com.impllife.split.ui.view.PeopleSetupView;
 import com.impllife.split.ui.view.PeopleView;
 
@@ -46,7 +46,7 @@ public class ContactsPeoplesFragment extends NavFragment {
 
     private void loadAndDrawAllPeoples() {
         runAsync(() -> {
-            allPeoples = ComService.getInstance().getAllPeoples();
+            allPeoples = DataService.getInstance().getAllPeoples();
             view.post(this::updateView);
         });
     }

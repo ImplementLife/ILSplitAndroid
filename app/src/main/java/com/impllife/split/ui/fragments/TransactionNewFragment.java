@@ -8,7 +8,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
-import com.impllife.split.service.ComService;
+import com.impllife.split.service.DataService;
 
 import java.util.Calendar;
 
@@ -30,7 +30,7 @@ public class TransactionNewFragment extends NavFragment {
                 transaction.setSum(((EditText) view.findViewById(R.id.field_sum)).getText().toString());
                 transaction.setDateCreate(calendar.getTime());
                 transaction.setDescription(((EditText) view.findViewById(R.id.et_dscr)).getText().toString());
-                ComService.getInstance().insert(transaction);
+                DataService.getInstance().insert(transaction);
                 view.post(() -> {
                     navController.navigateUp();
                 });

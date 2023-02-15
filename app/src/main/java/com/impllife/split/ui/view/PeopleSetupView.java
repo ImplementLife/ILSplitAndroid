@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
-import com.impllife.split.service.ComService;
+import com.impllife.split.service.DataService;
 
 import static java.util.concurrent.CompletableFuture.runAsync;
 
@@ -46,12 +46,12 @@ public class PeopleSetupView extends BaseView {
                 people = new People();
                 runAsync(() -> {
                     people.setPseudonym(text.toString());
-                    ComService.getInstance().insert(people);
+                    DataService.getInstance().insert(people);
                 });
             } else {
                 runAsync(() -> {
                     people.setPseudonym(text.toString());
-                    ComService.getInstance().update(people);
+                    DataService.getInstance().update(people);
                 });
             }
             postOkAction.run();

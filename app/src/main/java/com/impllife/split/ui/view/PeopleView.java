@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
-import com.impllife.split.service.ComService;
+import com.impllife.split.service.DataService;
 
 import java.util.function.Consumer;
 
@@ -48,7 +48,7 @@ public class PeopleView extends BaseView {
         findViewById(R.id.btn_edit).setOnClickListener(v -> btnEditAction.accept(people));
         findViewById(R.id.btn_delete).setOnClickListener(v -> {
             runAsync(() -> {
-                ComService.getInstance().delete(people);
+                DataService.getInstance().delete(people);
                 postDeleteAction.run();
             });
         });

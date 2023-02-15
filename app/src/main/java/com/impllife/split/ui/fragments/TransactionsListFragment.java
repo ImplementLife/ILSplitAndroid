@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
-import com.impllife.split.service.ComService;
+import com.impllife.split.service.DataService;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,7 +31,7 @@ public class TransactionsListFragment extends NavFragment {
 
         Thread thread = new Thread(() -> {
             Map<Integer, DateInfo> trn = new TreeMap<>();
-            List<Transaction> allTransactions = ComService.getInstance().getAllTransactions();
+            List<Transaction> allTransactions = DataService.getInstance().getAllTransactions();
             //allTransactions.sort((t1, t2) -> (int) (t1.getDateCreate() - t2.getDateCreate()));
             allTransactions.forEach(e -> {
                 Date date = e.getDateCreate();
