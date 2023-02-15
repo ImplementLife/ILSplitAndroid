@@ -2,12 +2,11 @@ package com.impllife.split.ui.fragments;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import com.impllife.split.ui.MainActivity;
 
-public class NavFragment extends Fragment {
+public class NavFragment extends BaseFragment {
     protected NavController navController;
 
     public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {

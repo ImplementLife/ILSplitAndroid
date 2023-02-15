@@ -83,6 +83,20 @@ public class ComService {
         repo.getPeopleDao().insert(people);
     }
 
+    public void update(Transaction transactions) {
+        repo.getTransactionDao().update(transactions);
+    }
+    public void update(People people) {
+        repo.getPeopleDao().update(people);
+    }
+
+    public void delete(Transaction transactions) {
+        repo.getTransactionDao().delete(transactions);
+    }
+    public void delete(People people) {
+        repo.getPeopleDao().delete(people);
+    }
+
     public List<Transaction> getAllTransactions() {
         return repo.getTransactionDao().getAll();
     }

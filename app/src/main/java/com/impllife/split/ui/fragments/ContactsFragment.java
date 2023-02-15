@@ -18,17 +18,12 @@ import java.util.TreeMap;
 public class ContactsFragment extends NavFragment {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
         setNavTitle("Contacts");
 
         Map<Integer, TabInfo> tabInfoMap = new TreeMap<>();
-        tabInfoMap.put(0, new TabInfo("Peoples", ContactsPeoplesFragment.newInstance()));
+        tabInfoMap.put(0, new TabInfo("Peoples", new ContactsPeoplesFragment()));
         tabInfoMap.put(1, new TabInfo("Groups", ContactsGroupsFragment.newInstance()));
 
         ViewPager2 pager = view.findViewById(R.id.pager);
