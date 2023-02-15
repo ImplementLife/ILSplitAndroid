@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_primary"
+        android:background="?attr/colorPrimary"
         tools:context=".ui.MainActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -16,7 +16,7 @@
             android:id="@+id/head">
 
         <TextView
-                style="@style/TextViewDefault"
+                style="@style/Theme.Split.TextViewDefault"
                 app:fontFamily="@font/inter"
                 android:textSize="24sp"
                 android:text="Title"
@@ -24,31 +24,36 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_title"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"/>
         <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_svg_arrow_back"
                 android:id="@+id/btn_back"
+                android:src="@drawable/ic_svg_arrow_back"
+                style="@style/Theme.Split.ImageButton.Middle"
+
                 app:backgroundTint="@color/alpha"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
         <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_svg_info"
                 android:id="@+id/btn_info"
+                android:src="@drawable/ic_svg_info"
+                style="@style/Theme.Split.ImageButton.Middle"
+
                 app:backgroundTint="@color/alpha"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.fragment.app.FragmentContainerView
             android:name="androidx.navigation.fragment.NavHostFragment"

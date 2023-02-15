@@ -13,7 +13,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/tab"
-            app:tabBackground="@color/background_primary">
+            app:tabBackground="?attr/colorPrimary"
+            app:tabTextColor="?attr/colorOnPrimary"
+            app:tabIndicatorColor="?attr/colorPrimaryVariant">
 
         <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
