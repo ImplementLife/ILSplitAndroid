@@ -46,6 +46,7 @@ public class PeopleSetupView extends BaseView {
 
         View btnOk = findViewById(R.id.btn_ok);
         btnOk.setOnClickListener(v -> {
+            MainActivity.getInstance().hideKeyboard();
             Editable text = etName.getText();
             if ("".equals(text.toString())) return;
             if (!isUpdate) {
@@ -60,7 +61,7 @@ public class PeopleSetupView extends BaseView {
                     DataService.getInstance().update(people);
                 });
             }
-            MainActivity.getInstance().hideKeyboard();
+
             if (postOkAction != null) postOkAction.run();
         });
 
