@@ -10,38 +10,49 @@
 
     <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:inputType="textPersonName"
             android:hint="Pseudonym"
             android:ems="10"
             android:id="@+id/et_pseudonym"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            android:layout_marginStart="8dp"/>
+
     <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:backgroundTint="@color/alpha"
-            app:srcCompat="@drawable/ic_svg_add_circle"
             android:id="@+id/btn_ok"
+            style="@style/Theme.Split.ImageButton.Middle"
+            app:backgroundTint="@color/green"
+            app:srcCompat="@drawable/ic_svg_done"
+
             app:layout_constraintStart_toEndOf="@+id/btn_cancel"
-            android:layout_marginStart="8dp"
             app:layout_constraintTop_toBottomOf="@+id/et_pseudonym"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
     <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:backgroundTint="@color/alpha"
-            app:srcCompat="@drawable/ic_svg_add_circle"
             android:id="@+id/btn_cancel"
+            style="@style/Theme.Split.ImageButton.Middle"
+            app:backgroundTint="@color/red"
+            app:srcCompat="@drawable/ic_svg_close"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_pseudonym"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"/>
+    <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@mipmap/ic_png_account_icon_1"
+            android:id="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

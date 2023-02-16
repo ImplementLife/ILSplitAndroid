@@ -1,10 +1,12 @@
 package com.impllife.split.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -66,5 +68,19 @@ public class MainActivity extends AppCompatActivity {
     }
     public void setInfoBtnAction(Runnable exe) {
         btnInfo.setOnClickListener(v -> exe.run());
+    }
+
+    public void hideKeyboard() {
+        View view = MainActivity.getInstance().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+    public void showKeyboard(View view) {
+        if (view != null && view.requestFocus()) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(view, 0);
+        }
     }
 }

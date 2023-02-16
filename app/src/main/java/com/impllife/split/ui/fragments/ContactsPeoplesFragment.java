@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
+import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.view.PeopleSetupView;
 import com.impllife.split.ui.view.PeopleView;
 
@@ -20,6 +21,8 @@ public class ContactsPeoplesFragment extends NavFragment {
     private boolean isPeopleSetupShow;
     private List<People> allPeoples;
     private PeopleSetupView peopleSetupView;
+    private int peopleSetupViewPosition;
+    private PeopleView hiddenPeopleView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,10 +30,15 @@ public class ContactsPeoplesFragment extends NavFragment {
         view = inflater.inflate(R.layout.fragment_contacts_peoples, container, false);
 
         listItems = view.findViewById(R.id.list_items);
-        peopleSetupView = new PeopleSetupView(inflater, listItems, this::hidePeopleSetup, this::addNewContact);
+        peopleSetupView = new PeopleSetupView(inflater, listItems);
+        peopleSetupView.setPostOkAction(this::addNewContact);
 
         btnNew = view.findViewById(R.id.btn_new);
-        btnNew.setOnClickListener(v -> showOrHidePeopleSetup());
+        btnNew.setOnClickListener(v -> {
+            peopleSetupView.setPostCancelAct(this::hidePeopleSetup);
+            peopleSetupView.focusKeyboard();
+            showOrHidePeopleSetup();
+        });
 
         loadAndDrawAllPeoples();
         return view;
@@ -53,12 +61,22 @@ public class ContactsPeoplesFragment extends NavFragment {
 
     private void updateView() {
         listItems.removeAllViews();
-        for (People e : allPeoples) {
-            PeopleView peopleView = new PeopleView(inflater, listItems, e);
+        for (int i = 0; i < allPeoples.size(); i++) {
+            PeopleView peopleView = new PeopleView(inflater, listItems, allPeoples.get(i));
+            int position = i;
             peopleView.setBtnEditAction(people -> {
+                if (isPeopleSetupShow) {
+                    hidePeopleSetup();
+                }
+                peopleSetupViewPosition = position;
                 peopleSetupView.setPeople(people);
-                peopleSetupView.init();
-                showPeopleSetup();
+                peopleSetupView.setPostCancelAct(() -> {
+                    hidePeopleSetup(position);
+                    peopleView.getRoot().setVisibility(View.VISIBLE);
+                });
+                peopleView.getRoot().setVisibility(View.GONE);
+                hiddenPeopleView = peopleView;
+                showPeopleSetup(position);
             });
             peopleView.setPostDeleteAction(this::loadAndDrawAllPeoples);
             listItems.addView(peopleView.getRoot());
@@ -66,20 +84,29 @@ public class ContactsPeoplesFragment extends NavFragment {
     }
 
     private void showPeopleSetup() {
+        peopleSetupViewPosition = 0;
+        showPeopleSetup(0);
+    }
+    private void showPeopleSetup(int position) {
         btnNew.setRotation(45);
         if (!isPeopleSetupShow) {
             isPeopleSetupShow = true;
-            listItems.addView(peopleSetupView.getRoot(), 0);
+            peopleSetupView.fillData();
+            listItems.addView(peopleSetupView.getRoot(), position);
         }
     }
 
     private void hidePeopleSetup() {
+        hidePeopleSetup(peopleSetupViewPosition);
+    }
+    private void hidePeopleSetup(int position) {
         btnNew.setRotation(0);
         if (isPeopleSetupShow) {
             isPeopleSetupShow = false;
-            listItems.removeViewAt(0);
+            MainActivity.getInstance().hideKeyboard();
+            listItems.removeViewAt(position);
+            if (hiddenPeopleView != null) hiddenPeopleView.getRoot().setVisibility(View.VISIBLE);
             peopleSetupView.setPeople(null);
-            peopleSetupView.init();
         }
     }
 

@@ -35,7 +35,6 @@ public class PeopleView extends BaseView {
         layout_expand.setVisibility(View.GONE);
 
         ImageView imgExpand = findViewById(R.id.img_expand);
-        imgExpand.setRotation(-90);
         root.setOnClickListener(v -> {
             imgExpand.setRotation(imgExpand.getRotation() + 180);
             if (layout_expand.getVisibility() == View.GONE) {
