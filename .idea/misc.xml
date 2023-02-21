@@ -15,6 +15,8 @@
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.25" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.25" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.25" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_svg_history.xml" value="0.36875" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/ic_svg_none.xml" value="0.36875" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/sh_round_rectangle.xml" value="0.1" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/sh_separator.xml" value="0.36770833333333336" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/drawable/side_nav_bar.xml" value="0.25104166666666666" />
@@ -49,7 +51,7 @@
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/sample_rec_view.xml" value="0.5" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/sample_view_main_menu_btn.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view.xml" value="0.3515625" />
-        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view_main_menu_btn.xml" value="0.3515625" />
+        <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view_btn_main_menu.xml" value="0.3515625" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view_people.xml" value="0.3515625" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view_people_setup.xml" value="0.3515625" />
         <entry key="..\:/Users/ImplementLife/.1IdeaProjects/ILSplit/SplitMobile/app/src/main/res/layout/view_transactoin_list.xml" value="0.3515625" />

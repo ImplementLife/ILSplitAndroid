@@ -7,6 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.MainMenuFragment">
     <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/grid"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -23,109 +24,6 @@
             app:rowOrderPreserved="false"
             app:useDefaultMargins="true"
     >
-        <Button
-                android:text="Contacts"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                android:id="@+id/btn_date_today"
-                app:layout_row="0"
-                app:layout_column="0"
-        />
-        <Button
-                android:text="My link qr"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="0"
-                app:layout_column="1"
-                android:id="@+id/btn_date_yesterday"/>
-        <Button
-                android:text="QR Scan"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="0"
-                app:layout_column="2"
-                android:id="@+id/btn_date_select"/>
-        <Button
-                android:text="Requisitions"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="2"
-                app:layout_column="1"
-                android:id="@+id/btn_history"/>
-        <Button
-                android:text="Billings"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="2"
-                app:layout_column="0"
-                android:id="@+id/btn_billings"/>
-        <Button
-                android:text="Budget"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_row="3"
-                app:layout_column="0"
-                android:id="@+id/btn_budget"
-                app:layout_gravity="fill_horizontal"/>
-        <Button
-                android:text="Discounts"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="1"
-                app:layout_column="2"
-                android:id="@+id/btn_discounts"/>
-        <Button
-                android:text="Settings"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="1"
-                app:layout_column="0"
-                android:id="@+id/btn_settings"/>
-        <Button
-                android:text="New Req"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="2"
-                app:layout_column="2"
-                android:id="@+id/btn_new_requisition"/>
-        <Button
-                android:text="Transact's"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="3"
-                app:layout_column="1"
-                android:id="@+id/btn_transactions"/>
-        <Button
-                android:text="New Trn"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_gravity="fill_horizontal"
-                app:layout_row="3"
-                app:layout_column="2"
-                android:id="@+id/btn_new_transaction"/>
-        <Button
-                android:text="Notify's"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_row="1"
-                app:layout_column="1"
-                android:id="@+id/btn_notifys"/>
-        <Button
-                android:text="NFC Pay"
-                style="@style/Theme.Split.GridItem.MainMenu"
-                app:layout_columnWeight="1"
-                app:layout_row="4"
-                app:layout_column="2"
-                android:id="@+id/btn_nfc_pay"/>
     </androidx.gridlayout.widget.GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
