@@ -5,7 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.MainMenuFragment">
+        tools:context=".ui.fragment.MainMenuFragment">
     <androidx.gridlayout.widget.GridLayout
             android:id="@+id/grid"
             android:layout_width="0dp"

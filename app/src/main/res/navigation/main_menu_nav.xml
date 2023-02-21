@@ -6,27 +6,27 @@
             app:startDestination="@id/fragment_main_menu">
 
     <fragment android:id="@+id/fragment_main_menu"
-              android:name="com.impllife.split.ui.fragments.MainMenuFragment"
+              android:name="com.impllife.split.ui.fragment.MainMenuFragment"
               android:label="fragment_main_menu"
               tools:layout="@layout/fragment_main_menu"/>
     <fragment android:id="@+id/fragment_contacts"
-              android:name="com.impllife.split.ui.fragments.ContactsFragment"
+              android:name="com.impllife.split.ui.fragment.ContactsFragment"
               android:label="fragment_contacts"
               tools:layout="@layout/fragment_contacts"/>
     <fragment android:id="@+id/fragment_transactions_list"
-              android:name="com.impllife.split.ui.fragments.TransactionsListFragment"
+              android:name="com.impllife.split.ui.fragment.TransactionsListFragment"
               android:label="fragment_transactions_list"
               tools:layout="@layout/fragment_transactions_list"/>
     <fragment android:id="@+id/fragment_transaction_info"
-              android:name="com.impllife.split.ui.fragments.TransactionInfoFragment"
+              android:name="com.impllife.split.ui.fragment.TransactionInfoFragment"
               android:label="fragment_transaction_info"
               tools:layout="@layout/fragment_transaction_info"/>
     <fragment android:id="@+id/fragment_transaction_new"
-              android:name="com.impllife.split.ui.fragments.TransactionNewFragment"
+              android:name="com.impllife.split.ui.fragment.TransactionNewFragment"
               android:label="fragment_transaction_new"
               tools:layout="@layout/fragment_transaction_new"/>
     <fragment android:id="@+id/fragment_contact_setup_group"
-              android:name="com.impllife.split.ui.fragments.ContactSetupGroupFragment"
+              android:name="com.impllife.split.ui.fragment.ContactSetupGroupFragment"
               android:label="fragment_contact_setup_group"
               tools:layout="@layout/fragment_contact_setup_group"/>
 </navigation>

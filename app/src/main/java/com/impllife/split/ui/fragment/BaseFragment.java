@@ -1,4 +1,4 @@
-package com.impllife.split.ui.fragments;
+package com.impllife.split.ui.fragment;
 
 import android.view.LayoutInflater;
 import androidx.fragment.app.Fragment;

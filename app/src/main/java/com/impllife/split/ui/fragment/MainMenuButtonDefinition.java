@@ -1,4 +1,4 @@
-package com.impllife.split.ui.fragments;
+package com.impllife.split.ui.fragment;
 
 import androidx.navigation.NavController;
 import com.impllife.split.R;

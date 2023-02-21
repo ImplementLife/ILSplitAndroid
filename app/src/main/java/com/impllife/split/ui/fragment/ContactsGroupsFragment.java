@@ -1,4 +1,4 @@
-package com.impllife.split.ui.fragments;
+package com.impllife.split.ui.fragment;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
