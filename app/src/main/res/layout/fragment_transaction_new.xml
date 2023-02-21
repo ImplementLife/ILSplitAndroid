@@ -32,16 +32,69 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/btn_create" android:layout_marginBottom="8dp"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
             android:hint="Description"
             android:id="@+id/et_dscr"
-            app:layout_constraintTop_toBottomOf="@+id/field_sum"
-            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/gridLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"/>
+    <androidx.gridlayout.widget.GridLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:alignmentMode="alignBounds"
+            app:columnCount="3"
+            app:rowOrderPreserved="false"
+            app:useDefaultMargins="true"
+            app:layout_constraintBottom_toTopOf="@+id/calendar"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            android:id="@+id/gridLayout">
+        <Button
+                android:text="Today"
+                style="@style/Theme.Split.GridItem.CategoryItem"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+                android:id="@+id/btn_date_today"
+                app:layout_row="0"
+                app:layout_column="0"
+        />
+        <Button
+                android:text="Yesterday"
+                style="@style/Theme.Split.GridItem.CategoryItem"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill_horizontal"
+                app:layout_row="0"
+                app:layout_column="1"
+                android:id="@+id/btn_date_yesterday"/>
+        <Button
+                android:text="Select"
+                style="@style/Theme.Split.GridItem.CategoryItem"
+                app:layout_columnWeight="1"
+                app:layout_row="0"
+                app:layout_column="2"
+                android:id="@+id/btn_date_select"
+                app:layout_gravity="fill_horizontal"/>
+
+    </androidx.gridlayout.widget.GridLayout>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/field_sum"
+            android:id="@+id/linearLayout"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,7 @@ public class MainMenuFragment extends NavFragment {
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         MainActivity.getInstance().hideHead();
 
-        view.findViewById(R.id.btn_contacts).setOnClickListener(v -> {
+        view.findViewById(R.id.btn_date_today).setOnClickListener(v -> {
             navController.navigate(R.id.fragment_contacts);
         });
         view.findViewById(R.id.btn_transactions).setOnClickListener(v -> {
