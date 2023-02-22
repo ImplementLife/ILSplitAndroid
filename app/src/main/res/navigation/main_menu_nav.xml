@@ -24,9 +24,19 @@
     <fragment android:id="@+id/fragment_transaction_new"
               android:name="com.impllife.split.ui.fragment.TransactionNewFragment"
               android:label="fragment_transaction_new"
-              tools:layout="@layout/fragment_transaction_new"/>
+              tools:layout="@layout/fragment_transaction_new">
+        <action android:id="@+id/action_fragment_transaction_new_to_fragment_date_select"
+                app:destination="@id/fragment_date_select"/>
+    </fragment>
     <fragment android:id="@+id/fragment_contact_setup_group"
               android:name="com.impllife.split.ui.fragment.ContactSetupGroupFragment"
               android:label="fragment_contact_setup_group"
               tools:layout="@layout/fragment_contact_setup_group"/>
+    <fragment android:id="@+id/fragment_date_select"
+              android:name="com.impllife.split.ui.fragment.DateSelectFragment"
+              android:label="fragment_date_select"
+              tools:layout="@layout/fragment_date_select">
+        <action android:id="@+id/action_fragment_date_select_to_fragment_transaction_new"
+                app:destination="@id/fragment_transaction_new"/>
+    </fragment>
 </navigation>

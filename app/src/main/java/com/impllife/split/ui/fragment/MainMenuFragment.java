@@ -39,6 +39,7 @@ public class MainMenuFragment extends NavFragment {
             GridLayout.spec(row, 1f),
             GridLayout.spec(col, 1f));
         layoutParams.setGravity(FILL_HORIZONTAL);
+        layoutParams.height = 100;
 
         grid.addView(view, layoutParams);
     }
