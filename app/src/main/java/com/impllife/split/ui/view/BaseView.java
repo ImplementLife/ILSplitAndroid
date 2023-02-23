@@ -32,4 +32,8 @@ public abstract class BaseView {
     public <T extends View> T findViewById(int id) {
         return root.findViewById(id);
     }
+
+    public void setOnClickListener(View.OnClickListener listener) {
+        getRoot().setOnClickListener(listener);
+    }
 }

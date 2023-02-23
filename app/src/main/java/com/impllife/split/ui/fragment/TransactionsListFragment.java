@@ -1,5 +1,6 @@
 package com.impllife.split.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class TransactionsListFragment extends NavFragment {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YYYY");
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private LinearLayout listItems;
 
     @Override
