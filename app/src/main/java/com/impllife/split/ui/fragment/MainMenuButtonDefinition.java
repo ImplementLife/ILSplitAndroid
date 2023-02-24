@@ -18,7 +18,7 @@ public enum MainMenuButtonDefinition {
     BTN_REQUISITIONS("Requisitions", 2, 1, -1, n -> {}),
     BTN_NEW_REQUISITION("New Req", 2, 2, -1, n -> {}),
 
-    BTN_BUDGET("Budget", 3, 0, -1, n -> {}),
+    BTN_BUDGET("Budget", 3, 0, -1, n -> n.navigate(R.id.fragment_budget_menu)),
     BTN_TRANSACTIONS("Transact's", 3, 1, R.drawable.ic_svg_history, n -> n.navigate(R.id.fragment_transactions_list)),
     BTN_NEW_TRANSACTION("New Trn", 3, 2, R.drawable.ic_svg_receipt, n -> n.navigate(R.id.fragment_transaction_new)),
 

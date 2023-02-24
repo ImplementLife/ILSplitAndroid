@@ -39,4 +39,8 @@
         <action android:id="@+id/action_fragment_date_select_to_fragment_transaction_new"
                 app:destination="@id/fragment_transaction_new"/>
     </fragment>
+    <fragment android:id="@+id/fragment_budget_menu"
+              android:name="com.impllife.split.ui.fragment.BudgetMenuFragment"
+              android:label="fragment_budget_menu"
+              tools:layout="@layout/fragment_budget_menu"/>
 </navigation>
