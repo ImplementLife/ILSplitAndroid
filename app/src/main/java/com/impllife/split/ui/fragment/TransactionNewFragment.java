@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.gridlayout.widget.GridLayout;
 
 import com.impllife.split.R;
@@ -16,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static android.view.Gravity.FILL_HORIZONTAL;
+import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
 public class TransactionNewFragment extends NavFragment {
     private Date dateCreate;
@@ -64,13 +67,21 @@ public class TransactionNewFragment extends NavFragment {
         btnSelectDate.setName("Select");
         initDateSelect();
         btnSelectDate.setOnClickListener(v -> {
-            btnSelectDate.select();
-            btnToday.unselect();
-            btnYesterday.unselect();
-
-            navController.navigate(R.id.action_fragment_transaction_new_to_fragment_date_select);
+            navController.navigate(R.id.fragment_date_select);
         });
 
+        getParentFragmentManager().setFragmentResultListener(RESULT_KEY, this, (key, bundle) -> {
+            if (RESULT_KEY.equals(key)) {
+                btnSelectDate.select();
+                btnToday.unselect();
+                btnYesterday.unselect();
+
+                long selected = bundle.getLong("date");
+                calendar.setTimeInMillis(selected);
+                dateCreate = calendar.getTime();
+                btnSelectDate.setDate(dateCreate);
+            }
+        });
 
         setBtn(btnToday.getRoot(), 0, 0);
         setBtn(btnYesterday.getRoot(), 0, 1);

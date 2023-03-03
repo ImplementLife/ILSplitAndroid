@@ -10,6 +10,7 @@ import com.impllife.split.R;
 import java.util.Calendar;
 
 public class DateSelectFragment extends NavFragment {
+    public static final String RESULT_KEY = "date_select_result";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,7 +27,9 @@ public class DateSelectFragment extends NavFragment {
         view.findViewById(R.id.btn_ok).setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putLong("date", calendar.getTimeInMillis());
-            navController.navigate(R.id.action_fragment_date_select_to_fragment_transaction_new, bundle);
+            getParentFragmentManager().setFragmentResult(RESULT_KEY, bundle);
+//            navController.navigate(R.id.action_fragment_date_select_to_fragment_transaction_new, bundle);
+            navController.navigateUp();
         });
         return view;
     }
