@@ -44,28 +44,34 @@ public class TransactionsListFragment extends NavFragment {
     }
 
     private List<BaseView> createListView(List<Transaction> sortedTransactions) {
-        List<BaseView> viewList = new ArrayList<>();
+        List<BaseView> result = new ArrayList<>();
+        if (sortedTransactions.size() == 0) return result;
+
         Date startDate = sortedTransactions.get(0).getDateCreate();
-        AtomicReference<Date> currentProcessingDate = new AtomicReference<>(startDate);
-        viewList.add(new TransactionListItemDate(inflater, listItems, startDate));
+        Date currentProcessingDay = startDate;
 
-        sortedTransactions.forEach(transaction -> {
-            calendar.setTime(transaction.getDateCreate());
-            calendar.clear(Calendar.HOUR);
-            calendar.clear(Calendar.MINUTE);
-            calendar.clear(Calendar.SECOND);
-            calendar.clear(Calendar.MILLISECOND);
+        TransactionListItemDate currentViewDate = new TransactionListItemDate(inflater, listItems, startDate);
+        double currentSumTotal = 0;
 
-            Date date = calendar.getTime();
-            if (!equalsDateByDMY(currentProcessingDate.get(), date)) {
-                viewList.add(new TransactionListItemDate(inflater, listItems, date));
-                currentProcessingDate.set(date);
+        result.add(currentViewDate);
+
+        for (Transaction transaction : sortedTransactions) {
+            Date date = transaction.getDateCreate();
+            if (!equalsDateByDMY(currentProcessingDay, date)) {
+                TransactionListItemDate viewDate = new TransactionListItemDate(inflater, listItems, date);
+                result.add(viewDate);
+
+                currentViewDate = viewDate;
+                currentProcessingDay = date;
+                currentSumTotal = 0D;
             }
+            currentSumTotal += Double.parseDouble(transaction.getSum());
+            currentViewDate.setData(String.valueOf(currentSumTotal));
 
-            viewList.add(new TransactionListItem(inflater, listItems, transaction));
-        });
+            result.add(new TransactionListItem(inflater, listItems, transaction));
+        }
 
-        return viewList;
+        return result;
     }
 
     private void updateView(List<BaseView> list) {

@@ -14,6 +14,7 @@ public class TransactionListItemDate extends BaseView {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private TextView tvDate;
+    private TextView tvSumTotal;
 
     public TransactionListItemDate(LayoutInflater inflater, ViewGroup rootForThis, Date date) {
         super(inflater, R.layout.view_transactoin_list_item_date, rootForThis);
@@ -23,9 +24,14 @@ public class TransactionListItemDate extends BaseView {
 
     private void init() {
         tvDate = findViewById(R.id.tv_date);
+        tvSumTotal = findViewById(R.id.tv_sum_total);
     }
 
     public void setData(Date date) {
         tvDate.setText(dateFormat.format(date));
+    }
+
+    public void setData(String sumTotal) {
+        tvSumTotal.setText(sumTotal);
     }
 }

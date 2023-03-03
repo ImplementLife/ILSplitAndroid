@@ -21,10 +21,9 @@
                 android:orientation="vertical"/>
     </ScrollView>
     <ImageButton
-            android:src="@drawable/ic_svg_add_circle"
+            android:src="@drawable/ic_svg_add_circle_alt"
+            style="@style/Theme.Split.ImageButton.Large"
             app:backgroundTint="@color/alpha"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
             android:id="@+id/btn_new"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

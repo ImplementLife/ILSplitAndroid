@@ -4,12 +4,20 @@
         <item name="android:padding">3dp</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitCenter</item>
+        <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
 
+    <style name="Theme.Split.ImageButton.Small">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+    </style>
     <style name="Theme.Split.ImageButton.Middle">
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:tint">?attr/colorOnPrimary</item>
+    </style>
+    <style name="Theme.Split.ImageButton.Large">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
     </style>
 
     <style name="Theme.Split.Card">

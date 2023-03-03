@@ -14,6 +14,6 @@ public abstract class TransactionDao implements RestDao<Integer, Transaction> {
     @Query("DELETE FROM `transaction` WHERE id = :id")
     public abstract void deleteById(int id);
 
-    @Query("SELECT * FROM `transaction` order by dateCreate")
+    @Query("SELECT * FROM `transaction` order by dateCreate desc")
     public abstract List<Transaction> getAll();
 }
