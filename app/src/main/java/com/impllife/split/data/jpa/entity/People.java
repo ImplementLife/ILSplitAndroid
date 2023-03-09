@@ -1,11 +1,16 @@
 package com.impllife.split.data.jpa.entity;
 
-import androidx.room.Entity;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "il_people")
 public class People extends EntityWithId {
+    @Column
     private int accountId;
+    @Column
     private String pseudonym;
+
+    //region get & set
 
     public int getAccountId() {
         return accountId;
@@ -20,4 +25,6 @@ public class People extends EntityWithId {
     public void setPseudonym(String pseudonym) {
         this.pseudonym = pseudonym;
     }
+
+    //endregion
 }

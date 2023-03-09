@@ -1,8 +1,14 @@
 package com.impllife.split.service;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.util.Log;
+import com.impllife.split.ui.MainActivity;
+import dalvik.system.DexClassLoader;
+import dalvik.system.DexFile;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 public class Util {
     private static final Calendar CALENDAR = Calendar.getInstance();
@@ -31,5 +37,34 @@ public class Util {
         int year2 = CALENDAR.get(Calendar.YEAR);
 
         return year1 == year2 && month1 == month2 && day1 == day2;
+    }
+
+    public static List<Class<?>> getAnnotatedClasses(Class<? extends Annotation> annotationClass) {
+        List<Class<?>> classes = new ArrayList<>();
+        Context context = MainActivity.getInstance();
+
+        try {
+            ApplicationInfo applicationInfo = context.getApplicationInfo();
+
+            DexClassLoader dexClassLoader = new DexClassLoader(applicationInfo.sourceDir, context.getCacheDir().getAbsolutePath(), null, context.getClassLoader());
+            String appPackageName = context.getApplicationContext().getPackageName();
+            DexFile dexFile = new DexFile(applicationInfo.sourceDir);
+            Enumeration<String> entries = dexFile.entries();
+            while (entries.hasMoreElements()) {
+                String className = entries.nextElement();
+                if (!className.startsWith(appPackageName)) continue;
+                try {
+                    Class<?> clazz = dexClassLoader.loadClass(className);
+                    if (clazz.isAnnotationPresent(annotationClass)) {
+                        classes.add(clazz);
+                    }
+                } catch (Throwable t) {
+                    Log.e("getAnnotatedClasses" + className, t.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return classes;
     }
 }

@@ -1,14 +1,30 @@
 package com.impllife.split.data.jpa.entity;
 
-import androidx.room.Entity;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
-@Entity
+@Entity(name = "il_transaction")
 public class Transaction extends EntityWithId {
+    @Column
     private Date dateCreate;
+    @Column
     private String sum;
+    @Column
     private String description;
+
+    @ManyToOne
+    private People people;
+
+    //region get & set
+
+    public People getPeople() {
+        return people;
+    }
+    public void setPeople(People people) {
+        this.people = people;
+    }
 
     public Date getDateCreate() {
         return dateCreate;
@@ -30,4 +46,6 @@ public class Transaction extends EntityWithId {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    //endregion
 }

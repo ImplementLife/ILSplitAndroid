@@ -49,18 +49,9 @@ public class PeopleSetupView extends BaseView {
             MainActivity.getInstance().hideKeyboard();
             Editable text = etName.getText();
             if ("".equals(text.toString())) return;
-            if (!isUpdate) {
-                people = new People();
-                runAsync(() -> {
-                    people.setPseudonym(text.toString());
-                    DataService.getInstance().insert(people);
-                });
-            } else {
-                runAsync(() -> {
-                    people.setPseudonym(text.toString());
-                    DataService.getInstance().update(people);
-                });
-            }
+            if (!isUpdate) people = new People();
+            people.setPseudonym(text.toString());
+            runAsync(() -> DataService.getInstance().save(people));
 
             if (postOkAction != null) postOkAction.run();
         });

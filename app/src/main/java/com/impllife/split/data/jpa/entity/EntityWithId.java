@@ -1,29 +1,32 @@
 package com.impllife.split.data.jpa.entity;
 
-import androidx.room.ColumnInfo;
-import androidx.room.PrimaryKey;
 import com.impllife.split.data.Sync;
 import com.impllife.split.data.jpa.provide.WithId;
 
-public class EntityWithId implements WithId<Integer>, Sync<Integer> {
-    @PrimaryKey(autoGenerate = true)
-    private Integer id;
-    @ColumnInfo(defaultValue = "-1")
-    private Integer serverId;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import static javax.persistence.GenerationType.IDENTITY;
+
+public class EntityWithId implements WithId<Long>, Sync<Long> {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+    private Long serverId = -1L;
 
     @Override
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Override
-    public Integer getServerId() {
+    public Long getServerId() {
         return serverId;
     }
-    public void setServerId(Integer serverId) {
+    public void setServerId(Long serverId) {
         this.serverId = serverId;
     }
     @Override

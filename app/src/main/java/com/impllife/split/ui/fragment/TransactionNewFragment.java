@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.gridlayout.widget.GridLayout;
 
 import com.impllife.split.R;
@@ -112,7 +110,7 @@ public class TransactionNewFragment extends NavFragment {
         transaction.setDateCreate(dateCreate);
         transaction.setDescription(etDscr.getText().toString());
 
-        DataService.getInstance().insert(transaction);
+        DataService.getInstance().save(transaction);
     }
 
     private void initDateSelect() {
