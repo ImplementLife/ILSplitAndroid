@@ -5,20 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.gridlayout.widget.GridLayout;
-
 import com.impllife.split.R;
+import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.view.BtnDate;
+import com.impllife.split.ui.view.PeopleView;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 import static android.view.Gravity.FILL_HORIZONTAL;
 import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
-public class TransactionNewFragment extends NavFragment {
+public class TransactionSetupFragment extends NavFragment {
     private Date dateCreate;
 
     private BtnDate btnToday;
@@ -28,15 +30,48 @@ public class TransactionNewFragment extends NavFragment {
 
     private EditText etSum;
     private EditText etDscr;
+    private LinearLayout contacts;
+    private Transaction transaction = new Transaction();
+    private TextView tvSel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transaction_new, container, false);
+        View view = inflater.inflate(R.layout.fragment_transaction_setup, container, false);
         setNavTitle("New transaction");
 
         init(inflater, view);
 
         Calendar calendar = Calendar.getInstance();
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            long trn_id = arguments.getLong("trn_id");
+            Optional<Transaction> trnById = DataService.getInstance().findTrnById(trn_id);
+            if (trnById.isPresent()) {
+                transaction = trnById.get();
+                etSum.setText(transaction.getSum());
+                etDscr.setText(transaction.getDescription());
+                People people = transaction.getPeople();
+                if (people != null) {
+                    people = DataService.getInstance().findPeopleById(people.getId()).get();
+                    tvSel.setText(people.getPseudonym());
+                }
+            }
+        }
+        runAsync(() -> {
+            List<PeopleView> pv = new ArrayList<>();
+            for (People p : DataService.getInstance().getAllPeoples()) {
+                PeopleView peopleView = new PeopleView(inflater, contacts, p);
+                peopleView.getRoot().setOnClickListener(v -> {
+                    transaction.setPeople(p);
+                    tvSel.setText(p.getPseudonym());
+                });
+                pv.add(peopleView);
+            }
+            view.post(() -> {
+                for (PeopleView p : pv) contacts.addView(p.getRoot());
+            });
+        });
 
         btnToday.setName("Today");
         btnToday.setDate(calendar.getTime());
@@ -102,10 +137,11 @@ public class TransactionNewFragment extends NavFragment {
         btnSelectDate = new BtnDate(inflater, grid);
         etSum = view.findViewById(R.id.field_sum);
         etDscr = view.findViewById(R.id.et_dscr);
+        contacts = view.findViewById(R.id.list_contacts);
+        tvSel = view.findViewById(R.id.tv_sel);
     }
 
     private void save() {
-        Transaction transaction = new Transaction();
         transaction.setSum(etSum.getText().toString());
         transaction.setDateCreate(dateCreate);
         transaction.setDescription(etDscr.getText().toString());

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.impllife.split.service.Util.equalsDateByDMY;
 
@@ -33,7 +32,7 @@ public class TransactionsListFragment extends NavFragment {
 
         listItems = view.findViewById(R.id.list_items);
         calendar = Calendar.getInstance();
-        view.findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_new));
+        view.findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
 
         runAsync(() -> {
             List<Transaction> allTransactions = DataService.getInstance().getAllTransactions();
@@ -68,7 +67,11 @@ public class TransactionsListFragment extends NavFragment {
             currentSumTotal += Double.parseDouble(transaction.getSum());
             currentViewDate.setData(String.valueOf(currentSumTotal));
 
-            result.add(new TransactionListItem(inflater, listItems, transaction));
+            TransactionListItem transactionListItem = new TransactionListItem(inflater, listItems, transaction);
+            Bundle bundle = new Bundle();
+            bundle.putLong("trn_id", transaction.getId());
+            transactionListItem.setOnClick(v -> navController.navigate(R.id.fragment_transaction_setup, bundle));
+            result.add(transactionListItem);
         }
 
         return result;

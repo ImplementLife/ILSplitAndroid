@@ -1,8 +1,6 @@
 package com.impllife.split.data.jpa.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "il_transaction")
@@ -14,7 +12,8 @@ public class Transaction extends EntityWithId {
     @Column
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "people_id")
     private People people;
 
     //region get & set

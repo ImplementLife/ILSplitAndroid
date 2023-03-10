@@ -3,6 +3,7 @@ package com.impllife.split.data.jpa.entity;
 import com.impllife.split.data.Sync;
 import com.impllife.split.data.jpa.provide.WithId;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -12,6 +13,7 @@ public class EntityWithId implements WithId<Long>, Sync<Long> {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    @Column
     private Long serverId = -1L;
 
     @Override

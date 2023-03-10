@@ -20,7 +20,7 @@ public enum MainMenuButtonDefinition {
 
     BTN_BUDGET("Budget", 3, 0, R.drawable.ic_svg_money, n -> n.navigate(R.id.fragment_budget_menu)),
     BTN_TRANSACTIONS("Transact's", 3, 1, R.drawable.ic_svg_history, n -> n.navigate(R.id.fragment_transactions_list)),
-    BTN_NEW_TRANSACTION("New Trn", 3, 2, R.drawable.ic_svg_receipt, n -> n.navigate(R.id.fragment_transaction_new)),
+    BTN_NEW_TRANSACTION("New Trn", 3, 2, R.drawable.ic_svg_receipt, n -> n.navigate(R.id.fragment_transaction_setup)),
 
     //BTN_NFC_PAY("NFC Pay", 4, 2, -1, n -> {}),
 

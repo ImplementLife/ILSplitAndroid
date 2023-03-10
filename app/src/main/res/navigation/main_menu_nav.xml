@@ -21,10 +21,10 @@
               android:name="com.impllife.split.ui.fragment.TransactionInfoFragment"
               android:label="fragment_transaction_info"
               tools:layout="@layout/fragment_transaction_info"/>
-    <fragment android:id="@+id/fragment_transaction_new"
-              android:name="com.impllife.split.ui.fragment.TransactionNewFragment"
+    <fragment android:id="@+id/fragment_transaction_setup"
+              android:name="com.impllife.split.ui.fragment.TransactionSetupFragment"
               android:label="fragment_transaction_new"
-              tools:layout="@layout/fragment_transaction_new"/>
+              tools:layout="@layout/fragment_transaction_setup"/>
     <fragment android:id="@+id/fragment_contact_setup_group"
               android:name="com.impllife.split.ui.fragment.ContactSetupGroupFragment"
               android:label="fragment_contact_setup_group"

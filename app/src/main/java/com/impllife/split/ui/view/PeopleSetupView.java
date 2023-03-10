@@ -10,6 +10,8 @@ import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
 
+import java.util.Date;
+
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class PeopleSetupView extends BaseView {
@@ -51,6 +53,7 @@ public class PeopleSetupView extends BaseView {
             if ("".equals(text.toString())) return;
             if (!isUpdate) people = new People();
             people.setPseudonym(text.toString());
+            people.setDateUpdate(new Date());
             runAsync(() -> DataService.getInstance().save(people));
 
             if (postOkAction != null) postOkAction.run();
