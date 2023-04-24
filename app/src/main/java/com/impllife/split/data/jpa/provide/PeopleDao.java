@@ -8,13 +8,13 @@ import com.impllife.split.data.jpa.entity.Transaction;
 import java.util.List;
 
 @Dao
-public abstract class PeopleDao implements RestDao<Integer, People> {
+public interface PeopleDao extends RestDao<Integer, People> {
     @Query("SELECT * FROM `people` WHERE id = :id")
-    public abstract People findById(int id);
+    People findById(int id);
 
     @Query("DELETE FROM `people` WHERE id = :id")
-    public abstract void deleteById(int id);
+    void deleteById(int id);
 
     @Query("SELECT * FROM `people`")
-    public abstract List<People> getAll();
+    List<People> getAll();
 }
