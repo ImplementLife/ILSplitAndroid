@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class PeopleView extends BaseView {
+    private DataService dataService = DataService.getInstance();
     private Consumer<People> btnEditAction;
     private Runnable postDeleteAction;
     private People people;
@@ -47,7 +48,7 @@ public class PeopleView extends BaseView {
         findViewById(R.id.btn_edit).setOnClickListener(v -> btnEditAction.accept(people));
         findViewById(R.id.btn_delete).setOnClickListener(v -> {
             runAsync(() -> {
-                DataService.getInstance().delete(people);
+                dataService.delete(people);
                 postDeleteAction.run();
             });
         });

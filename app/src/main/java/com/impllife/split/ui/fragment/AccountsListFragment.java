@@ -2,10 +2,10 @@ package com.impllife.split.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Account;
@@ -15,6 +15,7 @@ import com.impllife.split.ui.MainActivity;
 import java.util.List;
 
 public class AccountsListFragment extends NavFragment {
+    private DataService dataService = DataService.getInstance();
     private LinearLayout list;
     private View btnNew;
 
@@ -27,7 +28,7 @@ public class AccountsListFragment extends NavFragment {
         init(view);
 
         runAsync(() -> {
-            List<Account> all = DataService.getInstance().getAllAccounts();
+            List<Account> all = dataService.getAllAccounts();
             view.post(() -> {
                 for (Account account : all) {
                     TextView tv = new TextView(MainActivity.getInstance());

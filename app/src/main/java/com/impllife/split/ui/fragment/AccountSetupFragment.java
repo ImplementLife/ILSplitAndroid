@@ -11,6 +11,7 @@ import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.service.DataService;
 
 public class AccountSetupFragment extends NavFragment {
+    private DataService dataService = DataService.getInstance();
     private Button btnOk;
     private EditText etName;
     private EditText etAmount;
@@ -27,7 +28,7 @@ public class AccountSetupFragment extends NavFragment {
             account.setAmount(Double.parseDouble(String.valueOf(etAmount.getText())));
             account.setName(String.valueOf(etName.getText()));
             runAsync(() -> {
-                DataService.getInstance().insert(account);
+                dataService.insert(account);
                 view.post(() -> navController.navigateUp());
             });
         });

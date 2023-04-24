@@ -15,6 +15,7 @@ import com.impllife.split.ui.view.PeopleView;
 import java.util.List;
 
 public class ContactsPeoplesFragment extends NavFragment {
+    private DataService dataService = DataService.getInstance();
     private View view;
     private View btnNew;
     private LinearLayout listItems;
@@ -54,7 +55,7 @@ public class ContactsPeoplesFragment extends NavFragment {
 
     private void loadAndDrawAllPeoples() {
         runAsync(() -> {
-            allPeoples = DataService.getInstance().getAllPeoples();
+            allPeoples = dataService.getAllPeoples();
             view.post(this::updateView);
         });
     }

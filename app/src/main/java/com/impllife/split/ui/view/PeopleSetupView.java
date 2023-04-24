@@ -1,6 +1,5 @@
 package com.impllife.split.ui.view;
 
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import java.util.Date;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class PeopleSetupView extends BaseView {
+    private DataService dataService = DataService.getInstance();
     private boolean isUpdate;
     private People people;
     private Runnable postCancelAct;
@@ -54,7 +54,7 @@ public class PeopleSetupView extends BaseView {
             if (!isUpdate) people = new People();
             people.setPseudonym(text);
             people.setDateUpdate(new Date());
-            runAsync(() -> DataService.getInstance().insert(people));
+            runAsync(() -> dataService.insert(people));
 
             if (postOkAction != null) postOkAction.run();
         });

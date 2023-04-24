@@ -20,6 +20,7 @@ import java.util.List;
 import static com.impllife.split.service.Util.equalsDateByDMY;
 
 public class TransactionsListFragment extends NavFragment {
+    private DataService dataService = DataService.getInstance();
     private LinearLayout listItems;
     private Calendar calendar;
     private LayoutInflater inflater;
@@ -35,7 +36,7 @@ public class TransactionsListFragment extends NavFragment {
         view.findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
 
         runAsync(() -> {
-            List<Transaction> allTransactions = DataService.getInstance().getAllTransactions();
+            List<Transaction> allTransactions = dataService.getAllTransactions();
             view.post(() -> updateView(createListView(allTransactions)));
         });
 

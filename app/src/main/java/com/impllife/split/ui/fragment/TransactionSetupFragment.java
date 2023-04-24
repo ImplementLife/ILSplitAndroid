@@ -21,6 +21,7 @@ import static android.view.Gravity.FILL_HORIZONTAL;
 import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
 public class TransactionSetupFragment extends NavFragment {
+    private DataService dataService = DataService.getInstance();
     private Date dateCreate;
 
     private BtnDate btnToday;
@@ -58,7 +59,7 @@ public class TransactionSetupFragment extends NavFragment {
     private void initPeopleSelect(LayoutInflater inflater, View view) {
         runAsync(() -> {
             List<PeopleView> pv = new ArrayList<>();
-            for (People p : DataService.getInstance().getAllPeoples()) {
+            for (People p : dataService.getAllPeoples()) {
                 PeopleView peopleView = new PeopleView(inflater, contacts, p);
                 peopleView.getRoot().setOnClickListener(v -> {
                     transaction.setPeople(p);
@@ -126,14 +127,14 @@ public class TransactionSetupFragment extends NavFragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             int trn_id = arguments.getInt("trn_id");
-            Optional<Transaction> trnById = DataService.getInstance().findTrnById(trn_id);
+            Optional<Transaction> trnById = dataService.findTrnById(trn_id);
             if (trnById.isPresent()) {
                 transaction = trnById.get();
                 etSum.setText(transaction.getSum());
                 etDscr.setText(transaction.getDescription());
                 People people = transaction.getPeople();
                 if (people != null) {
-                    people = DataService.getInstance().findPeopleById(people.getId()).get();
+                    people = dataService.findPeopleById(people.getId()).get();
                     tvSel.setText(people.getPseudonym());
                 }
             }
@@ -156,7 +157,7 @@ public class TransactionSetupFragment extends NavFragment {
         transaction.setDateCreate(dateCreate);
         transaction.setDescription(etDscr.getText().toString());
 
-        DataService.getInstance().insert(transaction);
+        dataService.insert(transaction);
     }
 
     private void initDateSelect() {

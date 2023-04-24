@@ -3,7 +3,8 @@ package com.impllife.split.service;
 import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
-import com.impllife.split.data.jpa.provide.DaoFactory;
+import com.impllife.split.data.jpa.provide.AppDatabase;
+import com.impllife.split.ui.MainActivity;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,39 +22,39 @@ public class DataService {
     private DataService() {}
     //endregion
 
-    private final DaoFactory repo = new DaoFactory();
+    private final AppDatabase db = AppDatabase.init(MainActivity.getInstance());
 
     public void insert(Transaction transactions) {
-        repo.getTransactionDao().insert(transactions);
+        db.getTransactionDao().insert(transactions);
     }
     public void insert(People people) {
-        repo.getPeopleDao().insert(people);
+        db.getPeopleDao().insert(people);
     }
     public void insert(Account account) {
-        repo.getAccountDao().insert(account);
+        db.getAccountDao().insert(account);
     }
 
     public void delete(Transaction transactions) {
-        repo.getTransactionDao().delete(transactions);
+        db.getTransactionDao().delete(transactions);
     }
     public void delete(People people) {
-        repo.getPeopleDao().delete(people);
+        db.getPeopleDao().delete(people);
     }
 
     public List<Transaction> getAllTransactions() {
-        return repo.getTransactionDao().getAll();
+        return db.getTransactionDao().getAll();
     }
     public List<People> getAllPeoples() {
-        return repo.getPeopleDao().getAll();
+        return db.getPeopleDao().getAll();
     }
     public List<Account> getAllAccounts() {
-        return repo.getAccountDao().getAll();
+        return db.getAccountDao().getAll();
     }
 
     public Optional<People> findPeopleById(Integer id) {
-        return Optional.ofNullable(repo.getPeopleDao().findById(id));
+        return Optional.ofNullable(db.getPeopleDao().findById(id));
     }
     public Optional<Transaction> findTrnById(int trn_id) {
-        return Optional.ofNullable(repo.getTransactionDao().findById(trn_id));
+        return Optional.ofNullable(db.getTransactionDao().findById(trn_id));
     }
 }
