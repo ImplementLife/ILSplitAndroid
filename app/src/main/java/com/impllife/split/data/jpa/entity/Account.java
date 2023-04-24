@@ -1,13 +1,10 @@
 package com.impllife.split.data.jpa.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import androidx.room.Entity;
 
-@Entity(name = "il_account")
+@Entity(tableName = "il_account")
 public class Account extends EntityWithId {
-    @Column
     private String name;
-    @Column
     private double amount;
 
     //region get & set

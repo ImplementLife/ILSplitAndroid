@@ -49,12 +49,12 @@ public class PeopleSetupView extends BaseView {
         View btnOk = findViewById(R.id.btn_ok);
         btnOk.setOnClickListener(v -> {
             MainActivity.getInstance().hideKeyboard();
-            Editable text = etName.getText();
-            if ("".equals(text.toString())) return;
+            String text = etName.getText().toString();
+            if ("".equals(text)) return;
             if (!isUpdate) people = new People();
-            people.setPseudonym(text.toString());
+            people.setPseudonym(text);
             people.setDateUpdate(new Date());
-            runAsync(() -> DataService.getInstance().save(people));
+            runAsync(() -> DataService.getInstance().insert(people));
 
             if (postOkAction != null) postOkAction.run();
         });

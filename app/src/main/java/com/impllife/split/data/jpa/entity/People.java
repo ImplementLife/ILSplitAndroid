@@ -1,26 +1,14 @@
 package com.impllife.split.data.jpa.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import androidx.room.Entity;
+
 import java.util.Date;
 
-@Entity(name = "il_people")
+@Entity(tableName = "il_people")
 public class People extends EntityWithId {
-    @Column
     private int accountId;
-    @Column
     private String pseudonym;
-    @Column
     private Date dateUpdate;
-
-    //region get & set
-
-    public Date getDateUpdate() {
-        return dateUpdate;
-    }
-    public void setDateUpdate(Date dateUpdate) {
-        this.dateUpdate = dateUpdate;
-    }
 
     public int getAccountId() {
         return accountId;
@@ -36,5 +24,10 @@ public class People extends EntityWithId {
         this.pseudonym = pseudonym;
     }
 
-    //endregion
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
 }

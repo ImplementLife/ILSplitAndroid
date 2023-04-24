@@ -2,10 +2,10 @@ package com.impllife.split.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Account;

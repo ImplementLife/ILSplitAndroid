@@ -20,21 +20,21 @@ public class AccountSetupFragment extends NavFragment {
         View view = inflater.inflate(R.layout.fragment_account_setup, container, false);
         setNavTitle("Account Setup");
 
-        initFromLayout(view);
+        init(view);
 
         btnOk.setOnClickListener(v -> {
             Account account = new Account();
             account.setAmount(Double.parseDouble(String.valueOf(etAmount.getText())));
             account.setName(String.valueOf(etName.getText()));
             runAsync(() -> {
-                DataService.getInstance().save(account);
+                DataService.getInstance().insert(account);
                 view.post(() -> navController.navigateUp());
             });
         });
         return view;
     }
 
-    private void initFromLayout(View view) {
+    private void init(View view) {
         btnOk = view.findViewById(R.id.btn_ok);
         etName = view.findViewById(R.id.et_name);
         etAmount = view.findViewById(R.id.et_amount);

@@ -1,20 +1,16 @@
 package com.impllife.split.data.jpa.entity;
 
-import javax.persistence.*;
+import androidx.room.Entity;
+
 import java.util.Date;
 
-@Entity(name = "il_transaction")
+@Entity(tableName = "il_transaction")
 public class Transaction extends EntityWithId {
-    @Column
     private Date dateCreate;
-    @Column
     private String sum;
-    @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "people_id")
-    private People people;
+    private transient People people;
 
     //region get & set
 

@@ -41,23 +41,21 @@ public class TransactionSetupFragment extends NavFragment {
 
         init(inflater, view);
 
-        Calendar calendar = Calendar.getInstance();
+        bundleProcessing();
+        initPeopleSelect(inflater, view);
+        initDateBtns();
 
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            long trn_id = arguments.getLong("trn_id");
-            Optional<Transaction> trnById = DataService.getInstance().findTrnById(trn_id);
-            if (trnById.isPresent()) {
-                transaction = trnById.get();
-                etSum.setText(transaction.getSum());
-                etDscr.setText(transaction.getDescription());
-                People people = transaction.getPeople();
-                if (people != null) {
-                    people = DataService.getInstance().findPeopleById(people.getId()).get();
-                    tvSel.setText(people.getPseudonym());
-                }
-            }
-        }
+        view.findViewById(R.id.btn_create).setOnClickListener(v -> {
+            runAsync(() -> {
+                save();
+                view.post(() -> navController.navigateUp());
+            });
+        });
+
+        return view;
+    }
+
+    private void initPeopleSelect(LayoutInflater inflater, View view) {
         runAsync(() -> {
             List<PeopleView> pv = new ArrayList<>();
             for (People p : DataService.getInstance().getAllPeoples()) {
@@ -72,7 +70,10 @@ public class TransactionSetupFragment extends NavFragment {
                 for (PeopleView p : pv) contacts.addView(p.getRoot());
             });
         });
+    }
 
+    private void initDateBtns() {
+        Calendar calendar = Calendar.getInstance();
         btnToday.setName("Today");
         btnToday.setDate(calendar.getTime());
         btnToday.setOnClickListener(v -> {
@@ -119,15 +120,24 @@ public class TransactionSetupFragment extends NavFragment {
         setBtn(btnToday.getRoot(), 0, 0);
         setBtn(btnYesterday.getRoot(), 0, 1);
         setBtn(btnSelectDate.getRoot(), 0, 2);
+    }
 
-        view.findViewById(R.id.btn_create).setOnClickListener(v -> {
-            runAsync(() -> {
-                save();
-                view.post(() -> navController.navigateUp());
-            });
-        });
-
-        return view;
+    private void bundleProcessing() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            int trn_id = arguments.getInt("trn_id");
+            Optional<Transaction> trnById = DataService.getInstance().findTrnById(trn_id);
+            if (trnById.isPresent()) {
+                transaction = trnById.get();
+                etSum.setText(transaction.getSum());
+                etDscr.setText(transaction.getDescription());
+                People people = transaction.getPeople();
+                if (people != null) {
+                    people = DataService.getInstance().findPeopleById(people.getId()).get();
+                    tvSel.setText(people.getPseudonym());
+                }
+            }
+        }
     }
 
     private void init(LayoutInflater inflater, View view) {
@@ -146,7 +156,7 @@ public class TransactionSetupFragment extends NavFragment {
         transaction.setDateCreate(dateCreate);
         transaction.setDescription(etDscr.getText().toString());
 
-        DataService.getInstance().save(transaction);
+        DataService.getInstance().insert(transaction);
     }
 
     private void initDateSelect() {
