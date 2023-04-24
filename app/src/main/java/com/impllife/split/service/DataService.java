@@ -1,5 +1,6 @@
 package com.impllife.split.service;
 
+import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.provide.DaoFactory;
@@ -28,12 +29,8 @@ public class DataService {
     public void insert(People people) {
         repo.getPeopleDao().insert(people);
     }
-
-    public void update(Transaction transactions) {
-        repo.getTransactionDao().update(transactions);
-    }
-    public void update(People people) {
-        repo.getPeopleDao().update(people);
+    public void insert(Account account) {
+        repo.getAccountDao().insert(account);
     }
 
     public void delete(Transaction transactions) {
@@ -49,11 +46,13 @@ public class DataService {
     public List<People> getAllPeoples() {
         return repo.getPeopleDao().getAll();
     }
+    public List<Account> getAllAccounts() {
+        return repo.getAccountDao().getAll();
+    }
 
     public Optional<People> findPeopleById(Integer id) {
         return Optional.ofNullable(repo.getPeopleDao().findById(id));
     }
-
     public Optional<Transaction> findTrnById(int trn_id) {
         return Optional.ofNullable(repo.getTransactionDao().findById(trn_id));
     }

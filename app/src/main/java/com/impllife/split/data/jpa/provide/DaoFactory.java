@@ -11,6 +11,7 @@ import java.util.List;
 public class DaoFactory {
     private final TransactionDao transactionDao;
     private final PeopleDao peopleDao;
+    private final AccountDao accountDao;
 
     public DaoFactory() {
         RoomDatabase.Builder<AppDatabase> builder = Room.databaseBuilder(MainActivity.getInstance(), AppDatabase.class, "il-split-db");
@@ -20,6 +21,7 @@ public class DaoFactory {
 
         transactionDao = db.getTransactionDao();
         peopleDao = db.getPeopleDao();
+        accountDao = db.getAccountDao();
     }
 
     public TransactionDao getTransactionDao() {
@@ -27,5 +29,8 @@ public class DaoFactory {
     }
     public PeopleDao getPeopleDao() {
         return peopleDao;
+    }
+    public AccountDao getAccountDao() {
+        return accountDao;
     }
 }
