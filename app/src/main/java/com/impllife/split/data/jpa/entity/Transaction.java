@@ -4,7 +4,7 @@ import androidx.room.Entity;
 
 import java.util.Date;
 
-@Entity
+@Entity(tableName = "il_transaction")
 public class Transaction extends EntityWithId {
     private Date dateCreate;
     private String sum;

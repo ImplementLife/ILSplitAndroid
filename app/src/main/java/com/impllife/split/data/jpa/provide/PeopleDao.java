@@ -9,12 +9,12 @@ import java.util.List;
 
 @Dao
 public interface PeopleDao extends RestDao<Integer, People> {
-    @Query("SELECT * FROM `people` WHERE id = :id")
+    @Query("SELECT * FROM il_people WHERE id = :id")
     People findById(int id);
 
-    @Query("DELETE FROM `people` WHERE id = :id")
+    @Query("DELETE FROM il_people WHERE id = :id")
     void deleteById(int id);
 
-    @Query("SELECT * FROM `people`")
+    @Query("SELECT * FROM il_people")
     List<People> getAll();
 }

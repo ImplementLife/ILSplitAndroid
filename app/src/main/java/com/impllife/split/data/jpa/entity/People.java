@@ -4,7 +4,7 @@ import androidx.room.Entity;
 
 import java.util.Date;
 
-@Entity
+@Entity(tableName = "il_people")
 public class People extends EntityWithId {
     private int accountId;
     private String pseudonym;
