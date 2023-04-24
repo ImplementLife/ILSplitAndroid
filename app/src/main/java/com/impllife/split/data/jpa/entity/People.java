@@ -2,6 +2,8 @@ package com.impllife.split.data.jpa.entity;
 
 import androidx.room.Entity;
 
+import java.util.Date;
+
 @Entity
 public class People extends EntityWithId {
     private int accountId;
@@ -20,5 +22,12 @@ public class People extends EntityWithId {
     }
     public void setPseudonym(String pseudonym) {
         this.pseudonym = pseudonym;
+    }
+
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
     }
 }
