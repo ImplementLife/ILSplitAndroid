@@ -20,7 +20,7 @@ import java.util.*;
 import static android.view.Gravity.FILL_HORIZONTAL;
 import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
-public class TransactionSetupFragment extends NavFragment {
+public class TransactionNewFragment extends NavFragment {
     private Date dateCreate;
 
     private BtnDate btnToday;
@@ -146,7 +146,7 @@ public class TransactionSetupFragment extends NavFragment {
         transaction.setDateCreate(dateCreate);
         transaction.setDescription(etDscr.getText().toString());
 
-        DataService.getInstance().save(transaction);
+        DataService.getInstance().insert(transaction);
     }
 
     private void initDateSelect() {
