@@ -45,4 +45,8 @@
               android:name="com.impllife.split.ui.fragment.AccountSetupFragment"
               android:label="fragment_account_setup"
               tools:layout="@layout/fragment_account_setup"/>
+    <fragment android:id="@+id/fragment_notification"
+              android:name="com.impllife.split.ui.fragment.NotificationFragment"
+              android:label="fragment_notification"
+              tools:layout="@layout/fragment_notification"/>
 </navigation>

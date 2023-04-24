@@ -1,6 +1,7 @@
 package com.impllife.split.service;
 
 import com.impllife.split.data.jpa.entity.Account;
+import com.impllife.split.data.jpa.entity.NotificationInfo;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.provide.AppDatabase;
@@ -49,6 +50,9 @@ public class DataService {
     }
     public List<Account> getAllAccounts() {
         return db.getAccountDao().getAll();
+    }
+    public List<NotificationInfo> getAllNotifyInfo() {
+        return db.getNotificationDao().getAll();
     }
 
     public Optional<People> findPeopleById(Integer id) {

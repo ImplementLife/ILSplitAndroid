@@ -11,7 +11,7 @@ public enum MainMenuButtonDefinition {
     BTN_QR_SCANNER("QR Scan", 0, 2, -1, n -> {}),
 
     BTN_SETTINGS("Settings", 1, 0, -1, n -> {}),
-    BTN_NOTIFICATIONS("Notify's", 1, 1, -1, n -> {}),
+    BTN_NOTIFICATIONS("Notify's", 1, 1, R.drawable.ic_svg_notifications, n -> n.navigate(R.id.fragment_notification)),
     BTN_DISCOUNTS("Discounts", 1, 2, -1, n -> {}),
 
     BTN_BILLINGS("Billings", 2, 0, -1, n -> {}),

@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import com.impllife.split.data.jpa.convert.DateConverter;
 import com.impllife.split.data.jpa.entity.Account;
+import com.impllife.split.data.jpa.entity.NotificationInfo;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 
@@ -14,7 +15,8 @@ import com.impllife.split.data.jpa.entity.Transaction;
     entities = {
         Transaction.class,
         People.class,
-        Account.class
+        Account.class,
+        NotificationInfo.class
     },
     version = 1
 )
@@ -30,4 +32,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TransactionDao getTransactionDao();
     public abstract PeopleDao getPeopleDao();
     public abstract AccountDao getAccountDao();
+    public abstract NotificationDao getNotificationDao();
 }

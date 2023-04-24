@@ -49,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         navController = navHostFragment.getNavController();
         findViewById(R.id.btn_back).setOnClickListener(v -> navController.navigateUp());
+        bundleProcessing();
+    }
+
+    private void bundleProcessing() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String act = extras.getString("act");
+            if (Objects.equals(act, "notify")) {
+                navController.navigate(R.id.fragment_notification);
+            }
+        }
     }
 
     public void setHeadTitle(String title) {
