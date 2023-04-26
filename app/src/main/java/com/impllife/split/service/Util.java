@@ -1,11 +1,13 @@
 package com.impllife.split.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public class Util {
     private static final Calendar CALENDAR = Calendar.getInstance();
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat();
 
     /**
      * Returns true if the two given dates have the same day of month, month, and year.
@@ -31,5 +33,13 @@ public class Util {
         int year2 = CALENDAR.get(Calendar.YEAR);
 
         return year1 == year2 && month1 == month2 && day1 == day2;
+    }
+
+    public static String date() {
+        return dateFormat.format(new Date());
+    }
+
+    public static String date(String text) {
+        return String.format("%s %s", dateFormat.format(new Date()), text);
     }
 }

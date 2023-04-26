@@ -1,9 +1,5 @@
 package com.impllife.split.service;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -11,44 +7,100 @@ import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
-import androidx.core.app.NotificationCompat;
-import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
 import com.impllife.split.data.jpa.provide.AppDatabase;
-import com.impllife.split.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.impllife.split.BuildConfig.APPLICATION_ID;
+import static com.impllife.split.service.NotifyService.startWithNotify;
+import static com.impllife.split.service.Util.date;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class NotifyListener extends NotificationListenerService {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat();
-    private static final String CHANNEL_ID = "il_split";
     private static final List<String> ignoreApp = Arrays.asList(APPLICATION_ID, "android");
+    private static NotifyListener instance;
+
+    public enum Command {
+        STOP(l -> l.stopCommand()),
+        ;
+
+        private final Consumer<NotifyListener> command;
+
+        Command(Consumer<NotifyListener> command) {
+            this.command = command;
+        }
+
+        void run(NotifyListener instance) {
+            command.accept(instance);
+        }
+
+        public static void run(NotifyListener instance, String command) {
+            if (command == null) return;
+            valueOf(command).run(instance);
+        }
+    }
 
     private AppDatabase db;
+    private boolean isWork;
+
+    public static boolean isWork() {
+        return instance != null && instance.isWork;
+    }
+
+    public static void stop() {
+        if (instance != null) instance.stopCommand();
+    }
+
+    private void stopCommand() {
+        stopForeground(STOP_FOREGROUND_REMOVE);
+        stopSelf();
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.i("NotifyListener.onCreate", date());
+        startWithNotify(this);
+
         db = AppDatabase.init(getApplicationContext());
+        isWork = true;
+        instance = this;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("NotifyListener.onDestroy", date());
+        isWork = false;
+        instance = null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Command.run(this, intent.getStringExtra("command"));
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        Log.i("NotifyListener", "onNotificationPosted : " + dateFormat.format(new Date()));
+        Log.i("NotifyListener.onNotificationPosted", date("start"));
         String pack = sbn.getPackageName();
+        long postTime = sbn.getPostTime();
+        int id = sbn.getId();
+        Log.i("NotifyListener.onNotificationPosted", "sbn " + dateFormat.format(new Date(postTime)) + " " + id);
         if (ignoreApp.contains(pack)) return;
 
+        NotificationInfo info = new NotificationInfo();
         Bundle extras = sbn.getNotification().extras;
-        String title = extras.getString("android.title");
-        String text = (String) extras.getCharSequence("android.text");
-
+        info.setTitle(extras.getString("android.title"));
+        info.setText((String) extras.getCharSequence("android.text"));
         String appName;
         try {
             PackageManager pm = getPackageManager();
@@ -62,45 +114,15 @@ public class NotifyListener extends NotificationListenerService {
                 )
                 .collect(Collectors.joining("."));
         }
-        String finalAppName = appName;
-        runAsync(() -> {
-            NotificationInfo info = new NotificationInfo();
-            info.setAppPackage(pack);
-            info.setAppName(finalAppName);
-            info.setTitle(title);
-            info.setText(text);
+        info.setAppName(appName);
+        info.setAppPackage(pack);
 
-            db.getNotificationDao().insert(info);
-        });
+        runAsync(() -> db.getNotificationDao().insert(info));
+        Log.i("NotifyListener.onNotificationPosted", date("end"));
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.i("NotifyListener", "onNotificationRemoved : " + dateFormat.format(new Date()));
+        Log.i("NotifyListener.onNotificationRemoved", date());
     }
-
-    private void sendNotification(String text) {
-        sendNotification(text, this);
-    }
-    public static void sendNotification(String text, Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Split", NotificationManager.IMPORTANCE_DEFAULT);
-        notificationManager.createNotificationChannel(channel);
-        Intent intent = new Intent(context, MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("act", "notify");
-        intent.putExtras(bundle);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_svg_split_ico)
-            .setContentTitle("Split")
-            .setContentText(text)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        notificationManager.notify(1, notificationBuilder.build());
-    }
-
 }
