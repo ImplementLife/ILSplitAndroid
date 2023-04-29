@@ -3,58 +3,58 @@ package com.impllife.split.service;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import androidx.core.app.NotificationCompat;
 import com.impllife.split.R;
 import com.impllife.split.ui.MainActivity;
 
-import static android.app.NotificationManager.*;
-import static android.app.PendingIntent.*;
-import static android.content.Context.*;
-import static com.impllife.split.service.NotifyListener.Command.STOP;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static android.app.PendingIntent.getActivity;
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static androidx.core.app.NotificationCompat.*;
 
 public class NotifyService {
-    public static final String CHANNEL_ID = "il_split";
+    private static int createID() {
+        return Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(new Date()));
+    }
+
     public static void sendNotification(String text, Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Split", IMPORTANCE_DEFAULT);
-        notificationManager.createNotificationChannel(channel);
+        String channelId = "il_split";
+        createChannel(context, channelId, "Notify's");
+
         Intent intent = new Intent(context, MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("act", "notify");
-        intent.putExtras(bundle);
+        intent.putExtra("act", "notify");
         PendingIntent pendingIntent = getActivity(context, 0, intent, FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
+        Builder notificationBuilder = new Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_svg_split_ico)
             .setContentTitle("Split")
             .setContentText(text)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            .setPriority(PRIORITY_DEFAULT);
 
-        notificationManager.notify(1, notificationBuilder.build());
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(createID(), notificationBuilder.build());
     }
 
     public static void startWithNotify(Service service) {
         String channelId = "il_split_listener";
         createChannel(service, channelId, "Listener \uD83D\uDC40");
         // Create Pending Intents.
-        PendingIntent piLaunchMainActivity = getActivity(service, 0, new Intent(service, MainActivity.class), FLAG_UPDATE_CURRENT);
-        Intent stopIntent = new Intent(service, NotifyListener.class);
-        stopIntent.putExtra("com", STOP.toString());
-        PendingIntent piStopService = getActivity(service, 0, stopIntent, FLAG_UPDATE_CURRENT);
-
-        // Action to stop the service.
-        Notification.Action btnStop = new Notification.Action.Builder(R.drawable.ic_svg_close, "stop", piStopService).build();
-
+        Intent intent = new Intent(service, MainActivity.class);
+        intent.putExtra("act", "notify");
+        PendingIntent piLaunchMainActivity = getActivity(service, 0, intent, FLAG_UPDATE_CURRENT);
         // Create a notification.
-        Notification notify = new Notification.Builder(service, channelId)
+        Notification notify = new Builder(service, channelId)
             .setContentTitle("Listening notifications \uD83D\uDC40")
             .setSmallIcon(R.drawable.ic_svg_split_ico)
             .setContentIntent(piLaunchMainActivity)
-            .setActions(btnStop)
-            .setStyle(new Notification.BigTextStyle())
+            .setStyle(new BigTextStyle())
+            .setPriority(PRIORITY_MAX)
             .build();
 
         service.startForeground(1, notify);
