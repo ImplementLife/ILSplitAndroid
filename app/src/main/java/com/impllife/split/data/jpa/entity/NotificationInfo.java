@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.impllife.split.data.jpa.provide.WithId;
 
+import java.util.Date;
+
 @Entity(tableName = "il_notification")
 public class NotificationInfo implements WithId<Integer> {
     @PrimaryKey(autoGenerate = true)
@@ -14,8 +16,16 @@ public class NotificationInfo implements WithId<Integer> {
     private String title;
     private String text;
     private int iconResId;
+    private Date postDate;
 
     //region get & set
+
+    public Date getPostDate() {
+        return postDate;
+    }
+    public void setPostDate(Date postDate) {
+        this.postDate = postDate;
+    }
 
     public int getIconResId() {
         return iconResId;

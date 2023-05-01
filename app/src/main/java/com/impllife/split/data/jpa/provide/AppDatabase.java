@@ -1,10 +1,7 @@
 package com.impllife.split.data.jpa.provide;
 
 import android.content.Context;
-import androidx.room.Database;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
+import androidx.room.*;
 import com.impllife.split.data.jpa.convert.DateConverter;
 import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
@@ -18,15 +15,22 @@ import com.impllife.split.data.jpa.entity.Transaction;
         Account.class,
         NotificationInfo.class
     },
-    version = 1
+    autoMigrations = {
+        @AutoMigration(from = 1, to = 2),
+    },
+    version = 2
 )
 @TypeConverters(
     DateConverter.class
 )
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DB_NAME = "il_split";
+    private static AppDatabase instance;
     public static AppDatabase init(Context context) {
-        return Room.databaseBuilder(context, AppDatabase.class, DB_NAME).build();
+        if (instance == null || !instance.isOpen()) {
+            instance = Room.databaseBuilder(context, AppDatabase.class, DB_NAME).build();
+        }
+        return instance;
     }
 
     public abstract TransactionDao getTransactionDao();

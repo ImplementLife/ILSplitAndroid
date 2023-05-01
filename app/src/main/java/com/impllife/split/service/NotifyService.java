@@ -3,22 +3,83 @@ package com.impllife.split.service;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
 import com.impllife.split.R;
+import com.impllife.split.data.jpa.entity.NotificationInfo;
+import com.impllife.split.data.jpa.provide.AppDatabase;
 import com.impllife.split.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.app.PendingIntent.getActivity;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static androidx.core.app.NotificationCompat.*;
+import static com.impllife.split.BuildConfig.APPLICATION_ID;
+import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class NotifyService {
+    private static final List<String> ignoreApp = Arrays.asList(APPLICATION_ID, "android");
     private static int createID() {
         return Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(new Date()));
+    }
+    private static AppDatabase db;
+    private static AppDatabase getDB(Context context) {
+        if (db == null || !db.isOpen()) {
+            db = AppDatabase.init(context);
+        }
+        return db;
+    }
+
+    public static void processNotify(Context context, StatusBarNotification sbn) {
+        Log.i("NotifyService.processNotify", "start");
+        String pack = sbn.getPackageName();
+        if (ignoreApp.contains(pack)) return;
+        Log.i("NotifyService.processNotify", "process package: " + pack + " id:" + sbn.getId());
+
+        NotificationInfo info = new NotificationInfo();
+        try {
+            Bundle extras = sbn.getNotification().extras;
+            info.setTitle(extras.getString("android.title"));
+            info.setText((String) extras.getCharSequence("android.text"));
+        } catch (Throwable e) {
+            info.setTitle("err collect");
+            info.setText((String) sbn.getNotification().tickerText);
+        }
+
+        info.setPostDate(new Date(sbn.getPostTime()));
+        info.setAppPackage(pack);
+        info.setAppName(getAppName(context, pack));
+
+        runAsync(() -> getDB(context).getNotificationDao().insert(info));
+        Log.i("NotifyService.processNotify", "end");
+    }
+
+    private static String getAppName(Context context, String pack) {
+        String appName;
+        try {
+            PackageManager pm = context.getPackageManager();
+            ApplicationInfo ai = pm.getApplicationInfo(pack, 0);
+            appName = (String) pm.getApplicationLabel(ai);
+        } catch (PackageManager.NameNotFoundException e) {
+            appName = Arrays.stream(pack.split("\\."))
+                .filter(p -> !p.equals("com")
+                    && !p.equals("apps")
+                    && !p.equals("android")
+                )
+                .collect(Collectors.joining("."));
+        }
+        return appName;
     }
 
     public static void sendNotification(String text, Context context) {
@@ -42,6 +103,7 @@ public class NotifyService {
     }
 
     public static void startWithNotify(Service service) {
+        Log.i("NotifyService.startWithNotify", "start");
         String channelId = "il_split_listener";
         createChannel(service, channelId, "Listener \uD83D\uDC40");
         // Create Pending Intents.
@@ -58,6 +120,7 @@ public class NotifyService {
             .build();
 
         service.startForeground(1, notify);
+        Log.i("NotifyService.startWithNotify", "end");
     }
 
     private static void createChannel(Context context, String channelId, String channelName) {

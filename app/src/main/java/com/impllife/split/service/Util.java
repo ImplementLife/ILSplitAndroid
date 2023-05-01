@@ -39,7 +39,7 @@ public class Util {
         return dateFormat.format(new Date());
     }
 
-    public static String date(String text) {
-        return String.format("%s %s", dateFormat.format(new Date()), text);
+    public static String date(Object text) {
+        return String.format("%s %s", dateFormat.format(new Date()), text.toString());
     }
 }
