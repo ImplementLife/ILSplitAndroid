@@ -49,4 +49,8 @@
               android:name="com.impllife.split.ui.fragment.NotificationFragment"
               android:label="fragment_notification"
               tools:layout="@layout/fragment_notification"/>
+    <fragment android:id="@+id/fragment_notify_app_info_list"
+              android:name="com.impllife.split.ui.fragment.NotifyAppInfoListFragment"
+              android:label="fragment_notify_app_info_list"
+              tools:layout="@layout/fragment_notify_app_info_list"/>
 </navigation>

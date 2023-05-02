@@ -1,9 +1,8 @@
 package com.impllife.split.ui.fragment;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -14,38 +13,44 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
+import com.impllife.split.data.jpa.entity.NotifyAppInfo;
+import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
+import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
-import com.impllife.split.service.NotifyService;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.view.BaseView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 
 public class NotificationFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private MainActivity mainActivity = MainActivity.getInstance();
+    @SuppressLint("SimpleDateFormat")
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH.mm.ss");
 
     private LinearLayout list;
     private SwipeRefreshLayout refreshLayout;
     private Switch btnWork;
+    private boolean notifyListenPermit;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notification, container, false);
+        View view = createView(R.layout.fragment_notification, inflater, container);
         setNavTitle("Notifications");
-        init(inflater, view);
+        init();
 
         return view;
     }
-    private boolean notifyListenPermit;
 
     @Override
     public void onResume() {
@@ -61,10 +66,10 @@ public class NotificationFragment extends NavFragment {
         btnWork.setChecked(notifyListenPermit && NotifyListener.isWork());
     }
 
-    private void init(LayoutInflater inflater, View view) {
+    private void init() {
         notifyListenPermit = getEnabledListenerPackages(mainActivity).contains(mainActivity.getPackageName());
 
-        btnWork = view.findViewById(R.id.btn_work);
+        btnWork = findViewById(R.id.btn_work);
         btnWork.setOnClickListener(v -> {
             if (btnWork.isChecked()) {
                 if (!notifyListenPermit) {
@@ -80,40 +85,102 @@ public class NotificationFragment extends NavFragment {
         });
         btnWork.setChecked(notifyListenPermit && NotifyListener.isWork());
 
-        view.findViewById(R.id.btn_notify).setOnClickListener(v -> {
-            Log.i("NotificationFragment", "sand notify");
-            NotifyService.sendNotification(new SimpleDateFormat().format(new Date()) + " example", MainActivity.getInstance());
-        });
+        findViewById(R.id.btn_notify).setOnClickListener(v -> navController.navigate(R.id.fragment_notify_app_info_list));
 
-        refreshLayout = view.findViewById(R.id.swipe_refresh_layout);
-        refreshLayout.setOnRefreshListener(() -> updateListContent(inflater, view));
+        refreshLayout = findViewById(R.id.swipe_refresh_layout);
+        refreshLayout.setOnRefreshListener(this::updateListContent);
 
-        list = view.findViewById(R.id.list);
+        list = findViewById(R.id.list);
 
-        updateListContent(inflater, view);
+        updateListContent();
     }
 
-    private void updateListContent(LayoutInflater inflater, View view) {
+    public static class IgnoreDialog extends DialogFragment {
+        private final NotifyAppInfoDao notifyAppInfoDao = DataService.getInstance().getDb().getNotifyAppInfoDao();
+        private final NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
+        private final NotificationFragment fragment;
+        private final NotificationInfo info;
+
+        public IgnoreDialog(NotificationFragment fragment, NotificationInfo info) {
+            this.fragment = fragment;
+            this.info = info;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Ignore notifications from this app?")
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    CompletableFuture.runAsync(() -> {
+                        NotifyAppInfo appInfo = notifyAppInfoDao.findByPackage(info.getAppPackage());
+                        boolean alreadyExist = appInfo != null;
+                        if (!alreadyExist) {
+                            appInfo = new NotifyAppInfo(info);
+                        }
+                        appInfo.setIgnore(true);
+                        if (alreadyExist) {
+                            notifyAppInfoDao.update(appInfo);
+                        } else {
+                            notifyAppInfoDao.insert(appInfo);
+                        }
+
+                        List<NotificationInfo> allByAppPackage = notifyInfoDao.findAllByAppPackage(info.getAppPackage());
+                        if (allByAppPackage.size() > 1) {
+                            new DropAnalogDialog(fragment, info).show(getParentFragmentManager(), "drop_analog_dialog");
+                        }
+                        CompletableFuture.runAsync(() -> {
+                            notifyInfoDao.delete(info);
+                            fragment.updateListContent();
+                        });
+                    });
+                })
+                .setNegativeButton("Cancel", (dialog, id) -> {});
+            return builder.create();
+        }
+    }
+    public static class DropAnalogDialog extends DialogFragment {
+        private final NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
+        private NotificationInfo info;
+        private NotificationFragment fragment;
+
+        public DropAnalogDialog(NotificationFragment fragment, NotificationInfo info) {
+            this.info = info;
+            this.fragment = fragment;
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Drop other info about notifications of this app?")
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    CompletableFuture.runAsync(() -> {
+                        notifyInfoDao.deleteByAppPackage(info.getAppPackage());
+                        fragment.updateListContent();
+                    });
+                })
+                .setNegativeButton("No", (dialog, id) -> {});
+            return builder.create();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateListContent() {
         runAsync(() -> {
             List<NotificationInfo> allNotifyInfo = dataService.getAllNotifyInfo();
-            view.post(() -> {
+            updateView(() -> {
                 list.removeAllViews();
                 for (NotificationInfo info : allNotifyInfo) {
-                    BaseView baseView = new BaseView(inflater, R.layout.view_notify_list_item, list) {
-                    };
-                    ImageView icon = baseView.findViewById(R.id.img_app_icon);
-                    try {
-                        PackageManager pm = MainActivity.getInstance().getPackageManager();
-                        ApplicationInfo ai = pm.getApplicationInfo(info.getAppPackage(), 0);
-                        Drawable drawable = ai.loadIcon(pm);
-                        icon.setImageDrawable(drawable);
-                    } catch (PackageManager.NameNotFoundException ignored) {
-                        Log.w("NotificationFragment", "can't load another app icon");
-                    }
-                    ((TextView) baseView.findViewById(R.id.tv_app_name)).setText(info.getAppName() + " : " + info.getTitle());
-                    ((TextView) baseView.findViewById(R.id.tv_dscr)).setText(info.getText());
-                    ((TextView) baseView.findViewById(R.id.tv_pack)).setText(info.getAppPackage());
-                    list.addView(baseView.getRoot());
+                    BaseView view = new BaseView(inflater, R.layout.view_notify_info_list_item, list);
+                    view.getRoot().setLongClickable(true);
+                    view.getRoot().setOnLongClickListener(v -> {
+                        new IgnoreDialog(this, info).show(this.getParentFragmentManager(), "ignore_dialog");
+                        return true;
+                    });
+                    ImageView icon = view.findViewById(R.id.img_app_icon);
+                    dataService.loadAppIcon(info.getAppPackage()).ifPresent(icon::setImageDrawable);
+                    ((TextView) view.findViewById(R.id.tv_app_name)).setText(info.getAppName() + " at " + dateFormat.format(info.getPostDate()));
+                    ((TextView) view.findViewById(R.id.tv_dscr)).setText(info.getTitle() + ": " + info.getText());
+                    list.addView(view.getRoot());
                 }
                 refreshLayout.setRefreshing(false);
             });

@@ -10,6 +10,8 @@ public class People extends EntityWithId {
     private String pseudonym;
     private Date dateUpdate;
 
+    //region get & set
+
     public int getAccountId() {
         return accountId;
     }
@@ -30,4 +32,6 @@ public class People extends EntityWithId {
     public void setDateUpdate(Date dateUpdate) {
         this.dateUpdate = dateUpdate;
     }
+
+    //endregion
 }

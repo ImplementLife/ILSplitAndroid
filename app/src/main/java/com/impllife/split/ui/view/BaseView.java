@@ -4,9 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class BaseView {
+public class BaseView {
     protected View root;
-    private LayoutInflater inflater;
+    protected LayoutInflater inflater;
 
     public BaseView(LayoutInflater inflater, int viewId, ViewGroup rootForThis) {
         this.inflater = inflater;

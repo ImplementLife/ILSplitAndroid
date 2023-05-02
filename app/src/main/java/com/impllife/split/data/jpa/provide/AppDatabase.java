@@ -3,9 +3,7 @@ package com.impllife.split.data.jpa.provide;
 import android.content.Context;
 import androidx.room.*;
 import com.impllife.split.data.jpa.convert.DateConverter;
-import com.impllife.split.data.jpa.entity.Account;
-import com.impllife.split.data.jpa.entity.NotificationInfo;
-import com.impllife.split.data.jpa.entity.People;
+import com.impllife.split.data.jpa.entity.*;
 import com.impllife.split.data.jpa.entity.Transaction;
 
 @Database(
@@ -13,12 +11,14 @@ import com.impllife.split.data.jpa.entity.Transaction;
         Transaction.class,
         People.class,
         Account.class,
-        NotificationInfo.class
+        NotificationInfo.class,
+        NotifyAppInfo.class
     },
     autoMigrations = {
         @AutoMigration(from = 1, to = 2),
+        @AutoMigration(from = 2, to = 3),
     },
-    version = 2
+    version = 3
 )
 @TypeConverters(
     DateConverter.class
@@ -36,5 +36,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TransactionDao getTransactionDao();
     public abstract PeopleDao getPeopleDao();
     public abstract AccountDao getAccountDao();
-    public abstract NotificationDao getNotificationDao();
+    public abstract NotifyInfoDao getNotifyInfoDao();
+    public abstract NotifyAppInfoDao getNotifyAppInfoDao();
 }

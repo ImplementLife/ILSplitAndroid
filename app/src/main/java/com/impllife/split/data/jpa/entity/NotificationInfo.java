@@ -72,4 +72,33 @@ public class NotificationInfo implements WithId<Integer> {
 
     //endregion
 
+    //region object
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NotificationInfo info = (NotificationInfo) o;
+
+        if (getIconResId() != info.getIconResId()) return false;
+        if (getAppPackage() != null ? !getAppPackage().equals(info.getAppPackage()) : info.getAppPackage() != null) return false;
+        if (getAppName() != null ? !getAppName().equals(info.getAppName()) : info.getAppName() != null) return false;
+        if (getTitle() != null ? !getTitle().equals(info.getTitle()) : info.getTitle() != null) return false;
+        if (getText() != null ? !getText().equals(info.getText()) : info.getText() != null) return false;
+        return getPostDate() != null ? getPostDate().equals(info.getPostDate()) : info.getPostDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getAppPackage() != null ? getAppPackage().hashCode() : 0;
+        result = 31 * result + (getAppName() != null ? getAppName().hashCode() : 0);
+        result = 31 * result + (getTitle() != null ? getTitle().hashCode() : 0);
+        result = 31 * result + (getText() != null ? getText().hashCode() : 0);
+        result = 31 * result + getIconResId();
+        result = 31 * result + (getPostDate() != null ? getPostDate().hashCode() : 0);
+        return result;
+    }
+
+    //endregion
 }

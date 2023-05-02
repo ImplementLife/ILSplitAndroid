@@ -10,14 +10,14 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
+import com.impllife.split.data.jpa.entity.NotifyAppInfo;
 import com.impllife.split.data.jpa.provide.AppDatabase;
+import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
+import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
@@ -29,7 +29,7 @@ import static com.impllife.split.BuildConfig.APPLICATION_ID;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class NotifyService {
-    private static final List<String> ignoreApp = Arrays.asList(APPLICATION_ID, "android");
+    private static final List<String> defaultIgnoreApps = Arrays.asList(APPLICATION_ID, "android");
     private static int createID() {
         return Integer.parseInt(new SimpleDateFormat("ddHHmmss",  Locale.US).format(new Date()));
     }
@@ -41,27 +41,34 @@ public class NotifyService {
         return db;
     }
 
+    private static boolean isIgnore(Context context, String pack) {
+        NotifyAppInfoDao notifyAppInfoDao = getDB(context).getNotifyAppInfoDao();
+        List<String> ignoreApps = notifyAppInfoDao.findAllByIgnore(true).stream()
+            .map(NotifyAppInfo::getPack)
+            .collect(Collectors.toList());
+        return defaultIgnoreApps.contains(pack) || ignoreApps.contains(pack);
+    }
+
     public static void processNotify(Context context, StatusBarNotification sbn) {
         Log.i("NotifyService.processNotify", "start");
-        String pack = sbn.getPackageName();
-        if (ignoreApp.contains(pack)) return;
-        Log.i("NotifyService.processNotify", "process package: " + pack + " id:" + sbn.getId());
+        runAsync(() -> {
+            String pack = sbn.getPackageName();
+            if (isIgnore(context, pack)) return;
+            Log.i("NotifyService.processNotify", "process package: " + pack + " id:" + sbn.getId());
 
-        NotificationInfo info = new NotificationInfo();
-        try {
             Bundle extras = sbn.getNotification().extras;
-            info.setTitle(extras.getString("android.title"));
-            info.setText((String) extras.getCharSequence("android.text"));
-        } catch (Throwable e) {
-            info.setTitle("err collect");
-            info.setText((String) sbn.getNotification().tickerText);
-        }
+            NotificationInfo info = new NotificationInfo();
+            info.setTitle(extras.getString("android.title", "err collect"));
+            info.setText((String) extras.getCharSequence("android.text", sbn.getNotification().tickerText));
+            info.setPostDate(new Date(sbn.getPostTime()));
+            info.setAppPackage(pack);
+            info.setAppName(getAppName(context, pack));
 
-        info.setPostDate(new Date(sbn.getPostTime()));
-        info.setAppPackage(pack);
-        info.setAppName(getAppName(context, pack));
-
-        runAsync(() -> getDB(context).getNotificationDao().insert(info));
+            NotifyInfoDao notifyInfoDao = getDB(context).getNotifyInfoDao();
+            if (!notifyInfoDao.findAllByAppPackage(pack).contains(info)) {
+                notifyInfoDao.insert(info);
+            }
+        });
         Log.i("NotifyService.processNotify", "end");
     }
 
