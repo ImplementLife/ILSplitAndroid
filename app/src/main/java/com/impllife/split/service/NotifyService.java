@@ -58,7 +58,7 @@ public class NotifyService {
 
             Bundle extras = sbn.getNotification().extras;
             NotificationInfo info = new NotificationInfo();
-            info.setTitle(extras.getString("android.title", "err collect"));
+            info.setTitle((String) extras.getCharSequence("android.title", "err collect"));
             info.setText((String) extras.getCharSequence("android.text", sbn.getNotification().tickerText));
             info.setPostDate(new Date(sbn.getPostTime()));
             info.setAppPackage(pack);
