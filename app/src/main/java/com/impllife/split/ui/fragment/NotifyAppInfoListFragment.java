@@ -46,7 +46,7 @@ public class NotifyAppInfoListFragment extends NavFragment {
                     ImageView icon = view.findViewById(R.id.img_app_icon);
                     dataService.loadAppIcon(info.getPack()).ifPresent(icon::setImageDrawable);
 
-                    ((TextView) view.findViewById(R.id.tv_app_name)).setText(info.getName());
+                    view.setTextViewById(R.id.tv_app_name, info.getName());
                     Switch btnListen = view.findViewById(R.id.btn_listen);
                     btnListen.setChecked(!info.isIgnore());
                     btnListen.setOnClickListener(v -> {

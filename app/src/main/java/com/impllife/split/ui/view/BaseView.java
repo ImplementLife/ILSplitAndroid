@@ -3,6 +3,7 @@ package com.impllife.split.ui.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class BaseView {
     protected View root;
@@ -31,6 +32,10 @@ public class BaseView {
 
     public <T extends View> T findViewById(int id) {
         return root.findViewById(id);
+    }
+
+    public void setTextViewById(int id, String text) {
+        ((TextView) findViewById(id)).setText(text);
     }
 
     public void setOnClickListener(View.OnClickListener listener) {

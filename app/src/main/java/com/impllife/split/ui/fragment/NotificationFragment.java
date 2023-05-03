@@ -178,8 +178,8 @@ public class NotificationFragment extends NavFragment {
                     });
                     ImageView icon = view.findViewById(R.id.img_app_icon);
                     dataService.loadAppIcon(info.getAppPackage()).ifPresent(icon::setImageDrawable);
-                    ((TextView) view.findViewById(R.id.tv_app_name)).setText(info.getAppName() + " at " + dateFormat.format(info.getPostDate()));
-                    ((TextView) view.findViewById(R.id.tv_dscr)).setText(info.getTitle() + ": " + info.getText());
+                    view.setTextViewById(R.id.tv_app_name, info.getAppName() + " at " + dateFormat.format(info.getPostDate()));
+                    view.setTextViewById(R.id.tv_dscr, info.getTitle() + ": " + info.getText());
                     list.addView(view.getRoot());
                 }
                 refreshLayout.setRefreshing(false);
