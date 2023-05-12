@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public void showKeyboard(View view) {
         if (view != null && view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(view, 0);
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         }
     }
 }

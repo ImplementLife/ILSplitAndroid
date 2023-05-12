@@ -1,5 +1,7 @@
 package com.impllife.split.service;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.Objects;
 
 public class Util {
     private static final Calendar CALENDAR = Calendar.getInstance();
+    @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat();
 
     /**
@@ -41,5 +44,28 @@ public class Util {
 
     public static String date(Object text) {
         return String.format("%s %s", dateFormat.format(new Date()), text.toString());
+    }
+
+    /**
+     * Returns {@code true} if the given string is blank, {@code false} otherwise.
+     * A string is considered blank if it is empty (i.e., has a length of 0), contains only whitespace characters
+     * (e.g., spaces, tabs, line breaks), or is {@code null}.
+     *
+     * @param string the string to check for blankness (may be {@code null})
+     * @return {@code true} if the string is blank, {@code false} otherwise
+     */
+    public static boolean isBlank(String string) {
+        return string == null || string.trim().isEmpty();
+    }
+
+    /**
+     * Returns {@code true} if the given string is empty, {@code false} otherwise.
+     * A string is considered empty if it is empty (i.e., has a length of 0) or is {@code null}.
+     *
+     * @param string the string to check for emptiness (may be {@code null})
+     * @return {@code true} if the string is empty, {@code false} otherwise
+     */
+    public static boolean isEmpty(String string) {
+        return string == null || string.isEmpty();
     }
 }

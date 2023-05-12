@@ -42,6 +42,10 @@ public class DataService {
         db.getAccountDao().insert(account);
     }
 
+    public void update(People people) {
+        db.getPeopleDao().update(people);
+    }
+
     public void delete(Transaction transactions) {
         db.getTransactionDao().delete(transactions);
     }

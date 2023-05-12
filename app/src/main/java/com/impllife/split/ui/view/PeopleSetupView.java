@@ -10,7 +10,9 @@ import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
 
 import java.util.Date;
+import java.util.Objects;
 
+import static com.impllife.split.service.Util.isBlank;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class PeopleSetupView extends BaseView {
@@ -42,7 +44,7 @@ public class PeopleSetupView extends BaseView {
 
     public void init() {
         etName = findViewById(R.id.et_pseudonym);
-        etName.postDelayed(this::focusKeyboard,50);
+        getRoot().postDelayed(this::focusKeyboard,50);
 
         fillData();
 
@@ -50,13 +52,15 @@ public class PeopleSetupView extends BaseView {
         btnOk.setOnClickListener(v -> {
             MainActivity.getInstance().hideKeyboard();
             String text = etName.getText().toString();
-            if ("".equals(text)) return;
+            if (isBlank(text)) return;
             if (!isUpdate) people = new People();
             people.setPseudonym(text);
             people.setDateUpdate(new Date());
-            runAsync(() -> dataService.insert(people));
-
-            if (postOkAction != null) postOkAction.run();
+            runAsync(() -> {
+                if (!isUpdate) dataService.insert(people);
+                else dataService.update(people);
+                if (postOkAction != null) postOkAction.run();
+            });
         });
 
         View btnCancel = findViewById(R.id.btn_cancel);
@@ -68,6 +72,7 @@ public class PeopleSetupView extends BaseView {
 
     public void focusKeyboard() {
         MainActivity.getInstance().showKeyboard(etName);
+        etName.setSelection(etName.getText().length());
     }
 
     public People getPeople() {

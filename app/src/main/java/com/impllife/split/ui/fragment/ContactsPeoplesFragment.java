@@ -37,7 +37,6 @@ public class ContactsPeoplesFragment extends NavFragment {
         btnNew = view.findViewById(R.id.btn_new);
         btnNew.setOnClickListener(v -> {
             peopleSetupView.setPostCancelAct(this::hidePeopleSetup);
-            peopleSetupView.focusKeyboard();
             showOrHidePeopleSetup();
         });
 
@@ -94,6 +93,7 @@ public class ContactsPeoplesFragment extends NavFragment {
             isPeopleSetupShow = true;
             peopleSetupView.fillData();
             listItems.addView(peopleSetupView.getRoot(), position);
+            peopleSetupView.focusKeyboard();
         }
     }
 
@@ -112,7 +112,7 @@ public class ContactsPeoplesFragment extends NavFragment {
     }
 
     private void addNewContact() {
-        hidePeopleSetup();
+        view.post(this::hidePeopleSetup);
         loadAndDrawAllPeoples();
     }
 }

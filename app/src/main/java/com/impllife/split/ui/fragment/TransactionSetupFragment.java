@@ -12,6 +12,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
+import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.view.BtnDate;
 import com.impllife.split.ui.view.PeopleView;
 
@@ -54,6 +55,12 @@ public class TransactionSetupFragment extends NavFragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MainActivity.getInstance().showKeyboard(etSum);
     }
 
     private void initPeopleSelect(LayoutInflater inflater, View view) {
