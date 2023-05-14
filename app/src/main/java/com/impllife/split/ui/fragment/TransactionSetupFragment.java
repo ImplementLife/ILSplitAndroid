@@ -43,7 +43,6 @@ public class TransactionSetupFragment extends NavFragment {
 
         init(inflater, view);
 
-        bundleProcessing();
         initPeopleSelect(inflater, view);
         initDateBtns();
 
@@ -60,7 +59,7 @@ public class TransactionSetupFragment extends NavFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainActivity.getInstance().showKeyboard(etSum);
+        bundleProcessing();
     }
 
     private void initPeopleSelect(LayoutInflater inflater, View view) {
@@ -134,17 +133,23 @@ public class TransactionSetupFragment extends NavFragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             int trn_id = arguments.getInt("trn_id");
-            Optional<Transaction> trnById = dataService.findTrnById(trn_id);
-            if (trnById.isPresent()) {
-                transaction = trnById.get();
-                etSum.setText(transaction.getSum());
-                etDscr.setText(transaction.getDescription());
-                People people = transaction.getPeople();
-                if (people != null) {
-                    people = dataService.findPeopleById(people.getId()).get();
-                    tvSel.setText(people.getPseudonym());
-                }
-            }
+            boolean fn = arguments.getBoolean("focus_need", false);
+            if (fn) MainActivity.getInstance().showKeyboard(etSum);
+            runAsync(() -> {
+                Optional<Transaction> trnById = dataService.findTrnById(trn_id);
+                root.post(() -> {
+                    if (trnById.isPresent()) {
+                        transaction = trnById.get();
+                        etSum.setText(transaction.getSum());
+                        etDscr.setText(transaction.getDescription());
+                        People people = transaction.getPeople();
+                        if (people != null) {
+                            people = dataService.findPeopleById(people.getId()).get();
+                            tvSel.setText(people.getPseudonym());
+                        }
+                    }
+                });
+            });
         }
     }
 

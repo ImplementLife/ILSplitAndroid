@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.impllife.split.service.Util.equalsDateByDMY;
+import static com.impllife.split.service.Util.isBlank;
 
 public class TransactionsListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
@@ -33,7 +34,11 @@ public class TransactionsListFragment extends NavFragment {
 
         listItems = view.findViewById(R.id.list_items);
         calendar = Calendar.getInstance();
-        view.findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
+        view.findViewById(R.id.btn_new).setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("focus_need", true);
+            navController.navigate(R.id.fragment_transaction_setup, bundle);
+        });
 
         runAsync(() -> {
             List<Transaction> allTransactions = dataService.getAllTransactions();
@@ -65,12 +70,12 @@ public class TransactionsListFragment extends NavFragment {
                 currentProcessingDay = date;
                 currentSumTotal = 0D;
             }
-            currentSumTotal += Double.parseDouble(transaction.getSum());
+            currentSumTotal += Double.parseDouble(isBlank(transaction.getSum())?"0":transaction.getSum());
             currentViewDate.setData(String.valueOf(currentSumTotal));
 
             TransactionListItem transactionListItem = new TransactionListItem(inflater, listItems, transaction);
             Bundle bundle = new Bundle();
-            bundle.putLong("trn_id", transaction.getId());
+            bundle.putInt("trn_id", transaction.getId());
             transactionListItem.setOnClick(v -> navController.navigate(R.id.fragment_transaction_setup, bundle));
             result.add(transactionListItem);
         }
