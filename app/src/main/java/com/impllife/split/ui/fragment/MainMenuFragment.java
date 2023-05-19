@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.gridlayout.widget.GridLayout;
+import android.widget.GridLayout;
 import com.impllife.split.R;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.view.BtnMainMenu;
@@ -16,19 +16,14 @@ public class MainMenuFragment extends NavFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
+        View view = createView(R.layout.fragment_main_menu, inflater, container);
         MainActivity.getInstance().hideHead();
 
         grid = view.findViewById(R.id.grid);
 
         for (MainMenuButtonDefinition btn : MainMenuButtonDefinition.values()) {
-            BtnMainMenu btnView = new BtnMainMenu(inflater, grid);
-            btnView.getRoot().setOnClickListener(v -> btn.getAction().accept(navController));
-            if (btn.getImgId() != -1) {
-                btnView.setImage(btn.getImgId());
-            }
-            btnView.setName(btn.getName());
-
+            BtnMainMenu btnView = new BtnMainMenu(btn, inflater, grid);
+            btnView.setOnClickListener(v -> btn.getAction().accept(navController));
             setBtn(btnView.getRoot(), btn.getDefaultRow(), btn.getDefaultCol());
         }
         return view;

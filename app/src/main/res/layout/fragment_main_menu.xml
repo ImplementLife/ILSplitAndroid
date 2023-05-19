@@ -6,24 +6,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.MainMenuFragment">
-    <androidx.gridlayout.widget.GridLayout
+    <android.widget.GridLayout
             android:id="@+id/grid"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-
             app:alignmentMode="alignBounds"
-            app:columnCount="3"
             app:rowOrderPreserved="false"
-            app:useDefaultMargins="true"
-    >
-    </androidx.gridlayout.widget.GridLayout>
+            android:useDefaultMargins="true"
+            app:layout_constraintBottom_toBottomOf="parent">
+    </android.widget.GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

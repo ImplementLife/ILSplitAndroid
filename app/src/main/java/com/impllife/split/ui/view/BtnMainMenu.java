@@ -3,28 +3,18 @@ package com.impllife.split.ui.view;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.ui.fragment.MainMenuButtonDefinition;
 
 public class BtnMainMenu extends BaseView {
-    private ImageView img;
-    private TextView name;
-
-    public BtnMainMenu(LayoutInflater inflater, ViewGroup rootForThis) {
+    public BtnMainMenu(MainMenuButtonDefinition item, LayoutInflater inflater, ViewGroup rootForThis) {
         super(inflater, R.layout.view_btn_main_menu, rootForThis);
-        init();
-    }
 
-    public void init() {
-        img = findViewById(R.id.img);
-        name = findViewById(R.id.tv_name);
-    }
+        if (item.getImgId() != -1) {
+            ImageView img = findViewById(R.id.img);
+            img.setImageResource(item.getImgId());
+        }
 
-    public void setImage(int id) {
-        img.setImageResource(id);
-    }
-
-    public void setName(String name) {
-        this.name.setText(name);
+        setTextViewById(R.id.tv_name, item.getName());
     }
 }
