@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.data.constant.DefaultAccountImg;
 import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.view.BaseView;
 
 import java.util.List;
+
+import static com.impllife.split.data.constant.Constant.ENTITY_ID;
+import static com.impllife.split.service.Util.bundle;
 
 public class AccountsListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
@@ -31,9 +35,17 @@ public class AccountsListFragment extends NavFragment {
             List<Account> all = dataService.getAllAccounts();
             view.post(() -> {
                 for (Account account : all) {
-                    TextView tv = new TextView(MainActivity.getInstance());
-                    tv.setText(account.getName() + " : " + account.getAmount());
-                    list.addView(tv);
+                    BaseView cardView = new BaseView(inflater, R.layout.view_account_list_item, list);
+                    cardView.setTextViewById(R.id.tv_name, account.getName());
+                    cardView.setTextViewById(R.id.tv_amount, String.valueOf(account.getAmount()));
+                    cardView.setOnClickListener(v -> navController.navigate(R.id.fragment_account_setup, bundle(ENTITY_ID, account.getId())));
+
+                    ImageView imgCard = cardView.findViewById(R.id.img_card);
+                    DefaultAccountImg parsed = DefaultAccountImg.parse(account.getImgName());
+                    if (parsed != null) {
+                        imgCard.setImageResource(parsed.id);
+                    }
+                    list.addView(cardView.getRoot());
                 }
             });
         });

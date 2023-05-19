@@ -1,6 +1,8 @@
 package com.impllife.split.service;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -67,5 +69,20 @@ public class Util {
      */
     public static boolean isEmpty(String string) {
         return string == null || string.isEmpty();
+    }
+
+    public static Bundle bundle(String key, Object value) {
+        Bundle bundle = new Bundle();
+        Class<?> valueClass = value.getClass();
+        if (valueClass.equals(Integer.class)) {
+            bundle.putInt(key, (Integer) value);
+        } else if (valueClass.equals(Boolean.class)) {
+            bundle.putBoolean(key, (Boolean) value);
+        } else if (valueClass.equals(String.class)) {
+            bundle.putString(key, (String) value);
+        } else {
+            Log.w("bundle", "value [" + valueClass.getTypeName() + "] type don't support");
+        }
+        return bundle;
     }
 }

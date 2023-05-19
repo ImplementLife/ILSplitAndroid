@@ -6,6 +6,7 @@ import androidx.room.Entity;
 public class Account extends EntityWithId {
     private String name;
     private double amount;
+    private String imgName;
 
     //region get & set
 
@@ -23,5 +24,11 @@ public class Account extends EntityWithId {
         this.amount = amount;
     }
 
+    public String getImgName() {
+        return imgName;
+    }
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
+    }
     //endregion
 }
