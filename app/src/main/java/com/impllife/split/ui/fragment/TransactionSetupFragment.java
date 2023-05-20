@@ -1,20 +1,31 @@
 package com.impllife.split.ui.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.arch.core.internal.SafeIterableMap;
+import androidx.fragment.app.Fragment;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 import com.impllife.split.R;
+import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.view.BtnDate;
 import com.impllife.split.ui.view.PeopleView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -22,7 +33,7 @@ import static android.view.Gravity.FILL_HORIZONTAL;
 import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
 public class TransactionSetupFragment extends NavFragment {
-    private DataService dataService = DataService.getInstance();
+    private final DataService dataService = DataService.getInstance();
     private Date dateCreate;
 
     private BtnDate btnToday;
@@ -32,19 +43,18 @@ public class TransactionSetupFragment extends NavFragment {
 
     private EditText etSum;
     private EditText etDscr;
-    private LinearLayout contacts;
     private Transaction transaction = new Transaction();
-    private TextView tvSel;
+    private ViewPager2 pagerCardFrom;
+    private ViewPager2 pagerCardTo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transaction_setup, container, false);
+        View view = createView(R.layout.fragment_transaction_setup, inflater, container);
         setNavTitle("New transaction");
 
-        init(inflater, view);
-
-        initPeopleSelect(inflater, view);
+        init();
         initDateBtns();
+        initPager();
 
         view.findViewById(R.id.btn_create).setOnClickListener(v -> {
             runAsync(() -> {
@@ -56,27 +66,61 @@ public class TransactionSetupFragment extends NavFragment {
         return view;
     }
 
+    private void initPager() {
+        runAsync(() -> {
+            List<Account> allAccounts = dataService.getAllAccounts();
+            List<Account> allAccounts2 = dataService.getAllAccounts();
+            allAccounts.add(0, null);
+            post(() -> {
+                class Ad extends FragmentStateAdapter {
+                    private List<Account> accounts;
+                    public Ad(Fragment fragment, List<Account> accounts) {
+                        super(fragment);
+                        this.accounts = accounts;
+                    }
+
+                    public Fragment createFragment(int position) {
+                        Account account = accounts.get(position);
+                        if (account == null) {
+                            return new TransactionSetupPeopleSelectFragment();
+                        } else {
+                            return new TransactionSetupAccountFragment();
+                        }
+                    }
+                    public int getItemCount() {
+                        return accounts.size();
+                    }
+                }
+                prepareViewPage(pagerCardFrom, new Ad(this, allAccounts), 1);
+                prepareViewPage(pagerCardTo, new Ad(this, allAccounts2), 0);
+            });
+        });
+    }
+
+    private void prepareViewPage(ViewPager2 pager, FragmentStateAdapter pageAdapter, int pos) {
+        pager.setOffscreenPageLimit(1);
+        pager.setAdapter(pageAdapter);
+        pager.setCurrentItem(pos);
+        final float nextItemVisiblePx = getResources().getDimension(R.dimen.viewpager_next_item_visible);
+        final float currentItemHorizontalMarginPx = getResources().getDimension(R.dimen.viewpager_current_item_horizontal_margin);
+        final float pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx;
+        pager.setPageTransformer((page, position) -> {
+            page.setTranslationX(-pageTranslationX * position);
+            page.setScaleY(1 - (0.10f * Math.abs(position)));
+        });
+        pager.addItemDecoration(new RecyclerView.ItemDecoration() {
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                int horizontalMarginInPx = (int) getResources().getDimension(R.dimen.viewpager_current_item_horizontal_margin);
+                outRect.right = horizontalMarginInPx;
+                outRect.left = horizontalMarginInPx;
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bundleProcessing();
-    }
-
-    private void initPeopleSelect(LayoutInflater inflater, View view) {
-        runAsync(() -> {
-            List<PeopleView> pv = new ArrayList<>();
-            for (People p : dataService.getAllPeoples()) {
-                PeopleView peopleView = new PeopleView(inflater, contacts, p);
-                peopleView.getRoot().setOnClickListener(v -> {
-                    transaction.setPeople(p);
-                    tvSel.setText(p.getPseudonym());
-                });
-                pv.add(peopleView);
-            }
-            view.post(() -> {
-                for (PeopleView p : pv) contacts.addView(p.getRoot());
-            });
-        });
     }
 
     private void initDateBtns() {
@@ -142,26 +186,21 @@ public class TransactionSetupFragment extends NavFragment {
                         transaction = trnById.get();
                         etSum.setText(transaction.getSum());
                         etDscr.setText(transaction.getDescription());
-                        People people = transaction.getPeople();
-                        if (people != null) {
-                            people = dataService.findPeopleById(people.getId()).get();
-                            tvSel.setText(people.getPseudonym());
-                        }
                     }
                 });
             });
         }
     }
 
-    private void init(LayoutInflater inflater, View view) {
-        grid = view.findViewById(R.id.group_btn);
+    private void init() {
+        grid = findViewById(R.id.group_btn);
         btnToday = new BtnDate(inflater, grid);
         btnYesterday = new BtnDate(inflater, grid);
         btnSelectDate = new BtnDate(inflater, grid);
-        etSum = view.findViewById(R.id.field_sum);
-        etDscr = view.findViewById(R.id.et_dscr);
-        contacts = view.findViewById(R.id.list_contacts);
-        tvSel = view.findViewById(R.id.tv_sel);
+        etSum = findViewById(R.id.field_sum);
+        etDscr = findViewById(R.id.field_dscr);
+        pagerCardFrom = findViewById(R.id.pager_card_from);
+        pagerCardTo = findViewById(R.id.pager_card_to);
     }
 
     private void save() {

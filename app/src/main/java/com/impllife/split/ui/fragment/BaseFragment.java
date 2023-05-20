@@ -1,5 +1,6 @@
 package com.impllife.split.ui.fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,13 @@ public class BaseFragment extends Fragment {
     }
 
     protected void runAsync(Runnable runnable) {
-        CompletableFuture.runAsync(runnable);
+        CompletableFuture.runAsync(() -> {
+            try {
+                runnable.run();
+            } catch (Throwable t) {
+                Log.e("runAsync", "", t);
+            }
+        });
     }
 
     public View createView(int layout, LayoutInflater inflater, ViewGroup container) {
@@ -44,5 +51,17 @@ public class BaseFragment extends Fragment {
         View view = super.getView();
         if (view == null) view = root;
         return view;
+    }
+
+    public boolean post(Runnable action) {
+        boolean result = root.post(action);
+        if (!result) Log.e("post", "task doesn't performed complete");
+        return result;
+    }
+
+    public boolean postDelayed(Runnable action, long delayMillis) {
+        boolean result = root.postDelayed(action, delayMillis);
+        if (!result) Log.e("postDelayed", "task doesn't performed complete");
+        return result;
     }
 }

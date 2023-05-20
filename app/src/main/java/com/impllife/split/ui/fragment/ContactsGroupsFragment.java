@@ -9,15 +9,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.impllife.split.R;
 
 public class ContactsGroupsFragment extends Fragment {
-    public ContactsGroupsFragment() {
-    }
-
-    public static ContactsGroupsFragment newInstance() {
-        ContactsGroupsFragment fragment = new ContactsGroupsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

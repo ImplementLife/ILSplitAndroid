@@ -24,7 +24,7 @@ public class ContactsFragment extends NavFragment {
 
         Map<Integer, TabInfo> tabInfoMap = new TreeMap<>();
         tabInfoMap.put(0, new TabInfo("Peoples", new ContactsPeoplesFragment()));
-        tabInfoMap.put(1, new TabInfo("Groups", ContactsGroupsFragment.newInstance()));
+        tabInfoMap.put(1, new TabInfo("Groups", new ContactsGroupsFragment()));
 
         ViewPager2 pager = view.findViewById(R.id.pager);
         FragmentStateAdapter pageAdapter = new FragmentStateAdapter(this) {
@@ -46,7 +46,7 @@ public class ContactsFragment extends NavFragment {
         return view;
     }
 
-    private class TabInfo {
+    private static class TabInfo {
         String name;
         Fragment fragment;
 
