@@ -8,9 +8,9 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.Date;
-import java.util.Objects;
 
 import static com.impllife.split.service.Util.isBlank;
 import static java.util.concurrent.CompletableFuture.runAsync;

@@ -8,7 +8,8 @@ import android.widget.LinearLayout;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.view.BaseView;
+import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.view.TransactionListItem;
 import com.impllife.split.ui.view.TransactionListItemDate;
 

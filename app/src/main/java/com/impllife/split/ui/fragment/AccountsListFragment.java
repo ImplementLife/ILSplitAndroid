@@ -11,7 +11,8 @@ import com.impllife.split.R;
 import com.impllife.split.data.constant.DefaultAccountImg;
 import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.view.BaseView;
+import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.List;
 

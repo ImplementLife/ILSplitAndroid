@@ -1,5 +1,6 @@
-package com.impllife.split.ui.fragment;
+package com.impllife.split.ui.custom.component;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +9,25 @@ import androidx.fragment.app.Fragment;
 
 import java.util.concurrent.CompletableFuture;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
+    private int layout;
     protected LayoutInflater inflater;
     protected View root;
+
+    public BaseFragment() {}
+    public BaseFragment(int layout) {
+        this.layout = layout;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = createView(layout, inflater, container);
+        init();
+        return view;
+    }
+
+    protected void init() {
+    }
 
     protected void setInflater(LayoutInflater inflater) {
         this.inflater = inflater;
@@ -42,7 +59,6 @@ public class BaseFragment extends Fragment {
     }
 
     /**
-     *
      * @return root view
      * @see #createView(int, LayoutInflater, ViewGroup)
      */

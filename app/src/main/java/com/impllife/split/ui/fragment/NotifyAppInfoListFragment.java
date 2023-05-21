@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotifyAppInfo;
 import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.view.BaseView;
+import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class NotifyAppInfoListFragment extends NavFragment {
         return view;
     }
 
-    private void init() {
+    protected void init() {
         list = findViewById(R.id.list_items);
 
         updateListContent();

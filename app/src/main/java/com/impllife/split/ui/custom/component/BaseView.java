@@ -1,9 +1,11 @@
-package com.impllife.split.ui.view;
+package com.impllife.split.ui.custom.component;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.impllife.split.ui.MainActivity;
 
 public class BaseView {
     protected View root;
@@ -12,7 +14,10 @@ public class BaseView {
     public BaseView(LayoutInflater inflater, int viewId, ViewGroup rootForThis) {
         this.inflater = inflater;
         this.root = inflater.inflate(viewId, rootForThis, false);
+    }
 
+    public BaseView(int viewId, ViewGroup rootForThis) {
+        this(LayoutInflater.from(MainActivity.getInstance()), viewId, rootForThis);
     }
 
     public LayoutInflater getInflater() {
@@ -40,5 +45,9 @@ public class BaseView {
 
     public void setOnClickListener(View.OnClickListener listener) {
         getRoot().setOnClickListener(listener);
+    }
+
+    public void setImgResById(int viewId, int resId) {
+        ((ImageView) findViewById(viewId)).setImageResource(resId);
     }
 }

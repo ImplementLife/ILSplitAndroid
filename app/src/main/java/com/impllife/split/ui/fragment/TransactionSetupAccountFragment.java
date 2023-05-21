@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.constant.DefaultAccountImg;
 import com.impllife.split.data.jpa.entity.Account;
+import com.impllife.split.ui.custom.component.BaseFragment;
 
 public class TransactionSetupAccountFragment extends BaseFragment {
     private Account account;
@@ -36,7 +37,7 @@ public class TransactionSetupAccountFragment extends BaseFragment {
         return view;
     }
 
-    private void init() {
+    protected void init() {
         imgCard = findViewById(R.id.img_card);
         tvName = findViewById(R.id.tv_name);
         tvAmount = findViewById(R.id.tv_amount);

@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import com.impllife.split.R;
 import com.impllife.split.data.constant.DefaultAccountImg;
 import com.impllife.split.ui.MainActivity;
-import com.impllife.split.ui.view.BaseView;
+import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.service.Util.bundle;

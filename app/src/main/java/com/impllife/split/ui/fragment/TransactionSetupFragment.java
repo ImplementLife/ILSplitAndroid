@@ -17,6 +17,7 @@ import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.BtnDate;
 
 import java.util.*;
@@ -224,7 +225,7 @@ public class TransactionSetupFragment extends NavFragment {
         }
     }
 
-    private void init() {
+    protected void init() {
         grid = findViewById(R.id.group_btn);
         btnToday = new BtnDate(inflater, grid);
         btnYesterday = new BtnDate(inflater, grid);

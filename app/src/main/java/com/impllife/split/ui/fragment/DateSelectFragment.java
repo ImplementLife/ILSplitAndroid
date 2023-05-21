@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import com.impllife.split.R;
+import com.impllife.split.ui.custom.component.NavFragment;
 
 import java.util.Calendar;
 

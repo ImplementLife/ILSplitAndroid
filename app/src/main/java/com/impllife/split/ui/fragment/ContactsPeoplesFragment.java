@@ -9,6 +9,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.PeopleSetupView;
 import com.impllife.split.ui.view.PeopleView;
 

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
+import com.impllife.split.ui.custom.component.BaseView;
 
 public class TransactionListItem extends BaseView {
     private TextView tvDscr;

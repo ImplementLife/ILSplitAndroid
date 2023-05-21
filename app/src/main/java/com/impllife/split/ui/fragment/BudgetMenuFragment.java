@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.impllife.split.R;
+import com.impllife.split.ui.custom.component.NavFragment;
 
 public class BudgetMenuFragment extends NavFragment {
     private LinearLayout list;

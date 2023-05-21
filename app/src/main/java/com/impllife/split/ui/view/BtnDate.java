@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

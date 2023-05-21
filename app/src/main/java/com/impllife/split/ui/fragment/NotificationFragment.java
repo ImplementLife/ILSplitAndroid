@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,7 +23,8 @@ import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
 import com.impllife.split.ui.MainActivity;
-import com.impllife.split.ui.view.BaseView;
+import com.impllife.split.ui.custom.component.BaseView;
+import com.impllife.split.ui.custom.component.NavFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -66,7 +66,7 @@ public class NotificationFragment extends NavFragment {
         btnWork.setChecked(notifyListenPermit && NotifyListener.isWork());
     }
 
-    private void init() {
+    protected void init() {
         notifyListenPermit = getEnabledListenerPackages(mainActivity).contains(mainActivity.getPackageName());
 
         btnWork = findViewById(R.id.btn_work);

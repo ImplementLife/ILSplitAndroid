@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.view.BaseView;
+import com.impllife.split.ui.custom.component.BaseFragment;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
         return view;
     }
 
-    private void init() {
+    protected void init() {
         search = findViewById(R.id.search);
         peopleView = findViewById(R.id.people_view);
         listItems = findViewById(R.id.people_view_list);

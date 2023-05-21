@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
+import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.function.Consumer;
 
