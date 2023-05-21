@@ -6,16 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.arch.core.internal.SafeIterableMap;
 import androidx.fragment.app.Fragment;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Account;
@@ -24,12 +18,11 @@ import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.view.BtnDate;
-import com.impllife.split.ui.view.PeopleView;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 import static android.view.Gravity.FILL_HORIZONTAL;
+import static com.impllife.split.service.Util.isBlank;
 import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
 public class TransactionSetupFragment extends NavFragment {
@@ -44,8 +37,12 @@ public class TransactionSetupFragment extends NavFragment {
     private EditText etSum;
     private EditText etDscr;
     private Transaction transaction = new Transaction();
+
     private ViewPager2 pagerCardFrom;
     private ViewPager2 pagerCardTo;
+
+    private final PagerDataHolder from = new PagerDataHolder();
+    private final PagerDataHolder to = new PagerDataHolder();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +55,7 @@ public class TransactionSetupFragment extends NavFragment {
 
         view.findViewById(R.id.btn_create).setOnClickListener(v -> {
             runAsync(() -> {
+                if (!valid()) return;
                 save();
                 view.post(() -> navController.navigateUp());
             });
@@ -69,38 +67,71 @@ public class TransactionSetupFragment extends NavFragment {
     private void initPager() {
         runAsync(() -> {
             List<Account> allAccounts = dataService.getAllAccounts();
-            List<Account> allAccounts2 = dataService.getAllAccounts();
             allAccounts.add(0, null);
+            List<Account> allAccounts2 = new ArrayList<>(allAccounts);
             post(() -> {
-                class Ad extends FragmentStateAdapter {
-                    private List<Account> accounts;
-                    public Ad(Fragment fragment, List<Account> accounts) {
-                        super(fragment);
-                        this.accounts = accounts;
-                    }
+                from.putData(allAccounts).putData(1);
+                prepareViewPage(pagerCardFrom, from);
 
-                    public Fragment createFragment(int position) {
-                        Account account = accounts.get(position);
-                        if (account == null) {
-                            return new TransactionSetupPeopleSelectFragment();
-                        } else {
-                            return new TransactionSetupAccountFragment();
-                        }
-                    }
-                    public int getItemCount() {
-                        return accounts.size();
-                    }
-                }
-                prepareViewPage(pagerCardFrom, new Ad(this, allAccounts), 1);
-                prepareViewPage(pagerCardTo, new Ad(this, allAccounts2), 0);
+                to.putData(allAccounts2).putData(1);
+                prepareViewPage(pagerCardTo, to);
             });
         });
     }
 
-    private void prepareViewPage(ViewPager2 pager, FragmentStateAdapter pageAdapter, int pos) {
+    private static class PagerDataHolder extends ViewPager2.OnPageChangeCallback {
+        private List<Account> accountsList;
+        private Account account;
+        private People people;
+        private int pos;
+        private final TransactionSetupPeopleSelectFragment peopleSelectFragment = new TransactionSetupPeopleSelectFragment();
+
+        public PagerDataHolder putData(int pos) {
+            this.pos = pos;
+            onPageSelected(pos);
+            return this;
+        }
+        public PagerDataHolder putData(List<Account> accountsList) {
+            this.accountsList = accountsList;
+            return this;
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position > 0) {
+                account = accountsList.get(position);
+                people = null;
+            } else {
+                people = peopleSelectFragment.getSelectedPeople();
+                account = null;
+            }
+        }
+    }
+
+    private static class Adapter extends FragmentStateAdapter {
+        private final PagerDataHolder dataHolder;
+        public Adapter(Fragment fragment, PagerDataHolder dataHolder) {
+            super(fragment);
+            this.dataHolder = dataHolder;
+        }
+
+        public Fragment createFragment(int position) {
+            Account account = dataHolder.accountsList.get(position);
+            if (account == null) {
+                return dataHolder.peopleSelectFragment;
+            } else {
+                return new TransactionSetupAccountFragment(dataHolder.accountsList.get(position));
+            }
+        }
+        public int getItemCount() {
+            return dataHolder.accountsList.size();
+        }
+    }
+
+    private void prepareViewPage(ViewPager2 pager, PagerDataHolder dataHolder) {
         pager.setOffscreenPageLimit(1);
-        pager.setAdapter(pageAdapter);
-        pager.setCurrentItem(pos);
+        pager.setAdapter(new Adapter(this, dataHolder));
+        pager.setCurrentItem(dataHolder.pos);
         final float nextItemVisiblePx = getResources().getDimension(R.dimen.viewpager_next_item_visible);
         final float currentItemHorizontalMarginPx = getResources().getDimension(R.dimen.viewpager_current_item_horizontal_margin);
         final float pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx;
@@ -115,6 +146,7 @@ public class TransactionSetupFragment extends NavFragment {
                 outRect.left = horizontalMarginInPx;
             }
         });
+        pager.registerOnPageChangeCallback(dataHolder);
     }
 
     @Override
@@ -201,6 +233,14 @@ public class TransactionSetupFragment extends NavFragment {
         etDscr = findViewById(R.id.field_dscr);
         pagerCardFrom = findViewById(R.id.pager_card_from);
         pagerCardTo = findViewById(R.id.pager_card_to);
+    }
+
+    private boolean valid() {
+        String sum = etSum.getText().toString();
+        if (dateCreate == null) dateCreate = new Date();
+        return !isBlank(sum)
+            && !Objects.equals(from.account, to.account)
+            && !Objects.equals(from.people, to.people);
     }
 
     private void save() {

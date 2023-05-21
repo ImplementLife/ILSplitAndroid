@@ -53,6 +53,11 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
             listItems.setAdapter(listAdapter);
         });
     }
+
+    public People getSelectedPeople() {
+        return null;
+    }
+
     private static class Holder extends RecyclerView.ViewHolder {
         private BaseView item;
         public Holder(BaseView item) {
