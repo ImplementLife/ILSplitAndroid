@@ -15,7 +15,7 @@ public class HistoryFragment extends NavFragment {
         super(R.layout.fragment_history, "History");
     }
     private enum MenuBtn {
-        BTN_TRANSACTIONS("Transact's", R.drawable.ic_svg_history, n -> n.navigate(R.id.fragment_transactions_list)),
+        BTN_TRANSACTIONS("Transact's", R.drawable.ic_svg_history, n -> n.navigate(R.id.fragment_transaction_list)),
         BTN_REQUISITIONS("Requisitions", R.drawable.ic_svg_cancel, n -> {}),
         BTN_BILLINGS("Billings", R.drawable.ic_svg_cancel, n -> {}),
         ;

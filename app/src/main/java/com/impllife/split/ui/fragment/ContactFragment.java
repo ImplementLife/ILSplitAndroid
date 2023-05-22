@@ -16,16 +16,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class ContactsFragment extends NavFragment {
+public class ContactFragment extends NavFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contacts, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact, container, false);
         setNavTitle("Contacts");
 
         Map<Integer, TabInfo> tabInfoMap = new TreeMap<>();
-        tabInfoMap.put(0, new TabInfo("Peoples", new ContactsPeoplesFragment()));
-        tabInfoMap.put(1, new TabInfo("Groups", new ContactsGroupsFragment()));
+        tabInfoMap.put(0, new TabInfo("Peoples", new ContactPeoplesFragment()));
+        tabInfoMap.put(1, new TabInfo("Groups", new ContactGroupListFragment()));
 
         ViewPager2 pager = view.findViewById(R.id.pager);
         FragmentStateAdapter pageAdapter = new FragmentStateAdapter(this) {

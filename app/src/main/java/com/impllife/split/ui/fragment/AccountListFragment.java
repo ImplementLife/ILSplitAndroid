@@ -19,7 +19,7 @@ import java.util.List;
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
 import static com.impllife.split.service.Util.bundle;
 
-public class AccountsListFragment extends NavFragment {
+public class AccountListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private LinearLayout list;
     private View btnNew;
@@ -27,7 +27,7 @@ public class AccountsListFragment extends NavFragment {
     @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_accounts_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_account_list, container, false);
         setNavTitle("Accounts");
 
         init(view);

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         if (extras != null) {
             String act = extras.getString("act");
             if (Objects.equals(act, "notify")) {
-                navController.navigate(R.id.fragment_notification);
+                navController.navigate(R.id.fragment_notify_list);
             }
         }
     }

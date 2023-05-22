@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 
-public class NotificationFragment extends NavFragment {
+public class NotifyListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private MainActivity mainActivity = MainActivity.getInstance();
     @SuppressLint("SimpleDateFormat")
@@ -45,7 +45,7 @@ public class NotificationFragment extends NavFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = createView(R.layout.fragment_notification, inflater, container);
+        View view = createView(R.layout.fragment_notify_list, inflater, container);
         setNavTitle("Notifications");
         init();
 
@@ -98,10 +98,10 @@ public class NotificationFragment extends NavFragment {
     public static class IgnoreDialog extends DialogFragment {
         private final NotifyAppInfoDao notifyAppInfoDao = DataService.getInstance().getDb().getNotifyAppInfoDao();
         private final NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
-        private final NotificationFragment fragment;
+        private final NotifyListFragment fragment;
         private final NotificationInfo info;
 
-        public IgnoreDialog(NotificationFragment fragment, NotificationInfo info) {
+        public IgnoreDialog(NotifyListFragment fragment, NotificationInfo info) {
             this.fragment = fragment;
             this.info = info;
         }
@@ -141,9 +141,9 @@ public class NotificationFragment extends NavFragment {
     public static class DropAnalogDialog extends DialogFragment {
         private final NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
         private NotificationInfo info;
-        private NotificationFragment fragment;
+        private NotifyListFragment fragment;
 
-        public DropAnalogDialog(NotificationFragment fragment, NotificationInfo info) {
+        public DropAnalogDialog(NotifyListFragment fragment, NotificationInfo info) {
             this.info = info;
             this.fragment = fragment;
         }

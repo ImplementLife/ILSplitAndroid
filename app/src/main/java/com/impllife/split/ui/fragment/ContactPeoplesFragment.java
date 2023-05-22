@@ -15,7 +15,7 @@ import com.impllife.split.ui.view.PeopleView;
 
 import java.util.List;
 
-public class ContactsPeoplesFragment extends NavFragment {
+public class ContactPeoplesFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private View view;
     private View btnNew;
@@ -29,7 +29,7 @@ public class ContactsPeoplesFragment extends NavFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setInflater(inflater);
-        view = inflater.inflate(R.layout.fragment_contacts_peoples, container, false);
+        view = inflater.inflate(R.layout.fragment_contact_people_list, container, false);
 
         listItems = view.findViewById(R.id.list_items);
         peopleSetupView = new PeopleSetupView(inflater, listItems);

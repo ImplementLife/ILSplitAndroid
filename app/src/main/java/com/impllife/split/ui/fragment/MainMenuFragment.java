@@ -41,12 +41,12 @@ public class MainMenuFragment extends NavFragment {
     }
 
     public enum MainMenuButtonDefinition {
-        BTN_CONTACTS("Contacts", 0, 0, R.drawable.ic_svg_group, n -> n.navigate(R.id.fragment_contacts)),
+        BTN_CONTACTS("Contacts", 0, 0, R.drawable.ic_svg_group, n -> n.navigate(R.id.fragment_contact)),
         BTN_QR("My link qr", 0, 1, R.drawable.ic_svg_cancel, n -> {}),
         BTN_QR_SCANNER("QR Scan", 0, 2, R.drawable.ic_svg_cancel, n -> {}),
 
         BTN_SETTINGS("Settings", 1, 0, R.drawable.ic_svg_cancel, n -> {}),
-        BTN_NOTIFICATIONS("Notify's", 1, 1, R.drawable.ic_svg_notifications, n -> n.navigate(R.id.fragment_notification)),
+        BTN_NOTIFICATIONS("Notify's", 1, 1, R.drawable.ic_svg_notifications, n -> n.navigate(R.id.fragment_notify_list)),
         BTN_DISCOUNTS("Discounts", 1, 2, R.drawable.ic_svg_cancel, n -> {}),
 
         BTN_NEW_REQUISITION("New Req", 2, 2, R.drawable.ic_svg_cancel, n -> {}),

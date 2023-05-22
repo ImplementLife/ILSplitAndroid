@@ -21,7 +21,7 @@ import java.util.List;
 import static com.impllife.split.service.Util.equalsDateByDMY;
 import static com.impllife.split.service.Util.isBlank;
 
-public class TransactionsListFragment extends NavFragment {
+public class TransactionListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private LinearLayout listItems;
     private Calendar calendar;
@@ -30,7 +30,7 @@ public class TransactionsListFragment extends NavFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.inflater = inflater;
-        View view = inflater.inflate(R.layout.fragment_transactions_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
         setNavTitle("Transactions");
 
         listItems = view.findViewById(R.id.list_items);
