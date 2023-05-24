@@ -1,52 +1,41 @@
 package com.impllife.split.ui.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.custom.component.BaseView;
+import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.TransactionListItem;
 import com.impllife.split.ui.view.TransactionListItemDate;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.impllife.split.service.Util.equalsDateByDMY;
-import static com.impllife.split.service.Util.isBlank;
+import static com.impllife.split.data.constant.Constant.ENTITY_ID;
+import static com.impllife.split.data.constant.Constant.FOCUS_NEED;
+import static com.impllife.split.service.Util.*;
 
 public class TransactionListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private LinearLayout listItems;
-    private Calendar calendar;
-    private LayoutInflater inflater;
+
+    public TransactionListFragment() {
+        super(R.layout.fragment_transaction_list, "Transactions");
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.inflater = inflater;
-        View view = inflater.inflate(R.layout.fragment_transaction_list, container, false);
-        setNavTitle("Transactions");
-
-        listItems = view.findViewById(R.id.list_items);
-        calendar = Calendar.getInstance();
-        view.findViewById(R.id.btn_new).setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("focus_need", true);
-            navController.navigate(R.id.fragment_transaction_setup, bundle);
+    protected void init() {
+        listItems = findViewById(R.id.list_items);
+        findViewById(R.id.btn_new).setOnClickListener(v -> {
+            navController.navigate(R.id.fragment_transaction_setup, bundle(FOCUS_NEED, true));
         });
 
         runAsync(() -> {
             List<Transaction> allTransactions = dataService.getAllTransactions();
-            view.post(() -> updateView(createListView(allTransactions)));
+            post(() -> updateView(createListView(allTransactions)));
         });
-
-        return view;
     }
 
     private List<BaseView> createListView(List<Transaction> sortedTransactions) {
@@ -75,9 +64,7 @@ public class TransactionListFragment extends NavFragment {
             currentViewDate.setData(String.valueOf(currentSumTotal));
 
             TransactionListItem transactionListItem = new TransactionListItem(inflater, listItems, transaction);
-            Bundle bundle = new Bundle();
-            bundle.putInt("trn_id", transaction.getId());
-            transactionListItem.setOnClick(v -> navController.navigate(R.id.fragment_transaction_setup, bundle));
+            transactionListItem.setOnClick(v -> navController.navigate(R.id.fragment_transaction_setup, bundle(ENTITY_ID, transaction.getId())));
             result.add(transactionListItem);
         }
 

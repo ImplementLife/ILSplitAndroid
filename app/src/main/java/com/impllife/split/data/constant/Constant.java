@@ -6,4 +6,5 @@ public class Constant {
     public static final String NAME = "NAME";
     public static final String RES_ID = "RES_ID";
     public static final String ENTITY_ID = "ENTITY_ID";
+    public static final String FOCUS_NEED = "FOCUS_NEED";
 }
