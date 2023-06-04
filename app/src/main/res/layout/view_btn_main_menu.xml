@@ -10,7 +10,7 @@
     <TextView
             android:text="TextView"
             android:layout_width="0dp"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:textSize="20sp"
             android:gravity="center"
             android:id="@+id/tv_name"
