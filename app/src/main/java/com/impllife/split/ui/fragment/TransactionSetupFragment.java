@@ -142,34 +142,21 @@ public class TransactionSetupFragment extends NavFragment {
     private void initPager() {
         runAsync(() -> {
             List<Account> allAccounts = dataService.getAllAccounts();
-            allAccounts.add(0, null);
+            allAccounts.add(0, new EmptyElement());
+            allAccounts.add(1, new PeopleSelectElement());
             List<Account> allAccounts2 = new ArrayList<>(allAccounts);
             post(() -> {
-                from.putData(allAccounts).putData(1);
+                from.putData(allAccounts).putData(allAccounts.size() > 2 ? 2 : 1);
                 prepareViewPage(pagerCardFrom, from);
 
-                to.putData(allAccounts2).putData(1);
+                to.putData(allAccounts2).putData(0);
                 prepareViewPage(pagerCardTo, to);
             });
         });
     }
 
-    private void bundleProcessing() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            int trn_id = arguments.getInt(ENTITY_ID);
-            boolean fn = arguments.getBoolean(FOCUS_NEED, false);
-            if (fn) MainActivity.getInstance().showKeyboard(etSum);
-            runAsync(() -> {
-                Optional.ofNullable(transactionDao.findById(trn_id)).ifPresent(trn -> post(() -> {
-                    update = true;
-                    transaction = trn;
-                    etSum.setText(trn.getSum());
-                    etDscr.setText(trn.getDescription());
-                }));
-            });
-        }
-    }
+    private static class EmptyElement extends Account {}
+    private static class PeopleSelectElement extends Account {}
 
     private static class PagerDataHolder extends ViewPager2.OnPageChangeCallback {
         private List<Account> accountsList;
@@ -190,12 +177,16 @@ public class TransactionSetupFragment extends NavFragment {
 
         @Override
         public void onPageSelected(int position) {
-            if (position > 0) {
-                account = accountsList.get(position);
-                people = null;
+            Account account = accountsList.get(position);
+            if (account instanceof EmptyElement) {
+                this.people = null;
+                this.account = null;
+            } else if (account instanceof PeopleSelectElement) {
+                this.people = peopleSelectFragment.getSelectedPeople();
+                this.account = null;
             } else {
-                people = peopleSelectFragment.getSelectedPeople();
-                account = null;
+                this.account = account;
+                this.people = null;
             }
         }
     }
@@ -209,10 +200,12 @@ public class TransactionSetupFragment extends NavFragment {
 
         public Fragment createFragment(int position) {
             Account account = dataHolder.accountsList.get(position);
-            if (account == null) {
+            if (account instanceof EmptyElement) {
+                return new Fragment(R.layout.fragment_transaction_setup_empty_element);
+            } else if (account instanceof PeopleSelectElement) {
                 return dataHolder.peopleSelectFragment;
             } else {
-                return new TransactionSetupAccountFragment(dataHolder.accountsList.get(position));
+                return new TransactionSetupAccountFragment(account);
             }
         }
         public int getItemCount() {
@@ -245,6 +238,23 @@ public class TransactionSetupFragment extends NavFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bundleProcessing();
+    }
+
+    private void bundleProcessing() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            int trn_id = arguments.getInt(ENTITY_ID);
+            boolean fn = arguments.getBoolean(FOCUS_NEED, false);
+            if (fn) MainActivity.getInstance().showKeyboard(etSum);
+            runAsync(() -> {
+                Optional.ofNullable(transactionDao.findById(trn_id)).ifPresent(trn -> post(() -> {
+                    update = true;
+                    transaction = trn;
+                    etSum.setText(trn.getSum());
+                    etDscr.setText(trn.getDescription());
+                }));
+            });
+        }
     }
 
     private boolean valid() {
