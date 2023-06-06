@@ -43,8 +43,8 @@ public class TransactionSetupFragment extends NavFragment {
     private Transaction transaction;
     private boolean update;
 
-    private ViewPager2 pagerCardFrom;
-    private ViewPager2 pagerCardTo;
+    private ViewPager2 pagerFrom;
+    private ViewPager2 pagerTo;
 
     private final PagerDataHolder from = new PagerDataHolder();
     private final PagerDataHolder to = new PagerDataHolder();
@@ -61,11 +61,11 @@ public class TransactionSetupFragment extends NavFragment {
         btnSelectDate = new BtnDate(inflater, btnDateGroup);
         etSum = findViewById(R.id.field_sum);
         etDscr = findViewById(R.id.field_dscr);
-        pagerCardFrom = findViewById(R.id.pager_card_from);
-        pagerCardTo = findViewById(R.id.pager_card_to);
+        pagerFrom = findViewById(R.id.pager_from);
+        pagerTo = findViewById(R.id.pager_to);
 
         initDateBtns();
-        initPager();
+        fillPager();
 
         findViewById(R.id.btn_create).setOnClickListener(v -> {
             runAsync(() -> {
@@ -139,18 +139,24 @@ public class TransactionSetupFragment extends NavFragment {
         }
     }
 
-    private void initPager() {
+    private void fillPager() {
         runAsync(() -> {
             List<Account> allAccounts = dataService.getAllAccounts();
             allAccounts.add(0, new EmptyElement());
             allAccounts.add(1, new PeopleSelectElement());
             List<Account> allAccounts2 = new ArrayList<>(allAccounts);
             post(() -> {
-                from.putData(allAccounts).putData(allAccounts.size() > 2 ? 2 : 1);
-                prepareViewPage(pagerCardFrom, from);
+                int indexFrom = allAccounts.size() > 2 ? 2 : 1;
+                int indexTo = 0;
 
-                to.putData(allAccounts2).putData(0);
-                prepareViewPage(pagerCardTo, to);
+                from.setData(allAccounts).setDefaultPos(indexFrom);
+                to.setData(allAccounts2).setDefaultPos(indexTo);
+
+                prepareViewPage(pagerFrom, from);
+                prepareViewPage(pagerTo, to);
+
+                from.updateOutData();
+                to.updateOutData();
             });
         });
     }
@@ -165,14 +171,27 @@ public class TransactionSetupFragment extends NavFragment {
         private int pos;
         private final TransactionSetupPeopleSelectFragment peopleSelectFragment = new TransactionSetupPeopleSelectFragment();
 
-        public PagerDataHolder putData(int pos) {
+        public PagerDataHolder setDefaultPos(int pos) {
             this.pos = pos;
-            onPageSelected(pos);
             return this;
         }
-        public PagerDataHolder putData(List<Account> accountsList) {
+        public PagerDataHolder setData(List<Account> accountsList) {
             this.accountsList = accountsList;
             return this;
+        }
+
+        public int getPos() {
+            int index = pos;
+            if (account != null) {
+                index = accountsList.indexOf(account);
+            } else if (people != null) {
+                index = 1;
+            }
+            return index;
+        }
+
+        public void updateOutData() {
+            onPageSelected(getPos());
         }
 
         @Override
@@ -216,7 +235,7 @@ public class TransactionSetupFragment extends NavFragment {
     private void prepareViewPage(ViewPager2 pager, PagerDataHolder dataHolder) {
         pager.setOffscreenPageLimit(1);
         pager.setAdapter(new Adapter(this, dataHolder));
-        pager.setCurrentItem(dataHolder.pos);
+        pager.setCurrentItem(dataHolder.getPos());
         final float nextItemVisiblePx = getResources().getDimension(R.dimen.viewpager_next_item_visible);
         final float currentItemHorizontalMarginPx = getResources().getDimension(R.dimen.viewpager_current_item_horizontal_margin);
         final float pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx;
@@ -241,20 +260,30 @@ public class TransactionSetupFragment extends NavFragment {
     }
 
     private void bundleProcessing() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            int trn_id = arguments.getInt(ENTITY_ID);
-            boolean fn = arguments.getBoolean(FOCUS_NEED, false);
-            if (fn) MainActivity.getInstance().showKeyboard(etSum);
-            runAsync(() -> {
-                Optional.ofNullable(transactionDao.findById(trn_id)).ifPresent(trn -> post(() -> {
-                    update = true;
-                    transaction = trn;
-                    etSum.setText(trn.getSum());
-                    etDscr.setText(trn.getDescription());
-                }));
-            });
-        }
+        Bundle args = getArguments();
+        if (args == null) return;
+
+        boolean focusNeed = args.getBoolean(FOCUS_NEED, false);
+        if (focusNeed) MainActivity.getInstance().showKeyboard(etSum);
+
+        int trn_id = args.getInt(ENTITY_ID);
+        runAsync(() -> {
+            Optional<Transaction> optional = Optional.ofNullable(transactionDao.findById(trn_id));
+            optional.ifPresent(trn -> post(() -> {
+                update = true;
+                transaction = trn;
+                etSum.setText(trn.getSum());
+                etDscr.setText(trn.getDescription());
+
+                from.account = trn.getFromAccount();
+                from.people = trn.getFromPeople();
+                to.account = trn.getToAccount();
+                to.people = trn.getToPeople();
+                pagerFrom.setCurrentItem(from.getPos());
+                pagerTo.setCurrentItem(to.getPos());
+            }));
+        });
+
     }
 
     private boolean valid() {

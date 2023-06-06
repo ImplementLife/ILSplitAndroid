@@ -47,7 +47,7 @@
             android:horizontalSpacing="10dp"
     />
     <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager_card_from"
+            android:id="@+id/pager_from"
             android:layout_width="0dp"
             android:layout_height="80dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
             app:layout_constraintTop_toBottomOf="@+id/label_1"
             android:layout_marginTop="8dp"/>
     <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager_card_to"
+            android:id="@+id/pager_to"
             android:layout_width="0dp"
             android:layout_height="80dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
             android:text="To"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/pager_card_from"
+            app:layout_constraintTop_toBottomOf="@+id/pager_from"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
