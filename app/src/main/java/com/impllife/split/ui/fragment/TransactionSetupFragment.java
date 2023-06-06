@@ -3,6 +3,7 @@ package com.impllife.split.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import androidx.fragment.app.Fragment;
@@ -40,6 +41,7 @@ public class TransactionSetupFragment extends NavFragment {
 
     private EditText etSum;
     private EditText etDscr;
+    private Button btnSave;
     private Transaction transaction;
     private boolean update;
 
@@ -61,6 +63,7 @@ public class TransactionSetupFragment extends NavFragment {
         btnSelectDate = new BtnDate(inflater, btnDateGroup);
         etSum = findViewById(R.id.field_sum);
         etDscr = findViewById(R.id.field_dscr);
+        btnSave = findViewById(R.id.btn_create);
         pagerFrom = findViewById(R.id.pager_from);
         pagerTo = findViewById(R.id.pager_to);
 
@@ -271,9 +274,11 @@ public class TransactionSetupFragment extends NavFragment {
             Optional<Transaction> optional = Optional.ofNullable(transactionDao.findById(trn_id));
             optional.ifPresent(trn -> post(() -> {
                 update = true;
+                btnSave.setText("Update");
                 transaction = trn;
                 etSum.setText(trn.getSum());
                 etDscr.setText(trn.getDescription());
+                dateCreate = trn.getDateCreate();
 
                 from.account = trn.getFromAccount();
                 from.people = trn.getFromPeople();
