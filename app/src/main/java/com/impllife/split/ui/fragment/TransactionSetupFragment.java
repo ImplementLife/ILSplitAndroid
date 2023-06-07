@@ -18,7 +18,7 @@ import com.impllife.split.data.jpa.provide.TransactionDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.TransactionService;
 import com.impllife.split.ui.MainActivity;
-import com.impllife.split.ui.custom.adapter.ListAdapter;
+import com.impllife.split.ui.custom.adapter.GridListAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.BtnDate;
 
@@ -32,22 +32,20 @@ import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 public class TransactionSetupFragment extends NavFragment {
     private final TransactionDao transactionDao = new TransactionService();
     private final DataService dataService = DataService.getInstance();
-    private Date dateCreate;
-
-    private BtnDate btnToday;
-    private BtnDate btnYesterday;
-    private BtnDate btnSelectDate;
-    private GridView btnDateGroup;
 
     private EditText etSum;
     private EditText etDscr;
     private Button btnSave;
-    private Transaction transaction;
-    private boolean update;
-
+    private BtnDate btnToday;
+    private BtnDate btnYesterday;
+    private BtnDate btnSelectDate;
+    private GridView btnDateGroup;
     private ViewPager2 pagerFrom;
     private ViewPager2 pagerTo;
 
+    private Transaction transaction;
+    private Date dateCreate;
+    private boolean update;
     private final PagerDataHolder from = new PagerDataHolder();
     private final PagerDataHolder to = new PagerDataHolder();
 
@@ -124,7 +122,7 @@ public class TransactionSetupFragment extends NavFragment {
             }
         });
 
-        btnDateGroup.setAdapter(new ListAdapter<>(
+        btnDateGroup.setAdapter(new GridListAdapter<>(
             Arrays.asList(btnToday, btnYesterday, btnSelectDate), (data, parent) -> data.getRoot()));
     }
 

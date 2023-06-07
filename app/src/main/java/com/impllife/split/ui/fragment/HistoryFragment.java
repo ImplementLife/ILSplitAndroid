@@ -3,7 +3,7 @@ package com.impllife.split.ui.fragment;
 import android.widget.GridView;
 import androidx.navigation.NavController;
 import com.impllife.split.R;
-import com.impllife.split.ui.custom.adapter.ListAdapter;
+import com.impllife.split.ui.custom.adapter.GridListAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.custom.component.BaseView;
 
@@ -32,7 +32,7 @@ public class HistoryFragment extends NavFragment {
     @Override
     protected void init() {
         grid = findViewById(R.id.grid);
-        ListAdapter<MenuBtn> adapter = new ListAdapter<>(MenuBtn.values(), (data, parent) -> {
+        GridListAdapter<MenuBtn> adapter = new GridListAdapter<>(MenuBtn.values(), (data, parent) -> {
             BaseView view = new BaseView(inflater, R.layout.view_btn_main_menu, parent);
             view.setTextViewById(R.id.tv_name, data.name);
             view.setImgResById(R.id.img, data.imgId);
