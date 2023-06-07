@@ -3,18 +3,18 @@ package com.impllife.split.ui.fragment;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
 import com.impllife.split.data.jpa.entity.NotifyAppInfo;
@@ -23,33 +23,34 @@ import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
 import com.impllife.split.ui.MainActivity;
-import com.impllife.split.ui.custom.component.BaseView;
+import com.impllife.split.ui.custom.SwipeToDeleteCallback;
+import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter.ViewData;
 import com.impllife.split.ui.custom.component.NavFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 
 public class NotifyListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
+    private NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
     private MainActivity mainActivity = MainActivity.getInstance();
     @SuppressLint("SimpleDateFormat")
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH.mm.ss");
 
-    private LinearLayout list;
     private SwipeRefreshLayout refreshLayout;
     private Switch btnWork;
     private boolean notifyListenPermit;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = createView(R.layout.fragment_notify_list, inflater, container);
-        setNavTitle("Notifications");
-        init();
+    private RecyclerViewListAdapter<NotificationInfo> adapter;
+    private RecyclerView recyclerView;
 
-        return view;
+    public NotifyListFragment() {
+        super(R.layout.fragment_notify_list, "Notifications");
     }
 
     @Override
@@ -66,6 +67,7 @@ public class NotifyListFragment extends NavFragment {
         btnWork.setChecked(notifyListenPermit && NotifyListener.isWork());
     }
 
+    @Override
     protected void init() {
         notifyListenPermit = getEnabledListenerPackages(mainActivity).contains(mainActivity.getPackageName());
 
@@ -90,9 +92,69 @@ public class NotifyListFragment extends NavFragment {
         refreshLayout = findViewById(R.id.swipe_refresh_layout);
         refreshLayout.setOnRefreshListener(this::updateListContent);
 
-        list = findViewById(R.id.list);
-
+        recyclerView = findViewById(R.id.list);
+        adapter = new RecyclerViewListAdapter<>((data, view) -> {
+            view.getRoot().setLongClickable(true);
+            view.getRoot().setOnLongClickListener(v -> {
+                new IgnoreDialog(this, data).show(this.getParentFragmentManager(), "ignore_dialog");
+                return true;
+            });
+            ImageView icon = view.findViewById(R.id.img_app_icon);
+            dataService.loadAppIcon(data.getAppPackage()).ifPresent(icon::setImageDrawable);
+            view.setTextViewById(R.id.tv_app_name, data.getAppName() + " at " + dateFormat.format(data.getPostDate()));
+            view.setTextViewById(R.id.tv_dscr, data.getTitle() + ": " + data.getText());
+        });
+        recyclerView.setAdapter(adapter);
         updateListContent();
+        enableSwipeToDeleteAndUndo();
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
+                int position = viewHolder.getAdapterPosition();
+                RecyclerViewListAdapter.ViewData<NotificationInfo> item = adapter.get(position);
+                runAsync(() -> {
+                    notifyInfoDao.delete(item.getData());
+                    updateView(() -> {
+                        adapter.remove(position);
+
+                        Snackbar snackbar = Snackbar.make(root, "Item removed.", Snackbar.LENGTH_LONG);
+                        snackbar.setAction("UNDO", view -> {
+                            runAsync(() -> {
+                                notifyInfoDao.insert(item.getData());
+                                updateView(() -> {
+                                    adapter.add(item, position);
+                                    recyclerView.scrollToPosition(position);
+                                });
+                            });
+                        });
+                        snackbar.setActionTextColor(Color.BLUE);
+                        snackbar.show();
+                    });
+                });
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(recyclerView);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateListContent() {
+        runAsync(() -> {
+            List<NotificationInfo> allNotifyInfo = dataService.getAllNotifyInfo();
+            updateView(() -> {
+                List<ViewData<NotificationInfo>> collect = allNotifyInfo.stream()
+                    .map(e -> new ViewData<>(R.layout.view_notify_info_list_item, e))
+                    .collect(Collectors.toList());
+                adapter.replaceAll(collect);
+                recyclerView.scrollToPosition(0);
+
+                refreshLayout.setRefreshing(false);
+            });
+        });
     }
 
     public static class IgnoreDialog extends DialogFragment {
@@ -138,6 +200,7 @@ public class NotifyListFragment extends NavFragment {
             return builder.create();
         }
     }
+
     public static class DropAnalogDialog extends DialogFragment {
         private final NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
         private NotificationInfo info;
@@ -161,29 +224,5 @@ public class NotifyListFragment extends NavFragment {
                 .setNegativeButton("No", (dialog, id) -> {});
             return builder.create();
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void updateListContent() {
-        runAsync(() -> {
-            List<NotificationInfo> allNotifyInfo = dataService.getAllNotifyInfo();
-            updateView(() -> {
-                list.removeAllViews();
-                for (NotificationInfo info : allNotifyInfo) {
-                    BaseView view = new BaseView(inflater, R.layout.view_notify_info_list_item, list);
-                    view.getRoot().setLongClickable(true);
-                    view.getRoot().setOnLongClickListener(v -> {
-                        new IgnoreDialog(this, info).show(this.getParentFragmentManager(), "ignore_dialog");
-                        return true;
-                    });
-                    ImageView icon = view.findViewById(R.id.img_app_icon);
-                    dataService.loadAppIcon(info.getAppPackage()).ifPresent(icon::setImageDrawable);
-                    view.setTextViewById(R.id.tv_app_name, info.getAppName() + " at " + dateFormat.format(info.getPostDate()));
-                    view.setTextViewById(R.id.tv_dscr, info.getTitle() + ": " + info.getText());
-                    list.addView(view.getRoot());
-                }
-                refreshLayout.setRefreshing(false);
-            });
-        });
     }
 }
