@@ -28,11 +28,11 @@ public class BtnDate extends BaseView {
     }
 
     public void select() {
-        root.setBackgroundColor(R.attr.colorSecondaryVariant);
+        root.setBackgroundResource(R.drawable.sh_round_rectangle_focus);
     }
 
     public void unselect() {
-        root.setBackgroundColor(R.attr.colorPrimaryVariant);
+        root.setBackgroundResource(R.drawable.sh_round_rectangle);
     }
 
     public void setName(String name) {
