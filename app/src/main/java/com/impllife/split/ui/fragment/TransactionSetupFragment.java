@@ -88,6 +88,7 @@ public class TransactionSetupFragment extends NavFragment {
 
             dateCreate = btnToday.getDate();
         });
+        btnToday.select();
 
         dateCreate = calendar.getTime();
 
