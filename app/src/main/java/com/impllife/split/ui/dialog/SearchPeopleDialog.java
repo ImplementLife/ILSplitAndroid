@@ -15,6 +15,7 @@ import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter;
 import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter.ViewData;
 import com.impllife.split.ui.custom.component.CustomRecyclerView;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,18 +48,11 @@ public class SearchPeopleDialog extends Dialog {
         fieldQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                String query = s.toString();
-                adapter.sort((e1, e2) -> {
-                    String pseudonym1 = e1.getData().getPseudonym();
-                    String pseudonym2 = e2.getData().getPseudonym();
-
-                    int result = pseudonym2.compareToIgnoreCase(query) - pseudonym1.compareToIgnoreCase(query);
-                    if (result == 0) {
-                        result = pseudonym1.compareToIgnoreCase(pseudonym2);
-                    }
-
-                    return result;
-                });
+                String query = s.toString().toLowerCase();
+                Comparator<ViewData<People>> comparator = Comparator
+                    .comparing((ViewData<People> p) -> !p.getData().getPseudonym().toLowerCase().startsWith(query))
+                    .thenComparing((ViewData<People> p) -> p.getData().getPseudonym().toLowerCase());
+                adapter.sort(comparator);
             }
 
             @Override
