@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -63,6 +64,10 @@ public class RecyclerViewListAdapter<D> extends RecyclerView.Adapter<CustomViewH
         int size = data.size();
         data.clear();
         notifyItemRangeRemoved(0, size);
+    }
+    public void sort(Comparator<? super ViewData<D>> comparator) {
+        data.sort(comparator);
+        notifyDataSetChanged();
     }
 
     public List<ViewData<D>> getData() {

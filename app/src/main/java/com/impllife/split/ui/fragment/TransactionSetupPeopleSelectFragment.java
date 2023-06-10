@@ -1,88 +1,72 @@
 package com.impllife.split.ui.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.component.BaseFragment;
-import com.impllife.split.ui.custom.component.BaseView;
+import com.impllife.split.ui.dialog.SearchPeopleDialog;
 
 import java.util.List;
 
 public class TransactionSetupPeopleSelectFragment extends BaseFragment {
     private final DataService dataService = DataService.getInstance();
 
-    private View peopleView;
-    private View search;
-    private RecyclerView listItems;
+    private People people;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = createView(R.layout.fragment_transaction_setup_people_select, inflater, container);
-        init();
-        initPeopleSelect();
-        return view;
+    private ImageView img;
+    private TextView tvName;
+    private ImageButton btnExpand;
+    private Runnable callback;
+
+    public TransactionSetupPeopleSelectFragment() {
+        super(R.layout.fragment_transaction_setup_people_select);
     }
 
     protected void init() {
-        search = findViewById(R.id.search);
-        peopleView = findViewById(R.id.people_view);
-        listItems = findViewById(R.id.people_view_list);
+        img = findViewById(R.id.img);
+        tvName = findViewById(R.id.tv_name);
+
+        btnExpand = findViewById(R.id.btn_search);
+        btnExpand.setOnClickListener(v -> beginSearch());
+        //getView().setOnClickListener(v -> beginSearch());
+        initDataView();
     }
 
-    private void bundleProcessing() {
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-
+    private void initDataView() {
+        if (people != null) {
+            tvName.setText(people.getPseudonym());
         }
     }
 
-    private void initPeopleSelect() {
-        peopleView.setVisibility(View.GONE);
-        listItems.setVisibility(View.GONE);
-        search.setOnClickListener(v -> {
-            listItems.setVisibility(View.VISIBLE);
-        });
+    private void beginSearch() {
         runAsync(() -> {
-            List<People> peoples = dataService.getAllPeoples();
-            ListAdapter listAdapter = new ListAdapter(peoples);
-
-            listItems.setAdapter(listAdapter);
+            List<People> data = dataService.getAllPeoples();
+            post(() -> {
+                SearchPeopleDialog searchPeopleDialog = new SearchPeopleDialog(data);
+                searchPeopleDialog.setCallback(() -> {
+                    people = searchPeopleDialog.getResult();
+                    initDataView();
+                    if (callback != null) {
+                        callback.run();
+                    }
+                });
+                searchPeopleDialog.show();
+                //Can't find onCreated method in Dialog class
+                postDelayed(searchPeopleDialog::showKeyboard, 100);
+            });
         });
+    }
+    public void setCallback(Runnable callback) {
+        this.callback = callback;
     }
 
     public People getSelectedPeople() {
-        return null;
+        return people;
     }
-
-    private static class Holder extends RecyclerView.ViewHolder {
-        private BaseView item;
-        public Holder(BaseView item) {
-            super(item.getRoot());
-            this.item = item;
-        }
-        public void setData(People people) {
-            item.setTextViewById(R.id.tv_name, people.getPseudonym());
-        }
-    }
-    private class ListAdapter extends RecyclerView.Adapter<Holder> {
-        private List<People> list;
-        public ListAdapter(List<People> list) {
-            this.list = list;
-        }
-        public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-            BaseView baseView = new BaseView(inflater, R.layout.view_people, listItems);
-            return new Holder(baseView);
-        }
-        public void onBindViewHolder(Holder holder, int position) {
-            holder.setData(list.get(position));
-        }
-        public int getItemCount() {
-            return list.size();
-        }
+    public void setSelectedPeople(People people) {
+        this.people = people;
     }
 }

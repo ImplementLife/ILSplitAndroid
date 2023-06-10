@@ -4,64 +4,43 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.fragment.TransactionSetupPeopleSelectFragment"
         style="@style/Theme.Split.Card"
 >
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
+    <ImageView
+            android:id="@+id/img"
+            android:src="@drawable/ic_png_default_user_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="8dp">
-        <EditText
-                android:id="@+id/et_search"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:inputType="textPersonName"
-                android:hint="Name"
-                android:ems="10"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintVertical_bias="0.0"/>
-        <ImageView
-                android:id="@+id/imageView2"
-                android:src="@drawable/ic_svg_expand_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/people_view"
-            app:layout_constraintTop_toBottomOf="@+id/search"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/people_view_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/people_view"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+    <TextView
+            android:id="@+id/tv_name"
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"/>
+    <ImageButton
+            android:id="@+id/btn_search"
+            style="@style/Theme.Split.ImageButton.Middle"
+            android:src="@drawable/ic_svg_search"
+            app:backgroundTint="@color/alpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

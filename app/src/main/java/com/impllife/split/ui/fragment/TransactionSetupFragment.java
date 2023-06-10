@@ -171,7 +171,15 @@ public class TransactionSetupFragment extends NavFragment {
         private Account account;
         private People people;
         private int pos;
-        private final TransactionSetupPeopleSelectFragment peopleSelectFragment = new TransactionSetupPeopleSelectFragment();
+        private final TransactionSetupPeopleSelectFragment peopleSelectFragment;
+
+        private PagerDataHolder() {
+            peopleSelectFragment = new TransactionSetupPeopleSelectFragment();
+            peopleSelectFragment.setCallback(() -> {
+                this.people = peopleSelectFragment.getSelectedPeople();
+                this.account = null;
+            });
+        }
 
         public PagerDataHolder setDefaultPos(int pos) {
             this.pos = pos;
@@ -180,6 +188,13 @@ public class TransactionSetupFragment extends NavFragment {
         public PagerDataHolder setData(List<Account> accountsList) {
             this.accountsList = accountsList;
             return this;
+        }
+        public void setPeople(People people) {
+            this.people = people;
+            peopleSelectFragment.setSelectedPeople(people);
+        }
+        public void setAccount(Account account) {
+            this.account = account;
         }
 
         public int getPos() {
@@ -279,10 +294,10 @@ public class TransactionSetupFragment extends NavFragment {
                 etDscr.setText(trn.getDescription());
                 dateCreate = trn.getDateCreate();
 
-                from.account = trn.getFromAccount();
-                from.people = trn.getFromPeople();
-                to.account = trn.getToAccount();
-                to.people = trn.getToPeople();
+                from.setAccount(trn.getFromAccount());
+                from.setPeople(trn.getFromPeople());
+                to.setAccount(trn.getToAccount());
+                to.setPeople(trn.getToPeople());
                 pagerFrom.setCurrentItem(from.getPos());
                 pagerTo.setCurrentItem(to.getPos());
             }));
