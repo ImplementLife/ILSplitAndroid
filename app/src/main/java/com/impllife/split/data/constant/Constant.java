@@ -7,4 +7,6 @@ public class Constant {
     public static final String RES_ID = "RES_ID";
     public static final String ENTITY_ID = "ENTITY_ID";
     public static final String FOCUS_NEED = "FOCUS_NEED";
+    public static final String ACTION = "ACTION";
+    public static final String ACTION_START_NOTIFY_FRAGMENT = "ACTION_START_NOTIFY_FRAGMENT";
 }

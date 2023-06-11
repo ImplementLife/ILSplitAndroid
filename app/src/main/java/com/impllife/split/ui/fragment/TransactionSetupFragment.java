@@ -271,15 +271,7 @@ public class TransactionSetupFragment extends NavFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        bundleProcessing();
-    }
-
-    private void bundleProcessing() {
-        Bundle args = getArguments();
-        if (args == null) return;
-
+    protected void argumentProcessing(Bundle args) {
         boolean focusNeed = args.getBoolean(FOCUS_NEED, false);
         if (focusNeed) MainActivity.getInstance().showKeyboard(etSum);
 

@@ -15,6 +15,9 @@ import com.impllife.split.R;
 
 import java.util.Objects;
 
+import static com.impllife.split.data.constant.Constant.ACTION;
+import static com.impllife.split.data.constant.Constant.ACTION_START_NOTIFY_FRAGMENT;
+
 public class MainActivity extends AppCompatActivity {
     public static MainActivity getInstance() {
         return instance;
@@ -55,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private void bundleProcessing() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String act = extras.getString("act");
-            if (Objects.equals(act, "notify")) {
+            String act = extras.getString(ACTION);
+            if (ACTION_START_NOTIFY_FRAGMENT.equals(act)) {
                 navController.navigate(R.id.fragment_notify_list);
             }
         }

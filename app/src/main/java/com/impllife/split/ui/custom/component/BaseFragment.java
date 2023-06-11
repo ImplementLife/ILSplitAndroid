@@ -26,6 +26,15 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            argumentProcessing(arguments);
+        }
+    }
+
     protected void init() {
     }
 
@@ -56,6 +65,9 @@ public abstract class BaseFragment extends Fragment {
 
     protected <T extends View> T findViewById(int id) {
         return getView().findViewById(id);
+    }
+
+    protected void argumentProcessing(Bundle arguments) {
     }
 
     /**

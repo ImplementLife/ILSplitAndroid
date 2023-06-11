@@ -17,7 +17,10 @@ import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.ui.MainActivity;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
@@ -26,6 +29,8 @@ import static android.app.PendingIntent.getActivity;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static androidx.core.app.NotificationCompat.*;
 import static com.impllife.split.BuildConfig.APPLICATION_ID;
+import static com.impllife.split.data.constant.Constant.ACTION;
+import static com.impllife.split.data.constant.Constant.ACTION_START_NOTIFY_FRAGMENT;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class NotifyService {
@@ -94,7 +99,7 @@ public class NotifyService {
         createChannel(context, channelId, "Notify's");
 
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("act", "notify");
+        intent.putExtra(ACTION, ACTION_START_NOTIFY_FRAGMENT);
         PendingIntent pendingIntent = getActivity(context, 0, intent, FLAG_UPDATE_CURRENT);
 
         Builder notificationBuilder = new Builder(context, channelId)
@@ -115,7 +120,7 @@ public class NotifyService {
         createChannel(service, channelId, "Listener \uD83D\uDC40");
         // Create Pending Intents.
         Intent intent = new Intent(service, MainActivity.class);
-        intent.putExtra("act", "notify");
+        intent.putExtra(ACTION, ACTION_START_NOTIFY_FRAGMENT);
         PendingIntent piLaunchMainActivity = getActivity(service, 0, intent, FLAG_UPDATE_CURRENT);
         // Create a notification.
         Notification notify = new Builder(service, channelId)
