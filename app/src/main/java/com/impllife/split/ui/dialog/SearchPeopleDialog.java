@@ -30,11 +30,8 @@ public class SearchPeopleDialog extends Dialog {
     private People result;
 
     public SearchPeopleDialog(List<People> dataForSearch) {
-        this(MainActivity.getInstance());
+        super(MainActivity.getInstance());
         this.dataForSearch = dataForSearch;
-    }
-    public SearchPeopleDialog(Context context) {
-        super(context);
     }
 
     @Override

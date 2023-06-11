@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.internal.CheckableGroup;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.People;
@@ -20,6 +21,7 @@ import com.impllife.split.service.TransactionService;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.adapter.GridListAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.dialog.CalendarDialog;
 import com.impllife.split.ui.view.BtnDate;
 
 import java.util.*;
@@ -27,7 +29,6 @@ import java.util.*;
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
 import static com.impllife.split.data.constant.Constant.FOCUS_NEED;
 import static com.impllife.split.service.Util.isBlank;
-import static com.impllife.split.ui.fragment.DateSelectFragment.RESULT_KEY;
 
 public class TransactionSetupFragment extends NavFragment {
     private final TransactionDao transactionDao = new TransactionService();
@@ -104,41 +105,20 @@ public class TransactionSetupFragment extends NavFragment {
             dateCreate = btnYesterday.getDate();
         });
 
+        CalendarDialog calendarDialog = new CalendarDialog(date -> {
+            btnSelectDate.select();
+            btnToday.unselect();
+            btnYesterday.unselect();
+
+            dateCreate = date;
+            btnSelectDate.setDate(dateCreate);
+        });
         btnSelectDate.setName("Select");
-        initDateSelect();
-        btnSelectDate.setOnClickListener(v -> {
-            navController.navigate(R.id.fragment_date_select);
-        });
-
-        getParentFragmentManager().setFragmentResultListener(RESULT_KEY, this, (key, bundle) -> {
-            if (RESULT_KEY.equals(key)) {
-                btnSelectDate.select();
-                btnToday.unselect();
-                btnYesterday.unselect();
-
-                long selected = bundle.getLong("date");
-                calendar.setTimeInMillis(selected);
-                dateCreate = calendar.getTime();
-                btnSelectDate.setDate(dateCreate);
-            }
-        });
+        btnSelectDate.setDate(null);
+        btnSelectDate.setOnClickListener(v -> calendarDialog.show());
 
         btnDateGroup.setAdapter(new GridListAdapter<>(
             Arrays.asList(btnToday, btnYesterday, btnSelectDate), (data, parent) -> data.getRoot()));
-    }
-
-    private void initDateSelect() {
-        long dateCreateAsLong = 0;
-        if (getArguments() != null) {
-            dateCreateAsLong = getArguments().getLong("date");
-        }
-        if (dateCreateAsLong != 0) {
-            this.dateCreate = new Date(dateCreateAsLong);
-            this.btnSelectDate.setDate(dateCreate);
-        } else {
-            this.dateCreate = new Date();
-            this.btnSelectDate.setDate(null);
-        }
     }
 
     private void fillPager() {

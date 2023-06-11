@@ -29,10 +29,6 @@
               android:name="com.impllife.split.ui.fragment.ContactGroupSetupFragment"
               android:label="fragment_contact_group_setup"
               tools:layout="@layout/fragment_contact_group_setup"/>
-    <fragment android:id="@+id/fragment_date_select"
-              android:name="com.impllife.split.ui.fragment.DateSelectFragment"
-              android:label="fragment_date_select"
-              tools:layout="@layout/fragment_date_select"/>
     <fragment android:id="@+id/fragment_budget_menu"
               android:name="com.impllife.split.ui.fragment.BudgetMenuFragment"
               android:label="fragment_budget_menu"
