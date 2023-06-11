@@ -27,6 +27,7 @@ import com.impllife.split.ui.custom.SwipeToDeleteCallback;
 import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter;
 import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter.ViewData;
 import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.dialog.NotifyProcessingDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -94,6 +95,8 @@ public class NotifyListFragment extends NavFragment {
 
         recyclerView = findViewById(R.id.list);
         adapter = new RecyclerViewListAdapter<>((data, view) -> {
+            NotifyProcessingDialog dialog = new NotifyProcessingDialog(data);
+            view.getRoot().setOnClickListener(v -> dialog.show());
             view.getRoot().setLongClickable(true);
             view.getRoot().setOnLongClickListener(v -> {
                 new IgnoreDialog(this, data).show(this.getParentFragmentManager(), "ignore_dialog");
