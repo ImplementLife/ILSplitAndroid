@@ -30,9 +30,8 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            argumentProcessing(arguments);
-        }
+        if (arguments == null) arguments = new Bundle();
+        argumentProcessing(arguments);
     }
 
     protected void init() {

@@ -28,9 +28,7 @@ public class TransactionListFragment extends NavFragment {
     @Override
     protected void init() {
         listItems = findViewById(R.id.list_items);
-        findViewById(R.id.btn_new).setOnClickListener(v -> {
-            navController.navigate(R.id.fragment_transaction_setup, bundle(FOCUS_NEED, true));
-        });
+        findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
 
         runAsync(() -> {
             List<Transaction> allTransactions = dataService.getAllTransactions();

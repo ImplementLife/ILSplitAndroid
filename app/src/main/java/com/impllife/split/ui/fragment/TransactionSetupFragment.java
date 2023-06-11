@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-import com.google.android.material.internal.CheckableGroup;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.People;
@@ -24,6 +23,7 @@ import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.dialog.CalendarDialog;
 import com.impllife.split.ui.view.BtnDate;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
@@ -69,6 +69,16 @@ public class TransactionSetupFragment extends NavFragment {
         initDateBtns();
         fillPager();
 
+        Button btnNegate = findViewById(R.id.btn_negate);
+        btnNegate.setOnClickListener(v -> {
+            String sum = etSum.getText().toString();
+            if (!isBlank(sum)) {
+                BigDecimal decimal = new BigDecimal(sum).negate();
+                etSum.setText(decimal.toString());
+                etSum.setSelection(etSum.getText().length());
+                btnNegate.setText(decimal.compareTo(new BigDecimal(0)) > 0 ? "-" : "+");
+            }
+        });
         findViewById(R.id.btn_create).setOnClickListener(v -> {
             runAsync(() -> {
                 if (!valid()) return;
@@ -252,29 +262,30 @@ public class TransactionSetupFragment extends NavFragment {
 
     @Override
     protected void argumentProcessing(Bundle args) {
-        boolean focusNeed = args.getBoolean(FOCUS_NEED, false);
+        int trnId = args.getInt(ENTITY_ID, -1);
+        boolean focusNeed = args.getBoolean(FOCUS_NEED, trnId == -1);
         if (focusNeed) MainActivity.getInstance().showKeyboard(etSum);
 
-        int trn_id = args.getInt(ENTITY_ID);
-        runAsync(() -> {
-            Optional<Transaction> optional = Optional.ofNullable(transactionDao.findById(trn_id));
-            optional.ifPresent(trn -> post(() -> {
-                update = true;
-                btnSave.setText("Update");
-                transaction = trn;
-                etSum.setText(trn.getSum());
-                etDscr.setText(trn.getDescription());
-                dateCreate = trn.getDateCreate();
+        if (trnId != -1) {
+            runAsync(() -> {
+                Optional<Transaction> optional = Optional.ofNullable(transactionDao.findById(trnId));
+                optional.ifPresent(trn -> post(() -> {
+                    update = true;
+                    btnSave.setText("Update");
+                    transaction = trn;
+                    etSum.setText(trn.getSum());
+                    etDscr.setText(trn.getDescription());
+                    dateCreate = trn.getDateCreate();
 
-                from.setAccount(trn.getFromAccount());
-                from.setPeople(trn.getFromPeople());
-                to.setAccount(trn.getToAccount());
-                to.setPeople(trn.getToPeople());
-                pagerFrom.setCurrentItem(from.getPos());
-                pagerTo.setCurrentItem(to.getPos());
-            }));
-        });
-
+                    from.setAccount(trn.getFromAccount());
+                    from.setPeople(trn.getFromPeople());
+                    to.setAccount(trn.getToAccount());
+                    to.setPeople(trn.getToPeople());
+                    pagerFrom.setCurrentItem(from.getPos());
+                    pagerTo.setCurrentItem(to.getPos());
+                }));
+            });
+        }
     }
 
     private boolean valid() {
@@ -285,9 +296,15 @@ public class TransactionSetupFragment extends NavFragment {
             && !Objects.equals(from.people, to.people)*/;
     }
 
+    private BigDecimal getSum() {
+        String sum = etSum.getText().toString();
+        if (!isBlank(sum)) return new BigDecimal(sum);
+        else return new BigDecimal(0);
+    }
+
     private void save() {
         if (!update) transaction = new Transaction();
-        transaction.setSum(etSum.getText().toString());
+        transaction.setSum(getSum().setScale(2).toString());
         transaction.setDateCreate(dateCreate);
         transaction.setDescription(etDscr.getText().toString());
 
