@@ -9,4 +9,6 @@ public class Constant {
     public static final String FOCUS_NEED = "FOCUS_NEED";
     public static final String ACTION = "ACTION";
     public static final String ACTION_START_NOTIFY_FRAGMENT = "ACTION_START_NOTIFY_FRAGMENT";
+    public static final String NOTIFY_TO_TRN_SUM  = "NOTIFY_TO_TRN_SUM";
+    public static final String NOTIFY_TO_TRN_DSCR = "NOTIFY_TO_TRN_DSCR";
 }

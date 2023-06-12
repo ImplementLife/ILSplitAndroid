@@ -14,6 +14,7 @@ import com.impllife.split.ui.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,10 +23,16 @@ import static com.impllife.split.service.Util.isBlank;
 public class NotifyProcessingDialog extends Dialog {
     private Spinner spinner;
     private NotificationInfo info;
+    private Consumer<String> callback;
 
     public NotifyProcessingDialog(NotificationInfo info) {
         super(MainActivity.getInstance());
         this.info = info;
+    }
+    public NotifyProcessingDialog(NotificationInfo info, Consumer<String> callback) {
+        this(info);
+
+        this.callback = callback;
     }
 
     @Override
@@ -47,7 +54,8 @@ public class NotifyProcessingDialog extends Dialog {
         // forming like -> "\\b(UAH|USD|EUR)\\b"
         String regexCurrencies = /*"\\b(" + */String.join("|", extractCurrencySymbols(text))/* + ")\\b"*/;
         //Pattern pattern = Pattern.compile("(\\d+\\.\\d+)\\s*UAH");
-        Pattern pattern = Pattern.compile(regexDigit + regexCurrencies);
+//        Pattern pattern = Pattern.compile(regexDigit + regexCurrencies);
+        Pattern pattern = Pattern.compile("\\b(\\d+(?:\\.\\d+)?)\\b");
         Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
             String res = matcher.group(1);
@@ -61,7 +69,10 @@ public class NotifyProcessingDialog extends Dialog {
         spinner.setAdapter(adapter);
 
         findViewById(R.id.btn_cancel).setOnClickListener(v -> hide());
-        findViewById(R.id.btn_ok).setOnClickListener(v -> hide());
+        findViewById(R.id.btn_ok).setOnClickListener(v -> {
+            hide();
+            if (callback != null) callback.accept(spinner.getSelectedItem().toString());
+        });
     }
 
     private List<String> extractCurrencySymbols(String text) {

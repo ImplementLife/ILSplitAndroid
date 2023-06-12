@@ -35,6 +35,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
+import static com.impllife.split.data.constant.Constant.*;
+import static com.impllife.split.service.Util.bundle;
 
 public class NotifyListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
@@ -95,7 +97,11 @@ public class NotifyListFragment extends NavFragment {
 
         recyclerView = findViewById(R.id.list);
         adapter = new RecyclerViewListAdapter<>((data, view) -> {
-            NotifyProcessingDialog dialog = new NotifyProcessingDialog(data);
+            NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
+                Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
+                bundle.putString(NOTIFY_TO_TRN_DSCR, data.getText());
+                navigate(R.id.fragment_transaction_setup, bundle);
+            });
             view.getRoot().setOnClickListener(v -> dialog.show());
             view.getRoot().setLongClickable(true);
             view.getRoot().setOnLongClickListener(v -> {

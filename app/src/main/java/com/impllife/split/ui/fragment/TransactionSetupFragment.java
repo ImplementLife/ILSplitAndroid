@@ -26,8 +26,7 @@ import com.impllife.split.ui.view.BtnDate;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.impllife.split.data.constant.Constant.ENTITY_ID;
-import static com.impllife.split.data.constant.Constant.FOCUS_NEED;
+import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.service.Util.isBlank;
 
 public class TransactionSetupFragment extends NavFragment {
@@ -265,6 +264,11 @@ public class TransactionSetupFragment extends NavFragment {
         int trnId = args.getInt(ENTITY_ID, -1);
         boolean focusNeed = args.getBoolean(FOCUS_NEED, trnId == -1);
         if (focusNeed) MainActivity.getInstance().showKeyboard(etSum);
+
+        String sum = args.getString(NOTIFY_TO_TRN_SUM, "");
+        String dscr = args.getString(NOTIFY_TO_TRN_DSCR, "");
+        etDscr.setText(dscr);
+        etSum.setText(sum);
 
         if (trnId != -1) {
             runAsync(() -> {
