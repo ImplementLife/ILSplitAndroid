@@ -69,6 +69,7 @@ public class TransactionSetupFragment extends NavFragment {
         initDateBtns();
         fillPager();
 
+        findViewById(R.id.btn_clear_dscr).setOnClickListener(v -> etDscr.setText(""));
         Button btnNegate = findViewById(R.id.btn_negate);
         btnNegate.setOnClickListener(v -> {
             String sum = etSum.getText().toString();

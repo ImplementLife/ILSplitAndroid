@@ -23,7 +23,11 @@
             android:id="@+id/field_dscr"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:scrollbars="vertical"
+            android:minLines="1"
+            android:maxLines="5"
             android:ems="10"
             android:hint="Description"
             app:layout_constraintTop_toBottomOf="@+id/group_btn_date"
@@ -99,8 +103,17 @@
             android:text="-"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:layout_constraintEnd_toStartOf="@+id/field_sum"
             app:layout_constraintTop_toBottomOf="@+id/field_dscr"
+            app:layout_constraintStart_toEndOf="@+id/field_sum"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="8dp"/>
+    <ImageButton
+            android:id="@+id/btn_clear_dscr"
+            style="@style/Theme.Split.ImageButton.Small"
+            android:src="@drawable/ic_svg_eraser"
+            app:backgroundTint="@color/alpha"
+            app:layout_constraintEnd_toEndOf="@+id/field_dscr"
+            app:layout_constraintBottom_toBottomOf="@+id/field_dscr"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
