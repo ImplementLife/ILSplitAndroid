@@ -16,7 +16,6 @@ public interface NotifyInfoDao extends RestDao<Integer, NotificationInfo> {
     List<NotificationInfo> findAllByAppPackage(String appPackage);
     @Query("DELETE FROM il_notification WHERE appPackage = :appPackage")
     void deleteByAppPackage(String appPackage);
-
-
-
+    @Query("DELETE FROM il_notification WHERE id = :id")
+    void deleteById(int id);
 }

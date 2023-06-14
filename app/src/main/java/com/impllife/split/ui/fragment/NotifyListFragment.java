@@ -100,6 +100,7 @@ public class NotifyListFragment extends NavFragment {
             NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
                 Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
                 bundle.putString(NOTIFY_TO_TRN_DSCR, data.getText());
+                bundle.putInt(NOTIFY_ID, data.getId());
                 navigate(R.id.fragment_transaction_setup, bundle);
             });
             view.getRoot().setOnClickListener(v -> dialog.show());
@@ -116,6 +117,26 @@ public class NotifyListFragment extends NavFragment {
         recyclerView.setAdapter(adapter);
         updateListContent();
         enableSwipeToDeleteAndUndo();
+        getParentFragmentManager().setFragmentResultListener(FRAGMENT_RESULT_KEY, this, (key, bundle) -> {
+            postDelayed(() -> {
+                if (ACTION_TRN_CREATED_FRAGMENT.equals(bundle.getString(ACTION))) {
+                    int id = bundle.getInt(NOTIFY_ID, -1);
+                    if (id != -1) {
+                        runAsync(() -> {
+                            notifyInfoDao.deleteById(id);
+                            post(() -> {
+                                adapter.getData().stream()
+                                    .filter(e -> e.getData().getId() == id)
+                                    .findFirst().ifPresent(e -> {
+                                        int position = adapter.getData().indexOf(e);
+                                        adapter.remove(position);
+                                    });
+                            });
+                        });
+                    }
+                }
+            }, 700);
+        });
     }
 
     private void enableSwipeToDeleteAndUndo() {

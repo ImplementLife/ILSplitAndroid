@@ -117,5 +117,20 @@ public class RecyclerViewListAdapter<D> extends RecyclerView.Adapter<CustomViewH
         public T getData() {
             return data;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ViewData<?> viewData = (ViewData<?>) o;
+
+            return getData() != null ? getData().equals(viewData.getData()) : viewData.getData() == null;
+        }
+
+        @Override
+        public int hashCode() {
+            return getData() != null ? getData().hashCode() : 0;
+        }
     }
 }

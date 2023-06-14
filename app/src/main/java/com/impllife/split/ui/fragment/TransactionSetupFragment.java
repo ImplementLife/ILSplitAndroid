@@ -48,6 +48,7 @@ public class TransactionSetupFragment extends NavFragment {
     private boolean update;
     private final PagerDataHolder from = new PagerDataHolder();
     private final PagerDataHolder to = new PagerDataHolder();
+    private final Bundle fragmentResultBundle = new Bundle();
 
     public TransactionSetupFragment() {
         super(R.layout.fragment_transaction_setup, "New transaction");
@@ -82,7 +83,11 @@ public class TransactionSetupFragment extends NavFragment {
             runAsync(() -> {
                 if (!valid()) return;
                 save();
-                post(() -> navController.navigateUp());
+                post(() -> {
+                    fragmentResultBundle.putString(ACTION, ACTION_TRN_CREATED_FRAGMENT);
+                    getParentFragmentManager().setFragmentResult(FRAGMENT_RESULT_KEY, fragmentResultBundle);
+                    navController.navigateUp();
+                });
             });
         });
     }
@@ -264,6 +269,11 @@ public class TransactionSetupFragment extends NavFragment {
         int trnId = args.getInt(ENTITY_ID, -1);
         boolean focusNeed = args.getBoolean(FOCUS_NEED, trnId == -1);
         if (focusNeed) MainActivity.getInstance().showKeyboard(etSum);
+
+        int notifyId = args.getInt(NOTIFY_ID, -1);
+        if (notifyId != -1) {
+            fragmentResultBundle.putInt(NOTIFY_ID, notifyId);
+        }
 
         String sum = args.getString(NOTIFY_TO_TRN_SUM, "");
         String dscr = args.getString(NOTIFY_TO_TRN_DSCR, "");
