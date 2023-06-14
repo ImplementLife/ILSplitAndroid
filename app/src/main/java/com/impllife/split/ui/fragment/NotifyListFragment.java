@@ -43,7 +43,7 @@ public class NotifyListFragment extends NavFragment {
     private NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
     private MainActivity mainActivity = MainActivity.getInstance();
     @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH.mm.ss");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
     private SwipeRefreshLayout refreshLayout;
     private Switch btnWork;
