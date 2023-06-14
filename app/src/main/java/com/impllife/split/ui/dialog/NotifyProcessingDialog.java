@@ -13,6 +13,7 @@ import com.impllife.split.data.jpa.entity.NotificationInfo;
 import com.impllife.split.ui.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -43,25 +44,21 @@ public class NotifyProcessingDialog extends Dialog {
         getWindow().setLayout(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         TextView tvData = findViewById(R.id.tv_data);
-        String text = info.getText();
+        spinner = findViewById(R.id.spinner);
+
+
+        String text = info.getTitle() + " " + info.getText();
         tvData.setText(text);
 
-        spinner = findViewById(R.id.spinner);
         text = text.replace('\n', ' ');
 
+        List<String> patterns = Arrays.asList(
+            "((\\d+\\s*)?)+(\\d+\\.\\d+)"
+        );
+
         List<String> data = new ArrayList<>();
-        String regexDigit = "(\\+?\\d+\\.\\d+)\\s*";
-        // forming like -> "\\b(UAH|USD|EUR)\\b"
-        String regexCurrencies = /*"\\b(" + */String.join("|", extractCurrencySymbols(text))/* + ")\\b"*/;
-        //Pattern pattern = Pattern.compile("(\\d+\\.\\d+)\\s*UAH");
-//        Pattern pattern = Pattern.compile(regexDigit + regexCurrencies);
-        Pattern pattern = Pattern.compile("\\b(\\d+(?:\\.\\d+)?)\\b");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String res = matcher.group(1);
-            if (!isBlank(res)) {
-                data.add(res);
-            }
+        for (String p : patterns) {
+            data.addAll(parse(Pattern.compile(p).matcher(text)));
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, data);
@@ -74,12 +71,14 @@ public class NotifyProcessingDialog extends Dialog {
             if (callback != null) callback.accept(spinner.getSelectedItem().toString());
         });
     }
-
-    private List<String> extractCurrencySymbols(String text) {
+    public static List<String> parse(Matcher matcher) {
         List<String> result = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\\b([A-Z]{3})\\b");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) result.add(matcher.group(1));
+        while (matcher.find()) {
+            String math = matcher.group();
+            if (!isBlank(math)) {
+                result.add(math);
+            }
+        }
         return result;
     }
 }
