@@ -1,6 +1,5 @@
 package com.impllife.split.ui.dialog;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +10,7 @@ import android.widget.EditText;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.custom.CustomDialog;
 import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter;
 import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter.ViewData;
 import com.impllife.split.ui.custom.component.CustomRecyclerView;
@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SearchPeopleDialog extends Dialog {
+public class SearchPeopleDialog extends CustomDialog {
     private EditText fieldQuery;
 
     private CustomRecyclerView list;
@@ -30,7 +30,6 @@ public class SearchPeopleDialog extends Dialog {
     private People result;
 
     public SearchPeopleDialog(List<People> dataForSearch) {
-        super(MainActivity.getInstance());
         this.dataForSearch = dataForSearch;
     }
 
@@ -38,7 +37,6 @@ public class SearchPeopleDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_search_people);
-
         getWindow().setLayout(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         fieldQuery = findViewById(R.id.field_query);

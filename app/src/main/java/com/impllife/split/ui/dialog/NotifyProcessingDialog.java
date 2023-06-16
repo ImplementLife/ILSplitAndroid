@@ -1,6 +1,5 @@
 package com.impllife.split.ui.dialog;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -10,7 +9,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
-import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.custom.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,18 +20,13 @@ import java.util.regex.Pattern;
 
 import static com.impllife.split.service.Util.isBlank;
 
-public class NotifyProcessingDialog extends Dialog {
+public class NotifyProcessingDialog extends CustomDialog {
     private Spinner spinner;
     private NotificationInfo info;
     private Consumer<String> callback;
 
-    public NotifyProcessingDialog(NotificationInfo info) {
-        super(MainActivity.getInstance());
-        this.info = info;
-    }
     public NotifyProcessingDialog(NotificationInfo info, Consumer<String> callback) {
-        this(info);
-
+        this.info = info;
         this.callback = callback;
     }
 
@@ -40,7 +34,6 @@ public class NotifyProcessingDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_notify_processing);
-
         getWindow().setLayout(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         TextView tvData = findViewById(R.id.tv_data);
