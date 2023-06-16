@@ -99,7 +99,7 @@ public class NotifyListFragment extends NavFragment {
         adapter = new RecyclerViewListAdapter<>((data, view) -> {
             NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
                 Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
-                bundle.putString(NOTIFY_TO_TRN_DSCR, data.getText());
+                bundle.putString(NOTIFY_TO_TRN_DSCR, data.getTitle() + ": " + data.getText());
                 bundle.putInt(NOTIFY_ID, data.getId());
                 navigate(R.id.fragment_transaction_setup, bundle);
             });

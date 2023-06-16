@@ -60,6 +60,7 @@ public class NotifyProcessingDialog extends Dialog {
         for (String p : patterns) {
             data.addAll(parse(Pattern.compile(p).matcher(text)));
         }
+        if (data.isEmpty()) data.add("0");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
