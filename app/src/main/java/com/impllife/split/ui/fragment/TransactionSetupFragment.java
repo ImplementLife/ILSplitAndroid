@@ -18,6 +18,7 @@ import com.impllife.split.data.jpa.provide.TransactionDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.TransactionService;
 import com.impllife.split.ui.MainActivity;
+import com.impllife.split.ui.custom.BtnRadioGroup;
 import com.impllife.split.ui.custom.adapter.GridListAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.dialog.CalendarDialog;
@@ -36,6 +37,7 @@ public class TransactionSetupFragment extends NavFragment {
     private EditText etSum;
     private EditText etDscr;
     private Button btnSave;
+    private BtnRadioGroup group;
     private BtnDate btnToday;
     private BtnDate btnYesterday;
     private BtnDate btnSelectDate;
@@ -57,6 +59,7 @@ public class TransactionSetupFragment extends NavFragment {
     @Override
     protected void init() {
         btnDateGroup = findViewById(R.id.group_btn_date);
+        group = new BtnRadioGroup();
         btnToday = new BtnDate(inflater, btnDateGroup);
         btnYesterday = new BtnDate(inflater, btnDateGroup);
         btnSelectDate = new BtnDate(inflater, btnDateGroup);
@@ -99,12 +102,9 @@ public class TransactionSetupFragment extends NavFragment {
         btnToday.setDate(calendar.getTime());
         btnToday.setOnClickListener(v -> {
             btnToday.select();
-            btnYesterday.unselect();
-            btnSelectDate.unselect();
-
             dateCreate = btnToday.getDate();
         });
-        btnToday.select();
+        group.add(btnToday);
 
         dateCreate = calendar.getTime();
 
@@ -114,26 +114,24 @@ public class TransactionSetupFragment extends NavFragment {
         btnYesterday.setDate(calendar.getTime());
         btnYesterday.setOnClickListener(v -> {
             btnYesterday.select();
-            btnToday.unselect();
-            btnSelectDate.unselect();
-
             dateCreate = btnYesterday.getDate();
         });
+        group.add(btnYesterday);
 
         CalendarDialog calendarDialog = new CalendarDialog(date -> {
             btnSelectDate.select();
-            btnToday.unselect();
-            btnYesterday.unselect();
-
             dateCreate = date;
             btnSelectDate.setDate(dateCreate);
         });
         btnSelectDate.setName("Select");
         btnSelectDate.setDate(null);
         btnSelectDate.setOnClickListener(v -> calendarDialog.show());
+        group.add(btnSelectDate);
 
         btnDateGroup.setAdapter(new GridListAdapter<>(
             Arrays.asList(btnToday, btnYesterday, btnSelectDate), (data, parent) -> data.getRoot()));
+
+        btnToday.select();
     }
 
     private void fillPager() {
