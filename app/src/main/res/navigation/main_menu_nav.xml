@@ -57,4 +57,8 @@
               android:name="com.impllife.split.ui.fragment.HistoryFragment"
               android:label="fragment_history"
               tools:layout="@layout/fragment_history"/>
+    <fragment android:id="@+id/fragment_requisition_setup"
+              android:name="com.impllife.split.ui.fragment.RequisitionSetupFragment"
+              android:label="fragment_requisition_setup"
+              tools:layout="@layout/fragment_requisition_setup"/>
 </navigation>
