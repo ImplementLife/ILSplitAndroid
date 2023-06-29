@@ -89,6 +89,10 @@ public class NotifyListFragment extends NavFragment {
             }
         });
         btnWork.setChecked(notifyListenPermit && NotifyListener.isWork());
+        btnWork.setOnLongClickListener(v -> {
+            mainActivity.startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
+            return false;
+        });
 
         findViewById(R.id.btn_notify).setOnClickListener(v -> navController.navigate(R.id.fragment_notify_app_info_list));
 
