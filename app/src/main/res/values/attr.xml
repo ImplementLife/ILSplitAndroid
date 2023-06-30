@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="primaryBackgroundColor" format="reference|color"/>
+    <attr name="primaryForegroundColor" format="reference|color"/>
+    <attr name="primaryTextColor" format="reference|color"/>
+
+    <attr name="secondaryBackgroundColor" format="reference|color"/>
+    <attr name="secondaryForegroundColor" format="reference|color"/>
+    <attr name="secondaryTextColor" format="reference|color"/>
+
+    <attr name="focusedColor" format="reference|color"/>
+</resources>

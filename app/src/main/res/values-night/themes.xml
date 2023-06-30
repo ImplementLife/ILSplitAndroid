@@ -8,10 +8,13 @@
         <item name="colorSecondaryVariant">@color/background_secondary_variant_night</item>
         <item name="colorOnSecondary">#EAEAEA</item>
 
+        <item name="focusedColor">@color/light_blue_400</item>
 
         <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:textColor">#EAEAEA</item>
+
+        <item name="android:buttonStyle">@style/AppButtonStyle</item>
     </style>
 
     <!-- Dialog theme -->
@@ -26,5 +29,10 @@
 
     <style name="PositiveButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/background_primary</item>
+    </style>
+
+    <!-- Button -->
+    <style name="AppButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">?attr/colorSecondary</item>
     </style>
 </resources>
