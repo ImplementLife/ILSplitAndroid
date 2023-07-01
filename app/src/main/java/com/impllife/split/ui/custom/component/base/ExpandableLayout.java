@@ -60,6 +60,17 @@ public class ExpandableLayout extends ConstraintLayout {
 
             array.recycle();
         }
+
+        imgExpand.setRotation(180);
+        clHeader.setOnClickListener(v -> {
+            if (clContent.getVisibility() != GONE) {
+                clContent.setVisibility(GONE);
+                imgExpand.setRotation(0);
+            } else {
+                clContent.setVisibility(VISIBLE);
+                imgExpand.setRotation(imgExpand.getRotation() + 180);
+            }
+        });
     }
 
     @Override
