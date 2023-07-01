@@ -51,6 +51,22 @@ public class ExpandableLayout extends ConstraintLayout {
         clHeader  = findViewById(R.id.cl_header);
         clContent = findViewById(R.id.cl_content);
 
+        addOnAttachStateChangeListener(new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                ViewGroup.LayoutParams rootParam    = v.getLayoutParams();
+                ViewGroup.LayoutParams headerParam  = clHeader.getLayoutParams();
+                ViewGroup.LayoutParams contentParam = clContent.getLayoutParams();
+
+                int height = rootParam.height - headerParam.height;
+                rootParam.height = LayoutParams.WRAP_CONTENT;
+                contentParam.height = height;
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {}
+        });
+
         if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.ExpandableLayout);
             String title = array.getString(R.styleable.ExpandableLayout_il_title);
