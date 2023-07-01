@@ -1,4 +1,4 @@
-package com.impllife.split.ui.custom.component.base;
+package com.impllife.split.ui.custom.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-    <com.impllife.split.ui.custom.component.base.ExpandableLayout
+    <com.impllife.split.ui.custom.component.ExpandableLayout
             android:id="@+id/expandableLayout"
             app:il_title="Details"
             android:layout_width="0dp"
@@ -32,7 +32,7 @@
             app:layout_constraintTop_toBottomOf="@+id/et_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-    <com.impllife.split.ui.custom.component.base.ExpandableLayout
+    <com.impllife.split.ui.custom.component.ExpandableLayout
             app:il_title="Members &amp; Mappings"
             android:layout_width="0dp"
             android:layout_height="200dp"
@@ -60,5 +60,5 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
-    </com.impllife.split.ui.custom.component.base.ExpandableLayout>
+    </com.impllife.split.ui.custom.component.ExpandableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
