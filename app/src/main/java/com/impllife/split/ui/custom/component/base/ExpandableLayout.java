@@ -4,18 +4,21 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.impllife.split.R;
 
-import static com.impllife.split.service.Util.savePerform;
+import static com.impllife.split.service.Util.isBlank;
 
 public class ExpandableLayout extends ConstraintLayout {
     private ImageView imgExpand;
     private TextView  tvTitle;
     private ConstraintLayout clHeader;
     private ConstraintLayout clContent;
+    private boolean isInflated;
 
     public ExpandableLayout(Context context) {
         super(context);
@@ -41,6 +44,7 @@ public class ExpandableLayout extends ConstraintLayout {
     protected void init(AttributeSet attrs) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.component_expandable_layout, this);
+        isInflated = true;
 
         imgExpand = findViewById(R.id.img_expand);
         tvTitle   = findViewById(R.id.tv_title);
@@ -49,13 +53,57 @@ public class ExpandableLayout extends ConstraintLayout {
 
         if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.ExpandableLayout);
-            for (int i = 0; i < array.getIndexCount(); i++) {
-                int index = array.getIndex(i);
-                if (index == R.styleable.ExpandableLayout_il_title) {
-                    savePerform(() -> tvTitle.setText(array.getString(index)));
-                }
+            String title = array.getString(R.styleable.ExpandableLayout_il_title);
+            if (!isBlank(title)) {
+                tvTitle.setText(title);
             }
+
             array.recycle();
+        }
+    }
+
+    @Override
+    public void addView(View child) {
+        if (isInflated) {
+            clContent.addView(child);
+        } else {
+            super.addView(child);
+        }
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        if (isInflated) {
+            clContent.addView(child, index);
+        } else {
+            super.addView(child, index);
+        }
+    }
+
+    @Override
+    public void addView(View child, int width, int height) {
+        if (isInflated) {
+            clContent.addView(child, width, height);
+        } else {
+            super.addView(child, width, height);
+        }
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        if (isInflated) {
+            clContent.addView(child, params);
+        } else {
+            super.addView(child, params);
+        }
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        if (isInflated) {
+            clContent.addView(child, index, params);
+        } else {
+            super.addView(child, index, params);
         }
     }
 }
