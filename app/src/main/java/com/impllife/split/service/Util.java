@@ -10,9 +10,8 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Util {
+    private static final String TAG = Util.class.getName();
     private static final Calendar CALENDAR = Calendar.getInstance();
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat();
 
     /**
      * Returns true if the two given dates have the same day of month, month, and year.
@@ -40,12 +39,14 @@ public class Util {
         return year1 == year2 && month1 == month2 && day1 == day2;
     }
 
-    public static String date() {
-        return dateFormat.format(new Date());
+    @SuppressLint("SimpleDateFormat")
+    public static String format(Date date) {
+        return new SimpleDateFormat().format(date);
     }
 
-    public static String date(Object text) {
-        return String.format("%s %s", dateFormat.format(new Date()), text.toString());
+    @SuppressLint("SimpleDateFormat")
+    public static String format(Date date, String pattern) {
+        return new SimpleDateFormat(pattern).format(date);
     }
 
     /**
@@ -81,8 +82,16 @@ public class Util {
         } else if (valueClass.equals(String.class)) {
             bundle.putString(key, (String) value);
         } else {
-            Log.w("bundle", "value [" + valueClass.getTypeName() + "] type don't support");
+            Log.w(TAG + "#bundle", "value [" + valueClass.getTypeName() + "] type don't support");
         }
         return bundle;
+    }
+
+    public static void savePerform(Runnable run) {
+        try {
+            run.run();
+        } catch (Throwable throwable) {
+            Log.e(TAG + "#savePerform", "execute with exception", throwable);
+        }
     }
 }
