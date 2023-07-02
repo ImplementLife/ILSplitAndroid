@@ -58,6 +58,11 @@ public class ExpandableLayout extends ConstraintLayout {
                 ViewGroup.LayoutParams headerParam  = clHeader.getLayoutParams();
                 ViewGroup.LayoutParams contentParam = clContent.getLayoutParams();
 
+                if (rootParam.height == LayoutParams.WRAP_CONTENT) {
+                    contentParam.height = LayoutParams.WRAP_CONTENT;
+                    return;
+                }
+
                 int height = rootParam.height - headerParam.height;
                 rootParam.height = LayoutParams.WRAP_CONTENT;
                 contentParam.height = height;

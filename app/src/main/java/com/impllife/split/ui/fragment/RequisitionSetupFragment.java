@@ -14,6 +14,9 @@ public class RequisitionSetupFragment extends NavFragment {
 
     @Override
     protected void init() {
+        findViewById(R.id.btn_continue).setOnClickListener(v -> {
+            navigate(R.id.fragment_requisition_setup_billing_list);
+        });
         CustomRecyclerView rw = findViewById(R.id.list_item);
         RecyclerViewListAdapter<String> adapter = new RecyclerViewListAdapter<>((data, view) -> {
             view.setTextViewById(R.id.tv_name, data);

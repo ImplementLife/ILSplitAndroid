@@ -61,4 +61,8 @@
               android:name="com.impllife.split.ui.fragment.RequisitionSetupFragment"
               android:label="fragment_requisition_setup"
               tools:layout="@layout/fragment_requisition_setup"/>
+    <fragment android:id="@+id/fragment_requisition_setup_billing_list"
+              android:name="com.impllife.split.ui.fragment.RequisitionSetupBillingListFragment"
+              android:label="fragment_requisition_setup_billing_list"
+              tools:layout="@layout/fragment_requisition_setup_billing_list"/>
 </navigation>
