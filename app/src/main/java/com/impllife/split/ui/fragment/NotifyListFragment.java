@@ -1,6 +1,5 @@
 package com.impllife.split.ui.fragment;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -103,10 +102,10 @@ public class NotifyListFragment extends NavFragment {
         updateListContent();
         enableSwipeToDeleteAndUndo();
         getParentFragmentManager().setFragmentResultListener(FRAGMENT_RESULT_KEY, this, (key, bundle) -> {
-            postDelayed(() -> {
-                if (ACTION_TRN_CREATED_FRAGMENT.equals(bundle.getString(ACTION))) {
-                    int id = bundle.getInt(NOTIFY_ID, -1);
-                    if (id != -1) {
+            if (ACTION_TRN_CREATED_FRAGMENT.equals(bundle.getString(ACTION))) {
+                int id = bundle.getInt(NOTIFY_ID, -1);
+                if (id != -1) {
+                    postDelayed(() -> {
                         runAsync(() -> {
                             notifyInfoDao.deleteById(id);
                             post(() -> {
@@ -119,9 +118,9 @@ public class NotifyListFragment extends NavFragment {
                                     });
                             });
                         });
-                    }
+                    }, 700);
                 }
-            }, 700);
+            }
         });
     }
 
@@ -160,7 +159,6 @@ public class NotifyListFragment extends NavFragment {
         itemTouchhelper.attachToRecyclerView(recyclerView);
     }
 
-    @SuppressLint("SetTextI18n")
     private void updateListContent() {
         runAsync(() -> {
             List<NotificationInfo> allNotifyInfo = dataService.getAllNotifyInfo();
