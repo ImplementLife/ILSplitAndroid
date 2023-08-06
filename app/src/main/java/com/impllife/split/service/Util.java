@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
@@ -93,5 +94,35 @@ public class Util {
         } catch (Throwable throwable) {
             Log.e(TAG + "#savePerform", "execute with exception", throwable);
         }
+    }
+
+
+
+
+    public static boolean isToday(Date date) {
+        Date currentDate = new Date();
+        return isSameDay(currentDate, date);
+    }
+
+    public static boolean isYesterday(Date date) {
+        Date currentDate = new Date();
+        long oneDayInMillis = 24 * 60 * 60 * 1000;
+        Date yesterdayDate = new Date(currentDate.getTime() - oneDayInMillis);
+        return isSameDay(yesterdayDate, date);
+    }
+
+    public static boolean isTomorrow(Date date) {
+        Date currentDate = new Date();
+        long oneDayInMillis = 24 * 60 * 60 * 1000;
+        Date nextDate = new Date(currentDate.getTime() + oneDayInMillis);
+        return isSameDay(nextDate, date);
+    }
+
+    public static boolean isSameDay(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            return false;
+        }
+        return date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            .equals(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 }

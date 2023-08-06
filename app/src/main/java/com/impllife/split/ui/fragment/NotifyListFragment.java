@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Switch;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
@@ -22,38 +21,37 @@ import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
 import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
+import com.impllife.split.service.Util;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.SwipeToDeleteCallback;
-import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter;
-import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter.ViewData;
+import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
-import com.impllife.split.ui.dialog.NotifyProcessingDialog;
+import com.impllife.split.ui.view.NotifyInfoListItem;
+import com.impllife.split.ui.view.NotifyInfoListItemDate;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.service.Util.bundle;
 
 public class NotifyListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
     private NotifyInfoDao notifyInfoDao = DataService.getInstance().getDb().getNotifyInfoDao();
     private MainActivity mainActivity = MainActivity.getInstance();
-    @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
     private SwipeRefreshLayout refreshLayout;
     private Switch btnWork;
     private boolean notifyListenPermit;
 
-    private RecyclerViewListAdapter<NotificationInfo> adapter;
+    private AltRecyclerViewListAdapter adapter;
     private RecyclerView recyclerView;
-
+    private NotifyListFragment notifyListFragment;
     public NotifyListFragment() {
         super(R.layout.fragment_notify_list, "Notifications");
+        notifyListFragment = this;
     }
 
     @Override
@@ -100,24 +98,7 @@ public class NotifyListFragment extends NavFragment {
         refreshLayout.setOnRefreshListener(this::updateListContent);
 
         recyclerView = findViewById(R.id.list);
-        adapter = new RecyclerViewListAdapter<>((data, view) -> {
-            NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
-                Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
-                bundle.putString(NOTIFY_TO_TRN_DSCR, data.getTitle() + ": " + data.getText());
-                bundle.putInt(NOTIFY_ID, data.getId());
-                navigate(R.id.fragment_transaction_setup, bundle);
-            });
-            view.getRoot().setOnClickListener(v -> dialog.show());
-            view.getRoot().setLongClickable(true);
-            view.getRoot().setOnLongClickListener(v -> {
-                new IgnoreDialog(this, data).show(this.getParentFragmentManager(), "ignore_dialog");
-                return true;
-            });
-            ImageView icon = view.findViewById(R.id.img_app_icon);
-            dataService.loadAppIcon(data.getAppPackage()).ifPresent(icon::setImageDrawable);
-            view.setTextViewById(R.id.tv_app_name, data.getAppName() + " at " + dateFormat.format(data.getPostDate()));
-            view.setTextViewById(R.id.tv_dscr, data.getTitle() + ": " + data.getText());
-        });
+        adapter = new AltRecyclerViewListAdapter();
         recyclerView.setAdapter(adapter);
         updateListContent();
         enableSwipeToDeleteAndUndo();
@@ -130,7 +111,8 @@ public class NotifyListFragment extends NavFragment {
                             notifyInfoDao.deleteById(id);
                             post(() -> {
                                 adapter.getData().stream()
-                                    .filter(e -> e.getData().getId() == id)
+                                    .filter(e -> e instanceof NotifyInfoListItem
+                                                 && ((NotifyInfoListItem) e).getData().getId() == id)
                                     .findFirst().ifPresent(e -> {
                                         int position = adapter.getData().indexOf(e);
                                         adapter.remove(position);
@@ -146,28 +128,31 @@ public class NotifyListFragment extends NavFragment {
     private void enableSwipeToDeleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
-                RecyclerViewListAdapter.ViewData<NotificationInfo> item = adapter.get(position);
-                runAsync(() -> {
-                    notifyInfoDao.delete(item.getData());
-                    updateView(() -> {
-                        adapter.remove(position);
+                Object data = adapter.get(position).getData();
+                if (data instanceof NotificationInfo) {
+                    runAsync(() -> {
+                        NotificationInfo notificationInfo = (NotificationInfo) data;
+                        notifyInfoDao.delete(notificationInfo);
+                        updateView(() -> {
+                            adapter.remove(position);
 
-                        Snackbar snackbar = Snackbar.make(root, "Item removed.", Snackbar.LENGTH_LONG);
-                        snackbar.setAction("UNDO", view -> {
-                            runAsync(() -> {
-                                notifyInfoDao.insert(item.getData());
-                                updateView(() -> {
-                                    adapter.add(item, position);
-                                    recyclerView.scrollToPosition(position);
+                            Snackbar snackbar = Snackbar.make(root, "Item removed.", Snackbar.LENGTH_LONG);
+                            snackbar.setAction("UNDO", view -> {
+                                runAsync(() -> {
+                                    notifyInfoDao.insert(notificationInfo);
+                                    updateView(() -> {
+                                        adapter.add(new NotifyInfoListItem(notifyListFragment, notificationInfo), position);
+                                        recyclerView.scrollToPosition(position);
+                                    });
                                 });
                             });
+                            snackbar.setActionTextColor(Color.BLUE);
+                            snackbar.show();
                         });
-                        snackbar.setActionTextColor(Color.BLUE);
-                        snackbar.show();
                     });
-                });
+                }
             }
         };
 
@@ -179,13 +164,19 @@ public class NotifyListFragment extends NavFragment {
     private void updateListContent() {
         runAsync(() -> {
             List<NotificationInfo> allNotifyInfo = dataService.getAllNotifyInfo();
+            List<AltRecyclerViewListAdapter.Data> collect = new ArrayList<>();
+            Date d = null;
+            for (NotificationInfo info : allNotifyInfo) {
+                Date postDate = info.getPostDate();
+                if (!Util.isSameDay(d, postDate)) {
+                    d = postDate;
+                    collect.add(new NotifyInfoListItemDate(d));
+                }
+                collect.add(new NotifyInfoListItem(this, info));
+            }
             updateView(() -> {
-                List<ViewData<NotificationInfo>> collect = allNotifyInfo.stream()
-                    .map(e -> new ViewData<>(R.layout.view_notify_info_list_item, e))
-                    .collect(Collectors.toList());
                 adapter.replaceAll(collect);
                 recyclerView.scrollToPosition(0);
-
                 refreshLayout.setRefreshing(false);
             });
         });
