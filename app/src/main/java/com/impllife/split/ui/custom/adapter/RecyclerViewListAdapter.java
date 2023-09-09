@@ -23,11 +23,17 @@ public class RecyclerViewListAdapter<D> extends RecyclerView.Adapter<CustomViewH
         this.binder = binder;
     }
 
+    /**
+     * @see RecyclerViewListAdapter#onCreateViewHolder(ViewGroup, int)
+     */
     @Override
     public int getItemViewType(int position) {
         return data.get(position).getViewId();
     }
 
+    /**
+     * @see RecyclerViewListAdapter#getItemViewType(int)
+     */
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new CustomViewHolder(viewType, parent);
