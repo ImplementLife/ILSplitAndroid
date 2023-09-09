@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/btn_accounts"/>
             <Button
-                    android:text="Family  Budget"
+                    android:text="Budget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/btn_family_budget"/>
         </LinearLayout>
