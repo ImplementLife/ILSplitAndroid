@@ -1,10 +1,8 @@
 package com.impllife.split.service;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,16 +36,6 @@ public class Util {
         int year2 = CALENDAR.get(Calendar.YEAR);
 
         return year1 == year2 && month1 == month2 && day1 == day2;
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    public static String format(Date date) {
-        return new SimpleDateFormat().format(date);
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    public static String format(Date date, String pattern) {
-        return new SimpleDateFormat(pattern).format(date);
     }
 
     /**

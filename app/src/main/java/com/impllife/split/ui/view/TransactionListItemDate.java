@@ -1,21 +1,18 @@
 package com.impllife.split.ui.view;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.service.Formatters;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.StatusBar;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TransactionListItemDate extends BaseView {
-    @SuppressLint("SimpleDateFormat")
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static final BigDecimal budget = BigDecimal.valueOf(900);
     private TextView tvDate;
     private TextView tvSumTotal;
@@ -36,7 +33,7 @@ public class TransactionListItemDate extends BaseView {
     }
 
     public void setData(Date date) {
-        tvDate.setText(dateFormat.format(date));
+        tvDate.setText(Formatters.formatDDMMYYYY(date));
     }
 
     public void setData(String sumTotal) {
