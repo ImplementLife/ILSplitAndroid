@@ -34,6 +34,7 @@ public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<Notifica
             Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
             bundle.putString(NOTIFY_TO_TRN_DSCR, data.getTitle() + ": " + data.getText());
             bundle.putInt(NOTIFY_ID, data.getId());
+            bundle.putLong(NOTIFY_TO_TRN_DATE, data.getPostDate().getTime());
             ownerFragment.navigate(R.id.fragment_transaction_setup, bundle);
         });
         view.setOnClickListener(v -> dialog.show());

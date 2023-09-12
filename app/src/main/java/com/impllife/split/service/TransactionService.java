@@ -55,12 +55,12 @@ public class TransactionService implements TransactionDao {
         BigDecimal sum = new BigDecimal(trn.getSum());
         Account fromAccount = accountDao.findById(trn.getFromAccountId());
         if (fromAccount != null) {
-            fromAccount.setAmount(BigDecimal.valueOf(fromAccount.getAmount()).subtract(sum).doubleValue());
+            fromAccount.setAmount(BigDecimal.valueOf(fromAccount.getAmount()).add(sum).doubleValue());
             accountDao.update(fromAccount);
         }
         Account toAccount = accountDao.findById(trn.getToAccountId());
         if (toAccount != null) {
-            toAccount.setAmount(BigDecimal.valueOf(toAccount.getAmount()).add(sum).doubleValue());
+            toAccount.setAmount(BigDecimal.valueOf(toAccount.getAmount()).subtract(sum).doubleValue());
             accountDao.update(toAccount);
         }
     }
@@ -71,12 +71,12 @@ public class TransactionService implements TransactionDao {
             BigDecimal sum = new BigDecimal(oldTrn.getSum());
             Account fromAccount = accountDao.findById(oldTrn.getFromAccountId());
             if (fromAccount != null) {
-                fromAccount.setAmount(BigDecimal.valueOf(fromAccount.getAmount()).add(sum).doubleValue());
+                fromAccount.setAmount(BigDecimal.valueOf(fromAccount.getAmount()).subtract(sum).doubleValue());
                 accountDao.update(fromAccount);
             }
             Account toAccount = accountDao.findById(oldTrn.getToAccountId());
             if (toAccount != null) {
-                toAccount.setAmount(BigDecimal.valueOf(toAccount.getAmount()).subtract(sum).doubleValue());
+                toAccount.setAmount(BigDecimal.valueOf(toAccount.getAmount()).add(sum).doubleValue());
                 accountDao.update(toAccount);
             }
         }

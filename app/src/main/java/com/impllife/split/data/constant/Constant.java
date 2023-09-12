@@ -13,4 +13,5 @@ public class Constant {
     public static final String NOTIFY_ID  = "NOTIFY_ID";
     public static final String NOTIFY_TO_TRN_SUM  = "NOTIFY_TO_TRN_SUM";
     public static final String NOTIFY_TO_TRN_DSCR = "NOTIFY_TO_TRN_DSCR";
+    public static final String NOTIFY_TO_TRN_DATE = "NOTIFY_TO_TRN_DATE";
 }
