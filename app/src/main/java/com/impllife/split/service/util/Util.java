@@ -1,4 +1,4 @@
-package com.impllife.split.service;
+package com.impllife.split.service.util;
 
 import android.os.Bundle;
 import android.util.Log;

@@ -24,8 +24,10 @@ import com.impllife.split.data.jpa.entity.*;
         @AutoMigration(from = 3, to = 4),
         @AutoMigration(from = 4, to = 5),
         @AutoMigration(from = 5, to = 6),
+        @AutoMigration(from = 6, to = 7),
+        @AutoMigration(from = 7, to = 8),
     },
-    version = 6
+    version = 8
 )
 @TypeConverters({
     DateConverter.class,

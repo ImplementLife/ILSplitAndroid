@@ -20,7 +20,6 @@ import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
 import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
-import com.impllife.split.service.Util;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.SwipeToDeleteCallback;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
@@ -35,6 +34,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 import static com.impllife.split.data.constant.Constant.*;
+import static com.impllife.split.service.util.Util.isSameDay;
 
 public class NotifyListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
@@ -166,7 +166,7 @@ public class NotifyListFragment extends NavFragment {
             Date d = null;
             for (NotificationInfo info : allNotifyInfo) {
                 Date postDate = info.getPostDate();
-                if (!Util.isSameDay(d, postDate)) {
+                if (!isSameDay(d, postDate)) {
                     d = postDate;
                     collect.add(new NotifyInfoListItemDate(d));
                 }

@@ -1,14 +1,14 @@
 package com.impllife.split.ui.view;
 
 import com.impllife.split.R;
-import com.impllife.split.service.Formatters;
+import com.impllife.split.service.util.Formatters;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.Date;
 
-import static com.impllife.split.service.Util.isToday;
-import static com.impllife.split.service.Util.isYesterday;
+import static com.impllife.split.service.util.Util.isToday;
+import static com.impllife.split.service.util.Util.isYesterday;
 
 public class NotifyInfoListItemDate extends AltRecyclerViewListAdapter.Data<Date> {
     private Date date;

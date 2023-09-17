@@ -14,7 +14,7 @@ import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.custom.component.BaseView;
 
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.service.Util.bundle;
+import static com.impllife.split.service.util.Util.bundle;
 
 public class AccountChooseImgFragment extends NavFragment {
     @Override

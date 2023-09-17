@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.impllife.split.R;
-import com.impllife.split.service.Formatters;
+import com.impllife.split.service.util.Formatters;
 import com.impllife.split.ui.custom.BtnRadioGroup;
 import com.impllife.split.ui.custom.component.BaseView;
 

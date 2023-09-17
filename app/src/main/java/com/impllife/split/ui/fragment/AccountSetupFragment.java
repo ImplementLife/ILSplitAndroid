@@ -15,7 +15,7 @@ import com.impllife.split.ui.custom.component.NavFragment;
 
 import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.data.constant.DefaultAccountImg.img_1;
-import static com.impllife.split.service.Util.bundle;
+import static com.impllife.split.service.util.Util.bundle;
 
 public class AccountSetupFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();

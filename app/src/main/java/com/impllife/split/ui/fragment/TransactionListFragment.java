@@ -14,8 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
-import static com.impllife.split.data.constant.Constant.FOCUS_NEED;
-import static com.impllife.split.service.Util.*;
+import static com.impllife.split.service.util.Util.*;
 
 public class TransactionListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();

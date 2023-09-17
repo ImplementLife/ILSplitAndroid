@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.impllife.split.service.Util.isBlank;
+import static com.impllife.split.service.util.Util.isBlank;
 
 public class NotifyProcessingDialog extends CustomDialog {
     private Spinner spinner;

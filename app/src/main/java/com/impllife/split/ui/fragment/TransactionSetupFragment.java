@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.service.Util.*;
+import static com.impllife.split.service.util.Util.*;
 
 public class TransactionSetupFragment extends NavFragment {
     private final TransactionDao transactionDao = new TransactionService();
