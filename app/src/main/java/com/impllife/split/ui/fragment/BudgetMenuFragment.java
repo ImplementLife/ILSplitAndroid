@@ -27,7 +27,7 @@ public class BudgetMenuFragment extends NavFragment {
         });
 
         btnFamilyBudget.setOnClickListener(v -> {
-            navController.navigate(R.id.fragment_budget);
+            navController.navigate(R.id.fragment_budget_list);
         });
     }
 }

@@ -5,6 +5,6 @@ import com.impllife.split.ui.custom.component.NavFragment;
 
 public class BudgetFragment extends NavFragment {
     public BudgetFragment() {
-        super(R.layout.fragment_budget, "Budget");
+        super(R.layout.fragment_budget_setup, "Budget");
     }
 }
