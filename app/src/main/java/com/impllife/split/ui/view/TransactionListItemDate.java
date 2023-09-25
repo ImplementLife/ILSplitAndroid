@@ -45,7 +45,7 @@ public class TransactionListItemDate extends BaseView {
     public void setData(String sumTotal) {
         tvSumTotal.setText(sumTotal);
         runAsync(() -> {
-            for (Budget budget : budgetDao.getAll()) {
+            for (Budget budget : budgetDao.getAllByShowInTrn(true)) {
                 BudgetPeriod period = budget.getPeriod();
                 BigDecimal sumForPeriod = budget.getSumForPeriod();
                 if (period == BudgetPeriod.WEEK) {
