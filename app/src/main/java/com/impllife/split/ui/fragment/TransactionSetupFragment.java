@@ -272,6 +272,7 @@ public class TransactionSetupFragment extends NavFragment {
         int notifyId = args.getInt(NOTIFY_ID, -1);
         if (notifyId != -1) {
             fragmentResultBundle.putInt(NOTIFY_ID, notifyId);
+            fragmentResultBundle.putBoolean(DELETE_NOTIFY_AFTER_PROCESS, args.getBoolean(DELETE_NOTIFY_AFTER_PROCESS));
         }
 
         String sum = args.getString(NOTIFY_TO_TRN_SUM, "");
@@ -279,8 +280,7 @@ public class TransactionSetupFragment extends NavFragment {
         long date = args.getLong(NOTIFY_TO_TRN_DATE, -1);
         if (date != -1) {
             dateCreate = new Date(date);
-            btnSelectDate.setDate(dateCreate);
-            btnSelectDate.select();
+            setDate();
         }
         etDscr.setText(dscr);
         etSum.setText(sum);
@@ -295,14 +295,7 @@ public class TransactionSetupFragment extends NavFragment {
                     etSum.setText(trn.getSum());
                     etDscr.setText(trn.getDescription());
                     dateCreate = trn.getDateCreate();
-                    if (isToday(dateCreate)) {
-                        btnToday.select();
-                    } else if (isYesterday(dateCreate)) {
-                        btnYesterday.select();
-                    } else {
-                        btnSelectDate.select();
-                        btnSelectDate.setDate(dateCreate);
-                    }
+                    setDate();
 
                     from.setAccount(trn.getFromAccount());
                     from.setPeople(trn.getFromPeople());
@@ -312,6 +305,17 @@ public class TransactionSetupFragment extends NavFragment {
                     pagerTo.setCurrentItem(to.getPos());
                 }));
             });
+        }
+    }
+
+    private void setDate() {
+        if (isToday(dateCreate)) {
+            btnToday.select();
+        } else if (isYesterday(dateCreate)) {
+            btnYesterday.select();
+        } else {
+            btnSelectDate.select();
+            btnSelectDate.setDate(dateCreate);
         }
     }
 
@@ -326,7 +330,7 @@ public class TransactionSetupFragment extends NavFragment {
     private BigDecimal getSum() {
         String sum = etSum.getText().toString();
         if (!isBlank(sum)) return new BigDecimal(sum);
-        else return new BigDecimal(0);
+        else return BigDecimal.ZERO;
     }
 
     private void save() {

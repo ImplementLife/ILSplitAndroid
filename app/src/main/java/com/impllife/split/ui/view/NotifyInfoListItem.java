@@ -1,6 +1,7 @@
 package com.impllife.split.ui.view;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
@@ -10,11 +11,13 @@ import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.dialog.NotifyProcessingDialog;
 import com.impllife.split.ui.fragment.NotifyListFragment;
+import com.impllife.split.ui.fragment.SettingsFragment;
 
 import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.service.util.Util.bundle;
 
 public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<NotificationInfo> {
+    private static final boolean isDeleteAfterProcess = SettingsFragment.getPreferenceValue(DELETE_NOTIFY_AFTER_PROCESS);
     private final DataService dataService = DataService.getInstance();
     private final NotifyListFragment ownerFragment;
     private NotificationInfo data;
@@ -30,14 +33,22 @@ public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<Notifica
     }
 
     public void bindData(BaseView view) {
-        NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
-            Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
-            bundle.putString(NOTIFY_TO_TRN_DSCR, data.getTitle() + ": " + data.getText());
-            bundle.putInt(NOTIFY_ID, data.getId());
-            bundle.putLong(NOTIFY_TO_TRN_DATE, data.getPostDate().getTime());
-            ownerFragment.navigate(R.id.fragment_transaction_setup, bundle);
-        });
-        view.setOnClickListener(v -> dialog.show());
+        if (!data.isProcessed()) {
+            NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
+                Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
+                bundle.putString(NOTIFY_TO_TRN_DSCR, data.getTitle() + ": " + data.getText());
+                bundle.putInt(NOTIFY_ID, data.getId());
+                bundle.putLong(NOTIFY_TO_TRN_DATE, data.getPostDate().getTime());
+                if (!isDeleteAfterProcess && !data.isProcessed()) {
+                    bundle.putBoolean(DELETE_NOTIFY_AFTER_PROCESS, false);
+                }
+                ownerFragment.navigate(R.id.fragment_transaction_setup, bundle);
+            });
+            view.setOnClickListener(v -> dialog.show());
+        } else {
+            ImageView imgDone = view.findViewById(R.id.img_processed);
+            imgDone.setImageResource(R.drawable.ic_svg_done);
+        }
         view.getRoot().setLongClickable(true);
         view.getRoot().setOnLongClickListener(v -> {
             new NotifyListFragment.IgnoreDialog(ownerFragment, data).show(ownerFragment.getParentFragmentManager(), "ignore_dialog");

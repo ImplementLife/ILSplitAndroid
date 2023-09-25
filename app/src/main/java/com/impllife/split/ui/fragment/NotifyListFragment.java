@@ -104,21 +104,30 @@ public class NotifyListFragment extends NavFragment {
         getParentFragmentManager().setFragmentResultListener(FRAGMENT_RESULT_KEY, this, (key, bundle) -> {
             if (ACTION_TRN_CREATED_FRAGMENT.equals(bundle.getString(ACTION))) {
                 int id = bundle.getInt(NOTIFY_ID, -1);
+                boolean isDeleteAfterProcess = bundle.getBoolean(DELETE_NOTIFY_AFTER_PROCESS, true);
                 if (id != -1) {
-                    postDelayed(() -> {
-                        runAsync(() -> {
-                            notifyInfoDao.deleteById(id);
-                            post(() -> {
-                                adapter.getData().stream()
-                                    .filter(e -> e instanceof NotifyInfoListItem
-                                                 && ((NotifyInfoListItem) e).getData().getId() == id)
-                                    .findFirst().ifPresent(e -> {
-                                        int position = adapter.getData().indexOf(e);
-                                        adapter.remove(position);
-                                    });
+                    if (isDeleteAfterProcess) {
+                        postDelayed(() -> {
+                            runAsync(() -> {
+                                notifyInfoDao.deleteById(id);
+                                post(() -> {
+                                    adapter.getData().stream()
+                                        .filter(e -> e instanceof NotifyInfoListItem
+                                            && ((NotifyInfoListItem) e).getData().getId() == id)
+                                        .findFirst().ifPresent(e -> {
+                                            int position = adapter.getData().indexOf(e);
+                                            adapter.remove(position);
+                                        });
+                                });
                             });
+                        }, 700);
+                    } else {
+                        runAsync(() -> {
+                            NotificationInfo notify = notifyInfoDao.findById(id);
+                            notify.setProcessed(true);
+                            notifyInfoDao.update(notify);
                         });
-                    }, 700);
+                    }
                 }
             }
         });
