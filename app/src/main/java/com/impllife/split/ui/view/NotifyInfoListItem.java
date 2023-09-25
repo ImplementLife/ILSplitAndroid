@@ -17,7 +17,6 @@ import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.service.util.Util.bundle;
 
 public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<NotificationInfo> {
-    private static final boolean isDeleteAfterProcess = SettingsFragment.getPreferenceValue(DELETE_NOTIFY_AFTER_PROCESS);
     private final DataService dataService = DataService.getInstance();
     private final NotifyListFragment ownerFragment;
     private NotificationInfo data;
@@ -39,9 +38,6 @@ public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<Notifica
                 bundle.putString(NOTIFY_TO_TRN_DSCR, data.getTitle() + ": " + data.getText());
                 bundle.putInt(NOTIFY_ID, data.getId());
                 bundle.putLong(NOTIFY_TO_TRN_DATE, data.getPostDate().getTime());
-                if (!isDeleteAfterProcess && !data.isProcessed()) {
-                    bundle.putBoolean(DELETE_NOTIFY_AFTER_PROCESS, false);
-                }
                 ownerFragment.navigate(R.id.fragment_transaction_setup, bundle);
             });
             view.setOnClickListener(v -> dialog.show());

@@ -104,7 +104,7 @@ public class NotifyListFragment extends NavFragment {
         getParentFragmentManager().setFragmentResultListener(FRAGMENT_RESULT_KEY, this, (key, bundle) -> {
             if (ACTION_TRN_CREATED_FRAGMENT.equals(bundle.getString(ACTION))) {
                 int id = bundle.getInt(NOTIFY_ID, -1);
-                boolean isDeleteAfterProcess = bundle.getBoolean(DELETE_NOTIFY_AFTER_PROCESS, true);
+                boolean isDeleteAfterProcess = SettingsFragment.getPreferenceValue(DELETE_NOTIFY_AFTER_PROCESS);
                 if (id != -1) {
                     if (isDeleteAfterProcess) {
                         postDelayed(() -> {

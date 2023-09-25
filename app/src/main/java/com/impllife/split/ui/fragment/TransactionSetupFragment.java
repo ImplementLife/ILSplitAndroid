@@ -272,7 +272,6 @@ public class TransactionSetupFragment extends NavFragment {
         int notifyId = args.getInt(NOTIFY_ID, -1);
         if (notifyId != -1) {
             fragmentResultBundle.putInt(NOTIFY_ID, notifyId);
-            fragmentResultBundle.putBoolean(DELETE_NOTIFY_AFTER_PROCESS, args.getBoolean(DELETE_NOTIFY_AFTER_PROCESS));
         }
 
         String sum = args.getString(NOTIFY_TO_TRN_SUM, "");
