@@ -69,4 +69,8 @@
               android:name="com.impllife.split.ui.fragment.BudgetListFragment"
               android:label="fragment_budget_list"
               tools:layout="@layout/fragment_budget_list"/>
+    <fragment android:id="@+id/fragment_settings"
+              android:name="com.impllife.split.ui.fragment.SettingsFragment"
+              android:label="fragment_settings"
+              tools:layout="@layout/fragment_settings"/>
 </navigation>

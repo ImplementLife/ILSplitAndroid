@@ -46,7 +46,7 @@ public class MainMenuFragment extends NavFragment {
         BTN_QR("My link qr", 0, 1, R.drawable.ic_svg_cancel, n -> {}),
         BTN_QR_SCANNER("QR Scan", 0, 2, R.drawable.ic_svg_cancel, n -> {}),
 
-        BTN_SETTINGS("Settings", 1, 0, R.drawable.ic_svg_cancel, n -> {}),
+        BTN_SETTINGS("Settings", 1, 0, R.drawable.ic_svg_settings, n -> n.navigate(R.id.fragment_settings)),
         BTN_NOTIFICATIONS("Notify's", 1, 1, R.drawable.ic_svg_notifications, n -> n.navigate(R.id.fragment_notify_list)),
 //        BTN_DISCOUNTS("Discounts", 1, 2, R.drawable.ic_svg_cancel, n -> {}),
 
