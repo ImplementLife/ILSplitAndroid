@@ -62,7 +62,7 @@
               android:label="fragment_requisition_setup"
               tools:layout="@layout/fragment_requisition_setup"/>
     <fragment android:id="@+id/fragment_budget_setup"
-              android:name="com.impllife.split.ui.fragment.BudgetFragment"
+              android:name="com.impllife.split.ui.fragment.BudgetSetupFragment"
               android:label="fragment_budget_setup"
               tools:layout="@layout/fragment_budget_setup"/>
     <fragment android:id="@+id/fragment_budget_list"
