@@ -126,6 +126,7 @@ public class NotifyListFragment extends NavFragment {
                             NotificationInfo notify = notifyInfoDao.findById(id);
                             notify.setProcessed(true);
                             notifyInfoDao.update(notify);
+                            updateListContent();
                         });
                     }
                 }
