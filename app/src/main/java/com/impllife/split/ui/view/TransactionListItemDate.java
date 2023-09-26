@@ -5,10 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.impllife.split.R;
-import com.impllife.split.data.jpa.entity.Budget;
-import com.impllife.split.data.jpa.entity.type.BudgetPeriod;
-import com.impllife.split.data.jpa.provide.BudgetDao;
-import com.impllife.split.service.DataService;
 import com.impllife.split.service.util.Formatters;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.StatusBar;
@@ -18,8 +14,6 @@ import java.math.RoundingMode;
 import java.util.Date;
 
 public class TransactionListItemDate extends BaseView {
-    private static final BudgetDao budgetDao = DataService.getInstance().getDb().getBudgetDao();
-    private BigDecimal budgetCommon = BigDecimal.ZERO;
     private TextView tvDate;
     private TextView tvSumTotal;
     private TextView tvPercent;
@@ -42,33 +36,19 @@ public class TransactionListItemDate extends BaseView {
         tvDate.setText(Formatters.formatDDMMYYYY(date));
     }
 
-    public void setData(String sumTotal) {
+    public void setData(String sumTotal, BigDecimal budgetCommon) {
         tvSumTotal.setText(sumTotal);
-        runAsync(() -> {
-            for (Budget budget : budgetDao.getAllByShowInTrn(true)) {
-                BudgetPeriod period = budget.getPeriod();
-                BigDecimal sumForPeriod = budget.getSumForPeriod();
-                if (period == BudgetPeriod.WEEK) {
-                    sumForPeriod = sumForPeriod.divide(BigDecimal.valueOf(7), RoundingMode.CEILING);
-                } else if (period == BudgetPeriod.MONTH) {
-                    sumForPeriod = sumForPeriod.divide(BigDecimal.valueOf(31), RoundingMode.CEILING);
-                } else if (period == BudgetPeriod.QUARTER) {
-                    sumForPeriod = sumForPeriod.divide(BigDecimal.valueOf(93), RoundingMode.CEILING);
-                }
-                budgetCommon = budgetCommon.add(sumForPeriod);
+        post(() -> {
+            if (!BigDecimal.ZERO.equals(budgetCommon)) {
+                BigDecimal sum = new BigDecimal(sumTotal);
+                if (sum.compareTo(BigDecimal.ZERO) < 0) sum = sum.negate();
+                BigDecimal asPercent = sum.multiply(BigDecimal.valueOf(100)).divide(budgetCommon, RoundingMode.CEILING);
+                statusBar.setProgress(asPercent.intValue());
+                tvPercent.setText(asPercent.intValue() + "%");
+            } else {
+                statusBar.setVisibility(View.GONE);
+                tvPercent.setVisibility(View.GONE);
             }
-            post(() -> {
-                if (!BigDecimal.ZERO.equals(budgetCommon)) {
-                    BigDecimal sum = new BigDecimal(sumTotal);
-                    if (sum.compareTo(BigDecimal.ZERO) < 0) sum = sum.negate();
-                    BigDecimal asPercent = sum.multiply(BigDecimal.valueOf(100)).divide(budgetCommon, RoundingMode.CEILING);
-                    statusBar.setProgress(asPercent.intValue());
-                    tvPercent.setText(asPercent.intValue() + "%");
-                } else {
-                    statusBar.setVisibility(View.GONE);
-                    tvPercent.setVisibility(View.GONE);
-                }
-            });
         });
     }
 }
