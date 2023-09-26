@@ -113,4 +113,49 @@ public class Util {
         return date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             .equals(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
+
+    public static boolean isSameMonth(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            return false;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date1);
+        int year1 = calendar.get(Calendar.YEAR);
+        int month1 = calendar.get(Calendar.MONTH);
+        calendar.setTime(date2);
+        int year2 = calendar.get(Calendar.YEAR);
+        int month2 = calendar.get(Calendar.MONTH);
+
+        return year1 == year2 && month1 == month2;
+    }
+
+    public static boolean isSameWeek(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            return false;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date1);
+        int year1 = calendar.get(Calendar.YEAR);
+        int week1 = calendar.get(Calendar.WEEK_OF_YEAR);
+        calendar.setTime(date2);
+        int year2 = calendar.get(Calendar.YEAR);
+        int week2 = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        return year1 == year2 && week1 == week2;
+    }
+
+    public static Date getDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+        int day = calendar.get(Calendar.DAY_OF_YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        calendar.clear();
+        calendar.set(Calendar.DAY_OF_YEAR, day);
+        calendar.set(Calendar.YEAR, year);
+
+        return calendar.getTime();
+    }
 }
