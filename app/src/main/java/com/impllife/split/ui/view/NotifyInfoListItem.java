@@ -32,6 +32,7 @@ public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<Notifica
     }
 
     public void bindData(BaseView view) {
+        ImageView imgProcessed = view.findViewById(R.id.img_processed);
         if (!data.isProcessed()) {
             NotifyProcessingDialog dialog = new NotifyProcessingDialog(data, c -> {
                 Bundle bundle = bundle(NOTIFY_TO_TRN_SUM, c);
@@ -41,9 +42,10 @@ public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<Notifica
                 ownerFragment.navigate(R.id.fragment_transaction_setup, bundle);
             });
             view.setOnClickListener(v -> dialog.show());
+            imgProcessed.setImageResource(R.drawable.ic_svg_add_circle);
         } else {
-            ImageView imgDone = view.findViewById(R.id.img_processed);
-            imgDone.setImageResource(R.drawable.ic_svg_done);
+            imgProcessed.setImageResource(R.drawable.ic_svg_done);
+            view.setOnClickListener(null);
         }
         view.getRoot().setLongClickable(true);
         view.getRoot().setOnLongClickListener(v -> {
