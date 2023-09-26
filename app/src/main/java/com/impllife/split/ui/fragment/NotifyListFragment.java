@@ -20,6 +20,7 @@ import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
 import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
+import com.impllife.split.service.util.Util;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.SwipeToDeleteCallback;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
@@ -30,11 +31,15 @@ import com.impllife.split.ui.view.NotifyInfoListItemDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.service.util.Util.isSameDay;
+import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.Data;
+import static java.util.Comparator.reverseOrder;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 public class NotifyListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
@@ -171,16 +176,16 @@ public class NotifyListFragment extends NavFragment {
 
     private void updateListContent() {
         runAsync(() -> {
-            List<NotificationInfo> allNotifyInfo = dataService.getAllNotifyInfo();
-            List<AltRecyclerViewListAdapter.Data> collect = new ArrayList<>();
-            Date d = null;
-            for (NotificationInfo info : allNotifyInfo) {
-                Date postDate = info.getPostDate();
-                if (!isSameDay(d, postDate)) {
-                    d = postDate;
-                    collect.add(new NotifyInfoListItemDate(d));
+            List<Data> collect = new ArrayList<>();
+
+            Map<Date, List<NotificationInfo>> notifysByDays = dataService.getAllNotifyInfo().stream()
+                .collect(groupingBy(e -> Util.getDay(e.getPostDate())));
+            List<Date> sortedDays = notifysByDays.keySet().stream().sorted(reverseOrder()).collect(toList());
+            for (Date date : sortedDays) {
+                collect.add(new NotifyInfoListItemDate(date));
+                for (NotificationInfo info : notifysByDays.get(date)) {
+                    collect.add(new NotifyInfoListItem(this, info));
                 }
-                collect.add(new NotifyInfoListItem(this, info));
             }
             updateView(() -> {
                 adapter.replaceAll(collect);
