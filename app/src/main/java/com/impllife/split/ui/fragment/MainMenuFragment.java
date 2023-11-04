@@ -50,9 +50,9 @@ public class MainMenuFragment extends NavFragment {
         BTN_NOTIFICATIONS("Notify's", 1, 1, R.drawable.ic_svg_notifications, n -> n.navigate(R.id.fragment_notify_list)),
 //        BTN_DISCOUNTS("Discounts", 1, 2, R.drawable.ic_svg_cancel, n -> {}),
 
-        BTN_NEW_SPLIT("New Split", 1, 2, R.drawable.ic_svg_groups, n -> n.navigate(R.id.fragment_requisition_setup)),
+        BTN_NEW_SPLIT("Split", 1, 2, R.drawable.ic_svg_groups, n -> n.navigate(R.id.fragment_requisition_setup)),
         BTN_BUDGET("Budget", 3, 0, R.drawable.ic_svg_money, n -> n.navigate(R.id.fragment_budget_menu)),
-        BTN_NEW_TRANSACTION("New Trn", 2, 2, R.drawable.ic_svg_trandaction, n -> n.navigate(R.id.fragment_transaction_setup)),
+        BTN_NEW_TRANSACTION("Transact", 2, 2, R.drawable.ic_svg_trandaction, n -> n.navigate(R.id.fragment_transaction_setup)),
         BTN_NEW_TRANSACTION_BY_TEMPLATE("Templates", 2, 1, R.drawable.ic_svg_custom_grid, n -> {
             new ChooseTrnTemplateDialog().show();
         }),
