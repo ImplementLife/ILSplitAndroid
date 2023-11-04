@@ -1,21 +1,18 @@
 package com.impllife.split.ui.view;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.service.util.Formatters;
 import com.impllife.split.ui.custom.BtnRadioGroup;
 import com.impllife.split.ui.custom.component.BaseView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.impllife.split.ui.custom.BtnRadioGroup.RadioBtn;
 
 public class BtnDate extends BaseView implements RadioBtn {
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
     private Date date;
     private TextView tvDate;
     private TextView tvName;
@@ -55,7 +52,7 @@ public class BtnDate extends BaseView implements RadioBtn {
     public void setDate(Date date) {
         this.date = date;
         if (date != null) {
-            this.tvDate.setText(dateFormat.format(date));
+            this.tvDate.setText(Formatters.formatDDMM(date));
         } else {
             this.tvDate.setText("--.--");
         }

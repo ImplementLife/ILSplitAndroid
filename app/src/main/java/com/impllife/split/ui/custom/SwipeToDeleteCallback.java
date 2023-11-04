@@ -13,29 +13,34 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.R;
+import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
-    private Context context;
-    private Paint mClearPaint;
+    private Paint clearPaint;
     private ColorDrawable background;
-    private int backgroundColor;
     private Drawable deleteDrawable;
+    private int backgroundColor;
     private int intrinsicWidth;
     private int intrinsicHeight;
 
     public SwipeToDeleteCallback(Context context) {
-        this.context = context;
         this.background = new ColorDrawable();
         this.backgroundColor = Color.parseColor("#b80f0a");
-        this.mClearPaint = new Paint();
-        this.mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        this.deleteDrawable = ContextCompat.getDrawable(this.context, R.drawable.ic_svg_delete);
+        this.clearPaint = new Paint();
+        this.clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        this.deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_svg_delete);
         this.intrinsicWidth = deleteDrawable.getIntrinsicWidth();
         this.intrinsicHeight = deleteDrawable.getIntrinsicHeight();
     }
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        if (viewHolder instanceof AltRecyclerViewListAdapter.Holder) {
+            int viewId = ((AltRecyclerViewListAdapter.Holder) viewHolder).getViewId();
+            if (viewId == R.layout.view_notify_list_item_date) {
+                return makeMovementFlags(0, 0);
+            }
+        }
         return makeMovementFlags(0, ItemTouchHelper.LEFT);
     }
 
@@ -48,40 +53,39 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
-        View itemView = viewHolder.itemView;
-        int itemHeight = itemView.getHeight();
+        View view = viewHolder.itemView;
+        int itemHeight = view.getHeight();
 
         boolean isCancelled = dX == 0 && !isCurrentlyActive;
 
         if (isCancelled) {
-            clearCanvas(c, itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+            clearCanvas(c, view.getRight() + dX, (float) view.getTop(), (float) view.getRight(), (float) view.getBottom());
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             return;
         }
 
         background.setColor(backgroundColor);
-        background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+        background.setBounds(view.getRight() + (int) dX, view.getTop(), view.getRight(), view.getBottom());
         background.draw(c);
 
-        int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
+        int deleteIconTop = view.getTop() + (itemHeight - intrinsicHeight) / 2;
         int deleteIconMargin = (itemHeight - intrinsicHeight) / 2;
-        int deleteIconLeft = itemView.getRight() - deleteIconMargin - intrinsicWidth;
-        int deleteIconRight = itemView.getRight() - deleteIconMargin;
+        int deleteIconLeft = view.getRight() - deleteIconMargin - intrinsicWidth;
+        int deleteIconRight = view.getRight() - deleteIconMargin;
         int deleteIconBottom = deleteIconTop + intrinsicHeight;
 
         deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-
         deleteDrawable.draw(c);
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 
     private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
-        c.drawRect(left, top, right, bottom, mClearPaint);
+        c.drawRect(left, top, right, bottom, clearPaint);
     }
 
     @Override
     public float getSwipeThreshold(RecyclerView.ViewHolder viewHolder) {
-        return 0.7f;
+        return 0.65f;
     }
 }

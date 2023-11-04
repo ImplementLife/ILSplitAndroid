@@ -1,5 +1,6 @@
 package com.impllife.split.data.jpa.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import com.impllife.split.data.jpa.provide.WithId;
@@ -17,6 +18,9 @@ public class NotificationInfo implements WithId<Integer> {
     private String text;
     private int iconResId;
     private Date postDate;
+
+    @ColumnInfo(defaultValue = "false")
+    private boolean processed;
 
     //region get & set
 
@@ -68,6 +72,13 @@ public class NotificationInfo implements WithId<Integer> {
     }
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 
     //endregion

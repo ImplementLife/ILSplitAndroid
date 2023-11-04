@@ -28,7 +28,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.service.Util.isBlank;
+import static com.impllife.split.service.util.Util.*;
 
 public class TransactionSetupFragment extends NavFragment {
     private final TransactionDao transactionDao = new TransactionService();
@@ -276,6 +276,11 @@ public class TransactionSetupFragment extends NavFragment {
 
         String sum = args.getString(NOTIFY_TO_TRN_SUM, "");
         String dscr = args.getString(NOTIFY_TO_TRN_DSCR, "");
+        long date = args.getLong(NOTIFY_TO_TRN_DATE, -1);
+        if (date != -1) {
+            dateCreate = new Date(date);
+            setDate();
+        }
         etDscr.setText(dscr);
         etSum.setText(sum);
 
@@ -289,6 +294,7 @@ public class TransactionSetupFragment extends NavFragment {
                     etSum.setText(trn.getSum());
                     etDscr.setText(trn.getDescription());
                     dateCreate = trn.getDateCreate();
+                    setDate();
 
                     from.setAccount(trn.getFromAccount());
                     from.setPeople(trn.getFromPeople());
@@ -298,6 +304,17 @@ public class TransactionSetupFragment extends NavFragment {
                     pagerTo.setCurrentItem(to.getPos());
                 }));
             });
+        }
+    }
+
+    private void setDate() {
+        if (isToday(dateCreate)) {
+            btnToday.select();
+        } else if (isYesterday(dateCreate)) {
+            btnYesterday.select();
+        } else {
+            btnSelectDate.select();
+            btnSelectDate.setDate(dateCreate);
         }
     }
 
@@ -312,7 +329,7 @@ public class TransactionSetupFragment extends NavFragment {
     private BigDecimal getSum() {
         String sum = etSum.getText().toString();
         if (!isBlank(sum)) return new BigDecimal(sum);
-        else return new BigDecimal(0);
+        else return BigDecimal.ZERO;
     }
 
     private void save() {

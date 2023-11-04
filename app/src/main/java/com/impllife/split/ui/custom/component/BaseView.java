@@ -1,11 +1,14 @@
 package com.impllife.split.ui.custom.component;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.impllife.split.ui.MainActivity;
+
+import java.util.concurrent.CompletableFuture;
 
 public class BaseView {
     protected View root;
@@ -33,6 +36,16 @@ public class BaseView {
 
     public boolean post(Runnable action) {
         return root.post(action);
+    }
+
+    protected void runAsync(Runnable runnable) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                runnable.run();
+            } catch (Throwable t) {
+                Log.e("runAsync", "", t);
+            }
+        });
     }
 
     public <T extends View> T findViewById(int id) {

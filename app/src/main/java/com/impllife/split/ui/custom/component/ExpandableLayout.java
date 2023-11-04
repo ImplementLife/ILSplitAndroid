@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.impllife.split.R;
 
-import static com.impllife.split.service.Util.isBlank;
+import static com.impllife.split.service.util.Util.isBlank;
 
 public class ExpandableLayout extends ConstraintLayout {
     private ImageView imgExpand;

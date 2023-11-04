@@ -12,7 +12,7 @@ import com.impllife.split.ui.custom.component.BaseView;
 
 import java.util.Date;
 
-import static com.impllife.split.service.Util.isBlank;
+import static com.impllife.split.service.util.Util.isBlank;
 import static java.util.concurrent.CompletableFuture.runAsync;
 
 public class PeopleSetupView extends BaseView {

@@ -33,18 +33,17 @@ public class MainMenuFragment extends NavFragment {
     }
 
     public enum MainMenuButtonDefinition {
-        BTN_SETTINGS("Settings", 0, 0, R.drawable.ic_svg_cancel, n -> {}),
+        BTN_SETTINGS("Settings", 0, 0, R.drawable.ic_svg_settings, n -> n.navigate(R.id.fragment_settings)),
         BTN_CONTACTS("Contacts", 0, 1, R.drawable.ic_svg_group, n -> n.navigate(R.id.fragment_contact)),
         BTN_QR_SCANNER("QR", 0, 2, R.drawable.ic_svg_qr_code, n -> {new ChooseQrAction(n).show();}),
         BTN_HISTORY("History", 1, 0, R.drawable.ic_svg_history, n -> n.navigate(R.id.fragment_history)),
         BTN_NOTIFICATIONS("Notify's", 1, 1, R.drawable.ic_svg_notifications, n -> n.navigate(R.id.fragment_notify_list)),
-//        BTN_DISCOUNTS("Discounts", 1, 2, R.drawable.ic_svg_cancel, n -> {}),
-        BTN_NEW_SPLIT("New Split", 1, 2, R.drawable.ic_svg_groups, n -> n.navigate(R.id.fragment_requisition_setup)),
+        BTN_NEW_SPLIT("Split", 1, 2, R.drawable.ic_svg_groups, n -> n.navigate(R.id.fragment_requisition_setup)),
         BTN_BUDGET("Budget", 2, 0, R.drawable.ic_svg_money, n -> n.navigate(R.id.fragment_budget_menu)),
-        BTN_NEW_TRANSACTION_BY_TEMPLATE("Tmpl Trn", 2, 1, R.drawable.ic_svg_receipt_long, n -> {
+        BTN_NEW_TRANSACTION_BY_TEMPLATE("Templates", 2, 1, R.drawable.ic_svg_custom_grid, n -> {
             new ChooseTrnTemplateDialog().show();
         }),
-        BTN_NEW_TRANSACTION("New Trn", 2, 2, R.drawable.ic_svg_receipt, n -> n.navigate(R.id.fragment_transaction_setup)),
+        BTN_NEW_TRANSACTION("Transact", 2, 2, R.drawable.ic_svg_trandaction, n -> n.navigate(R.id.fragment_transaction_setup)),
         BTN_BILLINGS("Billings", 2, 2, R.drawable.ic_svg_cancel, n -> {}),
 //        BTN_NFC_PAY("NFC Pay", 3, 1, R.drawable.ic_svg_cancel, n -> {}),
 

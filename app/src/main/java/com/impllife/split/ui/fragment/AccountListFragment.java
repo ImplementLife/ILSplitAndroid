@@ -17,7 +17,7 @@ import com.impllife.split.ui.custom.component.BaseView;
 import java.util.List;
 
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
-import static com.impllife.split.service.Util.bundle;
+import static com.impllife.split.service.util.Util.bundle;
 
 public class AccountListFragment extends NavFragment {
     private DataService dataService = DataService.getInstance();
