@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         navController = navHostFragment.getNavController();
         findViewById(R.id.btn_back).setOnClickListener(v -> navController.navigateUp());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         bundleProcessing();
     }
 
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             String act = extras.getString(ACTION);
             if (ACTION_START_NOTIFY_FRAGMENT.equals(act)) {
                 navController.navigate(R.id.fragment_notify_list);
+                extras.remove(act);
             }
         }
     }
