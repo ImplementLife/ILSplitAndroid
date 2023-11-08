@@ -9,8 +9,8 @@ import com.impllife.split.ui.custom.component.BaseView;
 import java.util.Date;
 import java.util.List;
 
-import static com.impllife.split.service.util.Util.isToday;
-import static com.impllife.split.service.util.Util.isYesterday;
+import static com.impllife.split.service.util.date.DateUtil.isToday;
+import static com.impllife.split.service.util.date.DateUtil.isYesterday;
 
 public class NotifyInfoListItemDate extends AltRecyclerViewListAdapter.Data<Date> {
     private Date date;

@@ -17,6 +17,7 @@ import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.provide.TransactionDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.TransactionService;
+import com.impllife.split.service.util.date.DateUtil;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.BtnRadioGroup;
 import com.impllife.split.ui.custom.adapter.GridListAdapter;
@@ -308,9 +309,9 @@ public class TransactionSetupFragment extends NavFragment {
     }
 
     private void setDate() {
-        if (isToday(dateCreate)) {
+        if (DateUtil.isToday(dateCreate)) {
             btnToday.select();
-        } else if (isYesterday(dateCreate)) {
+        } else if (DateUtil.isYesterday(dateCreate)) {
             btnYesterday.select();
         } else {
             btnSelectDate.select();

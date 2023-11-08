@@ -20,7 +20,7 @@ import com.impllife.split.data.jpa.provide.NotifyAppInfoDao;
 import com.impllife.split.data.jpa.provide.NotifyInfoDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.NotifyListener;
-import com.impllife.split.service.util.Util;
+import com.impllife.split.service.util.date.DateUtil;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.SwipeToDeleteCallback;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
@@ -179,7 +179,7 @@ public class NotifyListFragment extends NavFragment {
             List<Data> collect = new ArrayList<>();
 
             Map<Date, List<NotificationInfo>> notifysByDays = dataService.getAllNotifyInfo().stream()
-                .collect(groupingBy(e -> Util.getDay(e.getPostDate())));
+                .collect(groupingBy(e -> DateUtil.getDay(e.getPostDate())));
             List<Date> sortedDays = notifysByDays.keySet().stream().sorted(reverseOrder()).collect(toList());
             for (Date date : sortedDays) {
                 collect.add(new NotifyInfoListItemDate(date));
