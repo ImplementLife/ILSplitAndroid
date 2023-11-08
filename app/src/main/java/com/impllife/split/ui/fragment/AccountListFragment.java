@@ -28,7 +28,6 @@ public class AccountListFragment extends NavFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_list, container, false);
-        setNavTitle("Accounts");
 
         init(view);
 
