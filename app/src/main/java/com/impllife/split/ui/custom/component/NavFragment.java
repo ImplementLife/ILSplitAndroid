@@ -11,10 +11,15 @@ import com.impllife.split.ui.MainActivity;
 public class NavFragment extends BaseFragment {
     protected NavController navController;
     private String name;
+    private boolean hideHead = true;
 
     public NavFragment() {}
     public NavFragment(int layout) {
         super(layout);
+    }
+    public NavFragment(int layout, boolean hideHead) {
+        super(layout);
+        this.hideHead = hideHead;
     }
     public NavFragment(int layout, String name) {
         super(layout);
@@ -32,7 +37,7 @@ public class NavFragment extends BaseFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         if (name != null) {
             setNavTitle(name);
-        } else {
+        } else if (hideHead) {
             MainActivity.getInstance().hideHead();
         }
         return view;

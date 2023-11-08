@@ -33,10 +33,6 @@
               android:name="com.impllife.split.ui.fragment.BudgetMenuFragment"
               android:label="fragment_budget_menu"
               tools:layout="@layout/fragment_budget_menu"/>
-    <fragment android:id="@+id/fragment_account_list"
-              android:name="com.impllife.split.ui.fragment.AccountListFragment"
-              android:label="fragment_account_list"
-              tools:layout="@layout/fragment_account_list"/>
     <fragment android:id="@+id/fragment_account_setup"
               android:name="com.impllife.split.ui.fragment.AccountSetupFragment"
               android:label="fragment_account_setup"
@@ -65,10 +61,6 @@
               android:name="com.impllife.split.ui.fragment.BudgetSetupFragment"
               android:label="fragment_budget_setup"
               tools:layout="@layout/fragment_budget_setup"/>
-    <fragment android:id="@+id/fragment_budget_list"
-              android:name="com.impllife.split.ui.fragment.BudgetListFragment"
-              android:label="fragment_budget_list"
-              tools:layout="@layout/fragment_budget_list"/>
     <fragment android:id="@+id/fragment_settings"
               android:name="com.impllife.split.ui.fragment.SettingsFragment"
               android:label="fragment_settings"

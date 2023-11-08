@@ -1,14 +1,16 @@
 package com.impllife.split.ui.fragment;
 
-import android.view.View;
-import android.widget.LinearLayout;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.impllife.split.R;
+import com.impllife.split.ui.custom.adapter.TabPagerAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BudgetMenuFragment extends NavFragment {
-    private LinearLayout list;
-    private View btnAccounts;
-    private View btnFamilyBudget;
 
     public BudgetMenuFragment() {
         super(R.layout.fragment_budget_menu, "Budget");
@@ -17,17 +19,17 @@ public class BudgetMenuFragment extends NavFragment {
 
     @Override
     protected void init() {
-        list = findViewById(R.id.list);
-        btnAccounts = findViewById(R.id.btn_accounts);
-        btnFamilyBudget = findViewById(R.id.btn_family_budget);
+        ViewPager2 pager = findViewById(R.id.pager);
+        TabLayout tabLayout = findViewById(R.id.tab);
 
+        List<TabPagerAdapter.TabInfo> tabInfoList = new ArrayList<>();
+        tabInfoList.add(new TabPagerAdapter.TabInfo("Accounts", new AccountListFragment()));
+        tabInfoList.add(new TabPagerAdapter.TabInfo("Budget", new BudgetListFragment()));
 
-        btnAccounts.setOnClickListener(v -> {
-            navController.navigate(R.id.fragment_account_list);
-        });
+        pager.setAdapter(new TabPagerAdapter(this, tabInfoList));
 
-        btnFamilyBudget.setOnClickListener(v -> {
-            navController.navigate(R.id.fragment_budget_list);
-        });
+        new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
+            tab.setText(tabInfoList.get(position).getName());
+        }).attach();
     }
 }

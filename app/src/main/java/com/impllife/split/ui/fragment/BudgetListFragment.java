@@ -19,12 +19,11 @@ public class BudgetListFragment extends NavFragment {
     private RecyclerView recyclerView;
 
     public BudgetListFragment() {
-        super(R.layout.fragment_budget_list, "Budgets");
+        super(R.layout.fragment_budget_list, false);
     }
 
     @Override
     protected void init() {
-
         findViewById(R.id.btn_new).setOnClickListener(v -> {
             navController.navigate(R.id.fragment_budget_setup);
         });
@@ -33,7 +32,6 @@ public class BudgetListFragment extends NavFragment {
         recyclerView.setAdapter(adapter);
 
         updateList();
-
     }
 
     private void updateList() {

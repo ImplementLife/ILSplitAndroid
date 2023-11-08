@@ -7,30 +7,42 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.BudgetMenuFragment"
 >
-    <ScrollView
+    <com.google.android.material.tabs.TabLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/tab"
+            app:tabBackground="?attr/colorPrimary"
+            app:tabTextColor="?attr/colorOnPrimary"
+            app:tabIndicatorColor="?attr/colorPrimaryVariant">
+
+        <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Accounts"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_conversion_absoluteWidth="0dp"/>
+        <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:text="Budget"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="206dp"
+                tools:layout_conversion_absoluteWidth="0dp"/>
+
+    </com.google.android.material.tabs.TabLayout>
+    <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="8dp">
-        <LinearLayout
-                android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            <Button
-                    android:text="Accounts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btn_accounts"/>
-            <Button
-                    android:text="Budget"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/btn_family_budget"/>
-        </LinearLayout>
-    </ScrollView>
+            android:id="@+id/pager"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
