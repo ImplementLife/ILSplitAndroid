@@ -18,19 +18,19 @@ public class SettingsFragment extends NavFragment {
     @Override
     protected void init() {
         cbDel = findViewById(R.id.cb_delete_notify_after_process);
-        cbDel.setChecked(getPreferenceValue(DELETE_NOTIFY_AFTER_PROCESS));
+        cbDel.setChecked(getProperty(DELETE_NOTIFY_AFTER_PROCESS));
         cbDel.setOnCheckedChangeListener((v, isChecked) -> {
-            writeToPreference(DELETE_NOTIFY_AFTER_PROCESS, isChecked);
+            setProperty(DELETE_NOTIFY_AFTER_PROCESS, isChecked);
         });
     }
 
 
-    public static boolean getPreferenceValue(String tag) {
+    public static boolean getProperty(String tag) {
         SharedPreferences sp = MainActivity.getInstance().getSharedPreferences("il_settings", Context.MODE_PRIVATE);
         return sp.getBoolean(tag,true);
     }
 
-    public static void writeToPreference(String tag, boolean value) {
+    public static void setProperty(String tag, boolean value) {
         SharedPreferences.Editor editor = MainActivity.getInstance().getSharedPreferences("il_settings",Context.MODE_PRIVATE).edit();
         editor.putBoolean(tag, value);
         editor.apply();
