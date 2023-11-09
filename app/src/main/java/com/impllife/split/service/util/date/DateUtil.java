@@ -5,6 +5,47 @@ import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtil {
+    public static Date getPreviousDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // Subtract one day from the given date
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+
+        return calendar.getTime();
+    }
+
+    public static DateRange getDayDateRange(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // Set the time to the beginning of the day (midnight)
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date startDate = calendar.getTime();
+
+        // Set the time to the end of the day (23:59:59.999)
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+
+        Date endDate = calendar.getTime();
+
+        return new DateRange(startDate, endDate);
+    }
+
+    public static int getMaxWeekOfYear(int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
+        calendar.set(Calendar.DAY_OF_MONTH, 31);
+
+        return calendar.get(Calendar.WEEK_OF_YEAR);
+    }
 
     public static DateRange getCurrentWeekDateRange() {
         return getWeekDateRange(getCurrentYear(), getCurrentWeek());
@@ -14,11 +55,19 @@ public final class DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.WEEK_OF_YEAR, weekNumber);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         Date startDate = calendar.getTime();
 
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        calendar.add(Calendar.DAY_OF_YEAR, 6); // End of the week
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
         Date endDate = calendar.getTime();
 
         return new DateRange(startDate, endDate);

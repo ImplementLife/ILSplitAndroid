@@ -24,6 +24,11 @@ public class TransactionListItemDate extends BaseView {
         init();
         setData(date);
     }
+    public TransactionListItemDate(LayoutInflater inflater, ViewGroup rootForThis, String title) {
+        super(inflater, R.layout.view_transactoin_list_item_date, rootForThis);
+        init();
+        setData(title);
+    }
 
     private void init() {
         tvDate = findViewById(R.id.tv_date);
@@ -35,14 +40,17 @@ public class TransactionListItemDate extends BaseView {
     public void setData(Date date) {
         tvDate.setText(Formatters.formatDDMMYYYY(date));
     }
+    public void setData(String data) {
+        tvDate.setText(data);
+    }
 
-    public void setData(String sumTotal, BigDecimal budgetCommon) {
+    public void setData(String sumTotal, BigDecimal budgetLimit) {
         tvSumTotal.setText(sumTotal);
         post(() -> {
-            if (!BigDecimal.ZERO.equals(budgetCommon)) {
+            if (!BigDecimal.ZERO.equals(budgetLimit)) {
                 BigDecimal sum = new BigDecimal(sumTotal);
                 if (sum.compareTo(BigDecimal.ZERO) < 0) sum = sum.negate();
-                BigDecimal asPercent = sum.multiply(BigDecimal.valueOf(100)).divide(budgetCommon, RoundingMode.CEILING);
+                BigDecimal asPercent = sum.multiply(BigDecimal.valueOf(100)).divide(budgetLimit, RoundingMode.CEILING);
                 statusBar.setProgress(asPercent.intValue());
                 tvPercent.setText(asPercent.intValue() + "%");
             } else {
