@@ -1,7 +1,7 @@
 package com.impllife.split.data.jpa.entity.type;
 
 public enum BudgetPeriod {
-    DAY(0), WEEK(1), MONTH(2), QUARTER(3);
+    DAY(0), WEEK(1), MONTH(2), QUARTER(3), YEAR(4);
 
     private final int key;
 

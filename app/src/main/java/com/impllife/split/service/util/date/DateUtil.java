@@ -73,6 +73,11 @@ public final class DateUtil {
         return new DateRange(startDate, endDate);
     }
 
+    public static int getCurrentMonth() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH);
+    }
+
     public static int getCurrentWeek() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.WEEK_OF_YEAR);
