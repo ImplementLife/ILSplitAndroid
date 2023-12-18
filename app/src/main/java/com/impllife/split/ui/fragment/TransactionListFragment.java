@@ -176,8 +176,10 @@ public class TransactionListFragment extends NavFragment {
                 for (Transaction trn : sortedTransactions) {
                     if (!itemBudget.inRange(trn.getDateCreate())) {
                         budgetsViewList.add(itemBudget);
-                        date = DateUtil.getPreviousDay(date);
-                        itemBudget = new ListBudgetData(budget, DateUtil.getDayDateRange(date));
+                        do {
+                            date = DateUtil.getPreviousDay(date);
+                            itemBudget = new ListBudgetData(budget, DateUtil.getDayDateRange(date));
+                        } while (!itemBudget.inRange(trn.getDateCreate()));
                     }
                     itemBudget.addSumTotal(new BigDecimal(trn.getSum()));
                 }
@@ -217,7 +219,7 @@ public class TransactionListFragment extends NavFragment {
             Date date1 = ((DataList) e1).getDay();
             Date date2 = ((DataList) e2).getDay();
             int compare = date2.compareTo(date1);
-            if (DateUtil.isSameDay(date1, date2)) {
+            if (compare != 0 && DateUtil.isSameDay(date1, date2)) {
                 compare = 0;
             }
             if (compare == 0) {
@@ -227,7 +229,7 @@ public class TransactionListFragment extends NavFragment {
                     compare = ((ListBudgetData) e1).compareTo((ListBudgetData) e2);
                 }
                 if (e1isListBudgetData != e2isListBudgetData) {
-                    compare = e1isListBudgetData ? 1 : -1;
+                    compare = e2isListBudgetData ? 1 : -1;
                 }
             }
 
