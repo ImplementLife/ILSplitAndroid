@@ -129,9 +129,15 @@ public class TransactionListFragment extends NavFragment {
         private BigDecimal sumTotal = BigDecimal.ZERO;
 
         public ListBudgetData(Budget budget, DateRange dateRange) {
-            super(R.layout.view_transactoin_list_item_date);
+            super(R.layout.view_transactoin_list_item_budget);
             this.budget = budget;
             this.dateRange = dateRange;
+        }
+
+        public ListBudgetData(Date date) {
+            super(R.layout.view_transactoin_list_item_date);
+            dateRange = null;
+            budget = null;
         }
 
         public void addSumTotal(BigDecimal sum) {
@@ -201,14 +207,16 @@ public class TransactionListFragment extends NavFragment {
         List<AltRecyclerViewListAdapter.Data> budgetsViewList = new LinkedList<>();
         Budget simpleDay = new Budget();
         simpleDay.setPeriod(DAY);
-        budgets.add(simpleDay);
+//        budgets.add(simpleDay);
         for (Budget budget : budgets) {
             if (budget.isPeriod(DAY)) {
                 Date date = new Date();
                 ListBudgetData itemBudget = new ListBudgetData(budget, DateUtil.getDayDateRange(date));
                 for (Transaction trn : sortedTransactions) {
                     if (!itemBudget.inRange(trn.getDateCreate())) {
-                        budgetsViewList.add(itemBudget);
+                        if (!BigDecimal.ZERO.equals(itemBudget.sumTotal)) {
+                            budgetsViewList.add(itemBudget);
+                        }
                         do {
                             date = DateUtil.getPreviousDay(date);
                             itemBudget = new ListBudgetData(budget, DateUtil.getDayDateRange(date));
@@ -223,7 +231,9 @@ public class TransactionListFragment extends NavFragment {
                 ListBudgetData itemBudget = new ListBudgetData(budget, DateUtil.getWeekDateRange(year, week));
                 for (Transaction trn : sortedTransactions) {
                     if (!itemBudget.inRange(trn.getDateCreate())) {
-                        budgetsViewList.add(itemBudget);
+                        if (!BigDecimal.ZERO.equals(itemBudget.sumTotal)) {
+                            budgetsViewList.add(itemBudget);
+                        }
                         do {
                             week--;
                             if (week <= 0) {

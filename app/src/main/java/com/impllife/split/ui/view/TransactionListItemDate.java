@@ -21,12 +21,12 @@ public class TransactionListItemDate extends BaseView {
     private StatusBar statusBar;
 
     public TransactionListItemDate(LayoutInflater inflater, ViewGroup rootForThis, Date date) {
-        super(inflater, R.layout.view_transactoin_list_item_date, rootForThis);
+        super(inflater, R.layout.view_transactoin_list_item_budget, rootForThis);
         init();
         setData(date);
     }
     public TransactionListItemDate(LayoutInflater inflater, ViewGroup rootForThis, String title) {
-        super(inflater, R.layout.view_transactoin_list_item_date, rootForThis);
+        super(inflater, R.layout.view_transactoin_list_item_budget, rootForThis);
         init();
         setData(title);
     }
