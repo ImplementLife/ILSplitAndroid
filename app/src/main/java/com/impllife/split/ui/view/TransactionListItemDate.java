@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Date;
 
+@Deprecated
 public class TransactionListItemDate extends BaseView {
     private TextView tvDate;
     private TextView tvSumTotal;

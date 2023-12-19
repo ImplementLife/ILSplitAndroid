@@ -1,20 +1,26 @@
 package com.impllife.split.ui.fragment;
 
+import android.view.View;
+import android.widget.TextView;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Budget;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.provide.BudgetDao;
 import com.impllife.split.service.DataService;
+import com.impllife.split.service.util.Formatters;
 import com.impllife.split.service.util.date.DateRange;
 import com.impllife.split.service.util.date.DateUtil;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.NavFragment;
+import com.impllife.split.ui.custom.component.StatusBar;
 import com.impllife.split.ui.view.TransactionListItem;
 import com.impllife.split.ui.view.TransactionListItemDate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -91,10 +97,12 @@ public class TransactionListFragment extends NavFragment {
 
     public static class ListItemData extends AltRecyclerViewListAdapter.Data implements DataList {
         private final Transaction transaction;
+        private final NavController navController;
 
-        public ListItemData(Transaction transaction) {
-            super(R.layout.view_simple_text);
+        public ListItemData(Transaction transaction, NavController navController) {
+            super(R.layout.view_transactoin_list_item);
             this.transaction = transaction;
+            this.navController = navController;
         }
 
         @Override
@@ -104,7 +112,9 @@ public class TransactionListFragment extends NavFragment {
 
         @Override
         public void bindData(BaseView view) {
-            view.setTextViewById(R.id.tv_data, transaction.getSum());
+            view.setTextViewById(R.id.tv_sum, transaction.getSum());
+            view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
+            view.setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup, bundle(ENTITY_ID, transaction.getId())));
         }
 
         @Override
@@ -119,7 +129,7 @@ public class TransactionListFragment extends NavFragment {
         private BigDecimal sumTotal = BigDecimal.ZERO;
 
         public ListBudgetData(Budget budget, DateRange dateRange) {
-            super(R.layout.view_simple_text);
+            super(R.layout.view_transactoin_list_item_date);
             this.budget = budget;
             this.dateRange = dateRange;
         }
@@ -146,7 +156,28 @@ public class TransactionListFragment extends NavFragment {
 
         @Override
         public void bindData(BaseView view) {
-            view.setTextViewById(R.id.tv_data, budget.getPeriod().toString() + " " + sumTotal.toPlainString());
+            TextView tvDate = view.findViewById(R.id.tv_date);
+            TextView tvSumTotal = view.findViewById(R.id.tv_sum_total);
+            TextView tvPercent = view.findViewById(R.id.tv_percent);
+            StatusBar statusBar = view.findViewById(R.id.status_bar);
+
+            tvSumTotal.setText(sumTotal.toPlainString());
+            if (budget.getSumForPeriod() != null && !BigDecimal.ZERO.equals(budget.getSumForPeriod())) {
+                BigDecimal sum = sumTotal;
+                if (sum.compareTo(BigDecimal.ZERO) < 0) sum = sum.negate();
+                BigDecimal asPercent = sum.multiply(BigDecimal.valueOf(100)).divide(budget.getSumForPeriod(), RoundingMode.CEILING);
+                statusBar.setProgress(asPercent.intValue());
+                tvPercent.setText(asPercent.intValue() + "%");
+            } else {
+                statusBar.setVisibility(View.GONE);
+                tvPercent.setVisibility(View.GONE);
+            }
+
+            if (budget.isPeriod(DAY) && budget.getSumForPeriod() == null) {
+                tvDate.setText(Formatters.formatDDMMYYYY(dateRange.getEndDate()));
+            } else {
+                tvDate.setText(budget.getName());
+            }
         }
 
         @Override
@@ -165,10 +196,12 @@ public class TransactionListFragment extends NavFragment {
 
     private void newListView(List<Transaction> sortedTransactions, List<Budget> budgets) {
         List<AltRecyclerViewListAdapter.Data> listViewData = new LinkedList<>();
-        sortedTransactions.forEach(e -> listViewData.add(new ListItemData(e)));
+        sortedTransactions.forEach(e -> listViewData.add(new ListItemData(e, navController)));
 
         List<AltRecyclerViewListAdapter.Data> budgetsViewList = new LinkedList<>();
-
+        Budget simpleDay = new Budget();
+        simpleDay.setPeriod(DAY);
+        budgets.add(simpleDay);
         for (Budget budget : budgets) {
             if (budget.isPeriod(DAY)) {
                 Date date = new Date();
