@@ -44,9 +44,6 @@ public class MainMenuFragment extends NavFragment {
             new ChooseTrnTemplateDialog().show();
         }),
         BTN_NEW_TRANSACTION("Transact", 2, 2, R.drawable.ic_svg_trandaction, n -> n.navigate(R.id.fragment_transaction_setup)),
-        BTN_BILLINGS("Billings", 2, 2, R.drawable.ic_svg_cancel, n -> {}),
-//        BTN_NFC_PAY("NFC Pay", 3, 1, R.drawable.ic_svg_cancel, n -> {}),
-
         ;
 
         MainMenuButtonDefinition(String name, int defaultRow, int defaultCol, int imgId, Consumer<NavController> action) {
