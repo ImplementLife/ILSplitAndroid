@@ -77,13 +77,29 @@ public class NotifyService {
         Log.i("NotifyService.processNotify", "end");
     }
 
-    private static String getAppName(Context context, String pack) {
+    public static String getAppName(Context context, String pack) {
         String appName;
         try {
             PackageManager pm = context.getPackageManager();
             ApplicationInfo ai = pm.getApplicationInfo(pack, 0);
             appName = (String) pm.getApplicationLabel(ai);
         } catch (PackageManager.NameNotFoundException e) {
+            appName = Arrays.stream(pack.split("\\."))
+                .filter(p -> !p.equals("com")
+                    && !p.equals("apps")
+                    && !p.equals("android")
+                )
+                .collect(Collectors.joining("."));
+        }
+        return appName;
+    }
+    public static String getAppName(Context context, ApplicationInfo ai) {
+        String appName;
+        String pack = ai.packageName;
+        try {
+            PackageManager pm = context.getPackageManager();
+            appName = (String) pm.getApplicationLabel(ai);
+        } catch (Exception e) {
             appName = Arrays.stream(pack.split("\\."))
                 .filter(p -> !p.equals("com")
                     && !p.equals("apps")
