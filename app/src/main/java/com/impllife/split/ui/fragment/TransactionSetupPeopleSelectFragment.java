@@ -34,6 +34,12 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
         btnExpand.setOnClickListener(v -> beginSearch());
         //getView().setOnClickListener(v -> beginSearch());
         initDataView();
+        if (people != null) {
+            String icon = people.getIcon();
+            if (icon != null && !icon.isEmpty()) {
+                img.setImageResource(Integer.parseInt(icon));
+            }
+        }
     }
 
     private void initDataView() {
