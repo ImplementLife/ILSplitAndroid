@@ -12,13 +12,11 @@ import java.util.List;
 import static com.impllife.split.service.util.date.DateUtil.isToday;
 import static com.impllife.split.service.util.date.DateUtil.isYesterday;
 
-public class NotifyInfoListItemDate extends AltRecyclerViewListAdapter.Data<Date> {
-    private Date date;
+public class NotifyInfoListItemDate extends AltRecyclerViewListAdapter.ModelViewData<Date> {
     private List<NotificationInfo> notifys;
 
     public NotifyInfoListItemDate(Date date) {
-        super(R.layout.view_notify_list_item_date);
-        this.date = date;
+        super(R.layout.view_notify_list_item_date, date);
     }
 
     @Override
@@ -26,17 +24,13 @@ public class NotifyInfoListItemDate extends AltRecyclerViewListAdapter.Data<Date
         view.findViewById(R.id.btn_add_all).setOnClickListener(v -> {
 
         });
-        if (isToday(date)) {
-            view.setTextViewById(R.id.tv_date, Formatters.formatDDMM(date) + " Today");
-        } else if (isYesterday(date)) {
-            view.setTextViewById(R.id.tv_date, Formatters.formatDDMM(date) + " Yesterday");
+        if (isToday(data)) {
+            view.setTextViewById(R.id.tv_date, Formatters.formatDDMM(data) + " Today");
+        } else if (isYesterday(data)) {
+            view.setTextViewById(R.id.tv_date, Formatters.formatDDMM(data) + " Yesterday");
         } else {
-            view.setTextViewById(R.id.tv_date, Formatters.formatDDMM(date));
+            view.setTextViewById(R.id.tv_date, Formatters.formatDDMM(data));
         }
     }
 
-    @Override
-    public Date getData() {
-        return date;
-    }
 }

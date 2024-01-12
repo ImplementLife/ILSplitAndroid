@@ -9,12 +9,9 @@ import com.impllife.split.ui.custom.component.BaseView;
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
 import static com.impllife.split.service.util.Util.bundle;
 
-public class BudgetListItem extends AltRecyclerViewListAdapter.Data<Budget> {
-    private Budget data;
-
+public class BudgetListItem extends AltRecyclerViewListAdapter.ModelViewData<Budget> {
     public BudgetListItem(Budget data) {
-        super(R.layout.view_budget_list_item);
-        this.data = data;
+        super(R.layout.view_budget_list_item, data);
     }
 
     @Override
@@ -23,10 +20,5 @@ public class BudgetListItem extends AltRecyclerViewListAdapter.Data<Budget> {
             MainActivity.getInstance().navController.navigate(R.id.fragment_budget_setup, bundle(ENTITY_ID, data.getId()));
         });
         view.setTextViewById(R.id.tv_name, data.getName());
-    }
-
-    @Override
-    public Budget getData() {
-        return data;
     }
 }

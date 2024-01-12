@@ -16,19 +16,19 @@ import com.impllife.split.R;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
-    private Paint clearPaint;
-    private ColorDrawable background;
-    private Drawable deleteDrawable;
-    private int backgroundColor;
-    private int intrinsicWidth;
-    private int intrinsicHeight;
+    private final Paint clearPaint;
+    private final ColorDrawable background;
+    private final Drawable deleteDrawable;
+    private final int backgroundColor;
+    private final int intrinsicWidth;
+    private final int intrinsicHeight;
 
     public SwipeToDeleteCallback(Context context) {
-        this.background = new ColorDrawable();
-        this.backgroundColor = Color.parseColor("#b80f0a");
         this.clearPaint = new Paint();
         this.clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        this.background = new ColorDrawable();
         this.deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_svg_delete);
+        this.backgroundColor = Color.parseColor("#b80f0a");
         this.intrinsicWidth = deleteDrawable.getIntrinsicWidth();
         this.intrinsicHeight = deleteDrawable.getIntrinsicHeight();
     }

@@ -46,8 +46,8 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
             List<People> data = dataService.getAllPeoples();
             post(() -> {
                 SearchPeopleDialog searchPeopleDialog = new SearchPeopleDialog(data);
-                searchPeopleDialog.setCallback(() -> {
-                    people = searchPeopleDialog.getResult();
+                searchPeopleDialog.setCallback((result) -> {
+                    people = result;
                     initDataView();
                     if (callback != null) {
                         callback.run();

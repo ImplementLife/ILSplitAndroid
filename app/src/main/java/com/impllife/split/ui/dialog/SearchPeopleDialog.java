@@ -11,20 +11,23 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.CustomDialog;
-import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter;
-import com.impllife.split.ui.custom.adapter.RecyclerViewListAdapter.ViewData;
+import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.CustomRecyclerView;
+import com.impllife.split.ui.view.SearchContactListItem;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
 
 public class SearchPeopleDialog extends CustomDialog {
     private EditText fieldQuery;
 
     private CustomRecyclerView list;
-    private RecyclerViewListAdapter<People> adapter;
-    private Runnable callback;
+    private AltRecyclerViewListAdapter adapter;
+    private Consumer<People> callback;
 
     private List<People> dataForSearch;
     private People result;
@@ -44,9 +47,21 @@ public class SearchPeopleDialog extends CustomDialog {
             @Override
             public void afterTextChanged(Editable s) {
                 String query = s.toString().toLowerCase();
-                Comparator<ViewData<People>> comparator = Comparator
-                    .comparing((ViewData<People> p) -> !p.getData().getPseudonym().toLowerCase().startsWith(query))
-                    .thenComparing((ViewData<People> p) -> p.getData().getPseudonym().toLowerCase());
+                Comparator<ModelViewData<?>> comparator = Comparator
+                    .comparing((ModelViewData<?> p) -> {
+                        Object data = p.getData();
+                        if (data instanceof People) {
+                            return !((People) data).getPseudonym().toLowerCase().startsWith(query);
+                        }
+                        return false;
+                    })
+                    .thenComparing((ModelViewData<?> p) -> {
+                        Object data = p.getData();
+                        if (data instanceof People) {
+                            return ((People) data).getPseudonym().toLowerCase();
+                        }
+                        return null;
+                    });
                 adapter.sort(comparator);
             }
 
@@ -58,25 +73,16 @@ public class SearchPeopleDialog extends CustomDialog {
         });
 
         list = findViewById(R.id.list);
-        adapter = new RecyclerViewListAdapter<>((data, view) -> {
-            view.setTextViewById(R.id.tv_name, data.getPseudonym());
-            view.setOnClickListener(v -> {
-                result = data;
-                if (callback != null) {
-                    callback.run();
-                }
-                dismiss();
-            });
-        });
+        adapter = new AltRecyclerViewListAdapter();
         list.setAdapter(adapter);
-        adapter.replaceAll(dataForSearch.stream().map(e -> new ViewData<>(R.layout.view_people_list_item, e)).collect(Collectors.toList()));
+        adapter.replaceAll(dataForSearch.stream().map(e -> new SearchContactListItem(e, callback)).collect(Collectors.toList()));
     }
 
-    public void setCallback(Runnable callback) {
-        this.callback = callback;
-    }
-    public People getResult() {
-        return result;
+    public void setCallback(Consumer<People> callback) {
+        this.callback = (response) -> {
+            callback.accept(response);
+            dismiss();
+        };
     }
 
     public void showKeyboard() {

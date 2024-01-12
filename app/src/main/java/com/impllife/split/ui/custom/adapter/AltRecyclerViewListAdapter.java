@@ -1,5 +1,6 @@
 package com.impllife.split.ui.custom.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.ui.custom.component.BaseView;
@@ -11,12 +12,11 @@ import java.util.List;
 import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.Holder;
 
 public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
-    private final List<Data> data;
-
+    private final List<ModelViewData<?>> data;
     public AltRecyclerViewListAdapter() {
         this(new ArrayList<>());
     }
-    public AltRecyclerViewListAdapter(List<Data> data) {
+    public AltRecyclerViewListAdapter(List<ModelViewData<?>> data) {
         this.data = data;
     }
 
@@ -28,7 +28,6 @@ public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
     public Holder onCreateViewHolder(ViewGroup parent, int viewId) {
         return new Holder(new BaseView(viewId, parent), viewId);
     }
-
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         data.get(position).bindData(holder.getView());
@@ -42,16 +41,20 @@ public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
         data.remove(position);
         notifyItemRemoved(position);
     }
-    public void add(Data item, int position) {
+    public void add(ModelViewData<?> item) {
+        data.add(item);
+        notifyItemInserted(data.size());
+    }
+    public void add(ModelViewData<?> item, int position) {
         data.add(position, item);
         notifyItemInserted(position);
     }
-    public void addAll(List<Data> all) {
+    public void addAll(List<ModelViewData<?>> all) {
         int size = data.size();
         data.addAll(all);
         notifyItemRangeInserted(size - 1, all.size());
     }
-    public void replaceAll(List<Data> replace) {
+    public void replaceAll(List<ModelViewData<?>> replace) {
         clear();
         addAll(replace);
     }
@@ -60,34 +63,46 @@ public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
         data.clear();
         notifyItemRangeRemoved(0, size);
     }
-    public void sort(Comparator<? super Data> comparator) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void sort(Comparator<? super ModelViewData<?>> comparator) {
         data.sort(comparator);
         notifyDataSetChanged();
     }
 
-    public List<Data> getData() {
+    public List<ModelViewData<?>> getData() {
         return data;
     }
-    public Data get(int position) {
+    public ModelViewData<?> get(int position) {
         return data.get(position);
     }
 
-    public static abstract class Data<D> {
-        protected int viewId;
+    public static abstract class ModelViewData<D> {
+        protected final int viewId;
+        protected D data;
 
-        public Data(int viewId) {
+        public ModelViewData(int viewId) {
             this.viewId = viewId;
+        }
+        public ModelViewData(int viewId, D data) {
+            this(viewId);
+            this.data = data;
         }
 
         public int getViewId() {
             return viewId;
         }
+        public void setData(D data) {
+            this.data = data;
+        }
+        public D getData() {
+            return data;
+        }
         public abstract void bindData(BaseView view);
-        public abstract D getData();
     }
     public static class Holder extends RecyclerView.ViewHolder {
         protected int viewId;
         private final BaseView view;
+        private ModelViewData<?> currentViewDataModel;
 
         public Holder(BaseView view, int viewId) {
             super(view.getRoot());
@@ -98,9 +113,15 @@ public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
         public BaseView getView() {
             return view;
         }
-
         public int getViewId() {
             return viewId;
+        }
+
+        public void setCurrentViewDataModel(ModelViewData<?> currentViewDataModel) {
+            this.currentViewDataModel = currentViewDataModel;
+        }
+        public ModelViewData<?> getCurrentViewDataModel() {
+            return currentViewDataModel;
         }
     }
 }

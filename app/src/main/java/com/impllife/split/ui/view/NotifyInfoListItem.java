@@ -1,7 +1,6 @@
 package com.impllife.split.ui.view;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
@@ -11,24 +10,17 @@ import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.dialog.NotifyProcessingDialog;
 import com.impllife.split.ui.fragment.NotifyListFragment;
-import com.impllife.split.ui.fragment.SettingsFragment;
 
 import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.service.util.Util.bundle;
 
-public class NotifyInfoListItem extends AltRecyclerViewListAdapter.Data<NotificationInfo> {
+public class NotifyInfoListItem extends AltRecyclerViewListAdapter.ModelViewData<NotificationInfo> {
     private final DataService dataService = DataService.getInstance();
     private final NotifyListFragment ownerFragment;
-    private NotificationInfo data;
 
     public NotifyInfoListItem(NotifyListFragment ownerFragment, NotificationInfo data) {
-        super(R.layout.view_notify_info_list_item);
+        super(R.layout.view_notify_info_list_item, data);
         this.ownerFragment = ownerFragment;
-        setData(data);
-    }
-
-    public void setData(NotificationInfo data) {
-        this.data = data;
     }
 
     public void bindData(BaseView view) {

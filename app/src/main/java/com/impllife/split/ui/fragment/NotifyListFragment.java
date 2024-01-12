@@ -36,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.Data;
+import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -176,7 +176,7 @@ public class NotifyListFragment extends NavFragment {
 
     private void updateListContent() {
         runAsync(() -> {
-            List<Data> collect = new ArrayList<>();
+            List<ModelViewData<?>> collect = new ArrayList<>();
 
             Map<Date, List<NotificationInfo>> notifysByDays = dataService.getAllNotifyInfo().stream()
                 .collect(groupingBy(e -> DateUtil.getDay(e.getPostDate())));

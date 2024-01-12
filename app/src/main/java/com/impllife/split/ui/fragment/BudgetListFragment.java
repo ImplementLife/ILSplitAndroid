@@ -6,7 +6,7 @@ import com.impllife.split.data.jpa.entity.Budget;
 import com.impllife.split.data.jpa.provide.BudgetDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.Data;
+import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.BudgetListItem;
 
@@ -36,7 +36,7 @@ public class BudgetListFragment extends NavFragment {
 
     private void updateList() {
         runAsync(() -> {
-            List<Data> collect = new ArrayList<>();
+            List<ModelViewData<?>> collect = new ArrayList<>();
             List<Budget> allBudget = budgetDao.getAll();
             for (Budget budget : allBudget) {
                 collect.add(new BudgetListItem(budget));
