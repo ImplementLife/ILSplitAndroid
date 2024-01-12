@@ -26,7 +26,7 @@ public class MainMenuFragment extends NavFragment {
 
             view.setOnClickListener(v -> data.getAction().accept(navController));
             view.setTextViewById(R.id.tv_name, data.getName());
-            view.setImgResById(R.id.img, data.getImgId());
+            view.setImgResById(R.id.img_people_icon, data.getImgId());
             return view.getRoot();
         });
         grid.setAdapter(adapter);
@@ -43,7 +43,7 @@ public class MainMenuFragment extends NavFragment {
         BTN_NEW_TRANSACTION_BY_TEMPLATE("Templates", 2, 1, R.drawable.ic_svg_custom_grid, n -> {
             new ChooseTrnTemplateDialog().show();
         }),
-        BTN_NEW_TRANSACTION("Transact", 2, 2, R.drawable.ic_svg_trandaction, n -> n.navigate(R.id.fragment_transaction_setup)),
+        BTN_NEW_TRANSACTION("Transact", 2, 2, R.drawable.ic_svg_transaction, n -> n.navigate(R.id.fragment_transaction_setup)),
         ;
 
         MainMenuButtonDefinition(String name, int defaultRow, int defaultCol, int imgId, Consumer<NavController> action) {

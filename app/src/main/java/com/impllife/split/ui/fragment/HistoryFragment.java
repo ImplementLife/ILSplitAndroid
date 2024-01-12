@@ -35,7 +35,7 @@ public class HistoryFragment extends NavFragment {
         GridListAdapter<MenuBtn> adapter = new GridListAdapter<>(MenuBtn.values(), (data, parent) -> {
             BaseView view = new BaseView(inflater, R.layout.view_btn_main_menu, parent);
             view.setTextViewById(R.id.tv_name, data.name);
-            view.setImgResById(R.id.img, data.imgId);
+            view.setImgResById(R.id.img_people_icon, data.imgId);
             view.setOnClickListener(v -> data.action.accept(navController));
             return view.getRoot();
         });

@@ -9,6 +9,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.component.BaseView;
+import com.impllife.split.ui.dialog.ChooseImageDialog;
 
 import java.util.function.Consumer;
 
@@ -56,6 +57,21 @@ public class PeopleView extends BaseView {
 
         TextView textView = findViewById(R.id.tv_name);
         textView.setText(people.getPseudonym());
+
+        ImageView iconImage = findViewById(R.id.img_people_icon);
+        iconImage.setOnClickListener(v -> {
+            new ChooseImageDialog(id -> {
+                iconImage.setImageResource(id);
+                people.setIcon(id.toString());
+                runAsync(() -> dataService.update(people));
+            }).show();
+        });
+        String icon = people.getIcon();
+        if (icon != null && !icon.isEmpty()) {
+            iconImage.setImageResource(Integer.parseInt(icon));
+        } else {
+            iconImage.setImageResource(R.drawable.ic_png_default_user_1);
+        }
     }
 
     public void setBtnEditAction(Consumer<People> btnEditAction) {

@@ -26,7 +26,8 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
     }
 
     protected void init() {
-        img = findViewById(R.id.img);
+        img = findViewById(R.id.img_people_icon);
+
         tvName = findViewById(R.id.tv_name);
 
         btnExpand = findViewById(R.id.btn_search);
@@ -51,6 +52,10 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
                     initDataView();
                     if (callback != null) {
                         callback.run();
+                    }
+                    String icon = people.getIcon();
+                    if (icon != null && !icon.isEmpty()) {
+                        img.setImageResource(Integer.parseInt(icon));
                     }
                 });
                 searchPeopleDialog.show();

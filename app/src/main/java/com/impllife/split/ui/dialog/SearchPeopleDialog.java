@@ -60,6 +60,10 @@ public class SearchPeopleDialog extends CustomDialog {
         list = findViewById(R.id.list);
         adapter = new RecyclerViewListAdapter<>((data, view) -> {
             view.setTextViewById(R.id.tv_name, data.getPseudonym());
+            String icon = data.getIcon();
+            if (icon != null && !icon.isEmpty()) {
+                view.setImgResById(R.id.img_people_icon, Integer.parseInt(icon));
+            }
             view.setOnClickListener(v -> {
                 result = data;
                 if (callback != null) {
