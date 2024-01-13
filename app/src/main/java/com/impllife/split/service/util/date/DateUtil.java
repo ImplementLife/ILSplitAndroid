@@ -73,6 +73,72 @@ public final class DateUtil {
         return new DateRange(startDate, endDate);
     }
 
+    public static DateRange getMonthDateRange(int year, int monthNumber) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, monthNumber);
+        // Set the day of the month to the first day
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date startDate = calendar.getTime();
+
+        // Set the day of the month to the last day
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date endDate = calendar.getTime();
+
+        return new DateRange(startDate, endDate);
+    }
+
+    public static DateRange getQuarterDateRange(int year, int quarterNumber) {
+        if (quarterNumber < 1 || quarterNumber > 4) {
+            throw new IllegalArgumentException("Quarter number must be between 1 and 4");
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+
+        // Calculate the start and end months of the quarter
+        int startMonth = (quarterNumber - 1) * 3; // 0-based index
+        int endMonth = startMonth + 2;
+
+        calendar.set(Calendar.MONTH, startMonth);
+        // Set the day of the month to the first day
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDate = calendar.getTime();
+
+        // Set the month to the last month of the quarter
+        calendar.set(Calendar.MONTH, endMonth);
+
+        // Set the day of the month to the last day
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date endDate = calendar.getTime();
+
+        return new DateRange(startDate, endDate);
+    }
+
+    public static int getCurrentQuarter() {
+        Calendar calendar = Calendar.getInstance();
+        int currentMonth = calendar.get(Calendar.MONTH); // 0-based index
+
+        // Quarters are 1-based index
+        if (currentMonth >= Calendar.JANUARY && currentMonth <= Calendar.MARCH) {
+            return 1;
+        } else if (currentMonth >= Calendar.APRIL && currentMonth <= Calendar.JUNE) {
+            return 2;
+        } else if (currentMonth >= Calendar.JULY && currentMonth <= Calendar.SEPTEMBER) {
+            return 3;
+        } else {
+            return 4;
+        }
+    }
+
     public static int getCurrentMonth() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.MONTH);

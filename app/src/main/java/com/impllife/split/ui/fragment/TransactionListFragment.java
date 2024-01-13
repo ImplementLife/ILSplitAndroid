@@ -95,11 +95,11 @@ public class TransactionListFragment extends NavFragment {
         Date getDay();
     }
 
-    public static class ListItemData extends AltRecyclerViewListAdapter.Data implements DataList {
+    public static class ListItemDataView extends AltRecyclerViewListAdapter.Data implements DataList {
         private final Transaction transaction;
         private final NavController navController;
 
-        public ListItemData(Transaction transaction, NavController navController) {
+        public ListItemDataView(Transaction transaction, NavController navController) {
             super(R.layout.view_transactoin_list_item);
             this.transaction = transaction;
             this.navController = navController;
@@ -123,18 +123,18 @@ public class TransactionListFragment extends NavFragment {
         }
     }
 
-    public static class ListBudgetData extends AltRecyclerViewListAdapter.Data implements Comparable<ListBudgetData>, DataList {
+    public static class ListBudgetDataView extends AltRecyclerViewListAdapter.Data implements Comparable<ListBudgetDataView>, DataList {
         private final Budget budget;
         private final DateRange dateRange;
         private BigDecimal sumTotal = BigDecimal.ZERO;
 
-        public ListBudgetData(Budget budget, DateRange dateRange) {
+        public ListBudgetDataView(Budget budget, DateRange dateRange) {
             super(R.layout.view_transactoin_list_item_budget);
             this.budget = budget;
             this.dateRange = dateRange;
         }
 
-        public ListBudgetData(Date date) {
+        public ListBudgetDataView(Date date) {
             super(R.layout.view_transactoin_list_item_date);
             dateRange = null;
             budget = null;
@@ -193,7 +193,7 @@ public class TransactionListFragment extends NavFragment {
 
 
         @Override
-        public int compareTo(ListBudgetData o) {
+        public int compareTo(ListBudgetDataView o) {
             int otherKey = o.budget.getPeriod().getKey();
             int thisKey = budget.getPeriod().getKey();
             return Integer.compare(otherKey, thisKey);
@@ -202,7 +202,7 @@ public class TransactionListFragment extends NavFragment {
 
     private void newListView(List<Transaction> sortedTransactions, List<Budget> budgets) {
         List<AltRecyclerViewListAdapter.Data> listViewData = new LinkedList<>();
-        sortedTransactions.forEach(e -> listViewData.add(new ListItemData(e, navController)));
+        sortedTransactions.forEach(e -> listViewData.add(new ListItemDataView(e, navController)));
 
         List<AltRecyclerViewListAdapter.Data> budgetsViewList = new LinkedList<>();
         Budget simpleDay = new Budget();
@@ -211,7 +211,7 @@ public class TransactionListFragment extends NavFragment {
         for (Budget budget : budgets) {
             if (budget.isPeriod(DAY)) {
                 Date date = new Date();
-                ListBudgetData itemBudget = new ListBudgetData(budget, DateUtil.getDayDateRange(date));
+                ListBudgetDataView itemBudget = new ListBudgetDataView(budget, DateUtil.getDayDateRange(date));
                 for (Transaction trn : sortedTransactions) {
                     if (!itemBudget.inRange(trn.getDateCreate())) {
                         if (!BigDecimal.ZERO.equals(itemBudget.sumTotal)) {
@@ -219,16 +219,19 @@ public class TransactionListFragment extends NavFragment {
                         }
                         do {
                             date = DateUtil.getPreviousDay(date);
-                            itemBudget = new ListBudgetData(budget, DateUtil.getDayDateRange(date));
+                            itemBudget = new ListBudgetDataView(budget, DateUtil.getDayDateRange(date));
                         } while (!itemBudget.inRange(trn.getDateCreate()));
                     }
                     itemBudget.addSumTotal(new BigDecimal(trn.getSum()));
+                }
+                if (sortedTransactions.size() > 0) {
+                    budgetsViewList.add(itemBudget);
                 }
             }
             if (budget.isPeriod(WEEK)) {
                 int year = DateUtil.getCurrentYear();
                 int week = DateUtil.getCurrentWeek();
-                ListBudgetData itemBudget = new ListBudgetData(budget, DateUtil.getWeekDateRange(year, week));
+                ListBudgetDataView itemBudget = new ListBudgetDataView(budget, DateUtil.getWeekDateRange(year, week));
                 for (Transaction trn : sortedTransactions) {
                     if (!itemBudget.inRange(trn.getDateCreate())) {
                         if (!BigDecimal.ZERO.equals(itemBudget.sumTotal)) {
@@ -240,18 +243,62 @@ public class TransactionListFragment extends NavFragment {
                                 year--;
                                 week = DateUtil.getMaxWeekOfYear(year);
                             }
-                            itemBudget = new ListBudgetData(budget, DateUtil.getWeekDateRange(year, week));
+                            itemBudget = new ListBudgetDataView(budget, DateUtil.getWeekDateRange(year, week));
                         } while (!itemBudget.inRange(trn.getDateCreate()));
                     }
                     itemBudget.addSumTotal(new BigDecimal(trn.getSum()));
+                }
+                if (sortedTransactions.size() > 0) {
+                    budgetsViewList.add(itemBudget);
                 }
             }
             if (budget.isPeriod(MONTH)) {
                 int year = DateUtil.getCurrentYear();
                 int month = DateUtil.getCurrentMonth();
+                ListBudgetDataView itemBudget = new ListBudgetDataView(budget, DateUtil.getMonthDateRange(year, month));
+                for (Transaction trn : sortedTransactions) {
+                    if (!itemBudget.inRange(trn.getDateCreate())) {
+                        if (!BigDecimal.ZERO.equals(itemBudget.sumTotal)) {
+                            budgetsViewList.add(itemBudget);
+                        }
+                        do {
+                            month--;
+                            if (month <= 0) {
+                                year--;
+                                month = 12;
+                            }
+                            itemBudget = new ListBudgetDataView(budget, DateUtil.getMonthDateRange(year, month));
+                        } while (!itemBudget.inRange(trn.getDateCreate()));
+                    }
+                    itemBudget.addSumTotal(new BigDecimal(trn.getSum()));
+                }
+                if (sortedTransactions.size() > 0) {
+                    budgetsViewList.add(itemBudget);
+                }
             }
             if (budget.isPeriod(QUARTER)) {
                 int year = DateUtil.getCurrentYear();
+                int quart = DateUtil.getCurrentQuarter();
+                ListBudgetDataView itemBudget = new ListBudgetDataView(budget, DateUtil.getQuarterDateRange(year, quart));
+                for (Transaction trn : sortedTransactions) {
+                    if (!itemBudget.inRange(trn.getDateCreate())) {
+                        if (!BigDecimal.ZERO.equals(itemBudget.sumTotal)) {
+                            budgetsViewList.add(itemBudget);
+                        }
+                        do {
+                            quart--;
+                            if (quart <= 0) {
+                                year--;
+                                quart = 4;
+                            }
+                            itemBudget = new ListBudgetDataView(budget, DateUtil.getQuarterDateRange(year, quart));
+                        } while (!itemBudget.inRange(trn.getDateCreate()));
+                    }
+                    itemBudget.addSumTotal(new BigDecimal(trn.getSum()));
+                }
+                if (sortedTransactions.size() > 0) {
+                    budgetsViewList.add(itemBudget);
+                }
             }
             if (budget.isPeriod(YEAR)) {
                 int year = DateUtil.getCurrentYear();
@@ -266,10 +313,10 @@ public class TransactionListFragment extends NavFragment {
                 compare = 0;
             }
             if (compare == 0) {
-                boolean e1isListBudgetData = e1 instanceof ListBudgetData;
-                boolean e2isListBudgetData = e2 instanceof ListBudgetData;
+                boolean e1isListBudgetData = e1 instanceof ListBudgetDataView;
+                boolean e2isListBudgetData = e2 instanceof ListBudgetDataView;
                 if (e1isListBudgetData && e2isListBudgetData) {
-                    compare = ((ListBudgetData) e1).compareTo((ListBudgetData) e2);
+                    compare = ((ListBudgetDataView) e1).compareTo((ListBudgetDataView) e2);
                 }
                 if (e1isListBudgetData != e2isListBudgetData) {
                     compare = e2isListBudgetData ? 1 : -1;
