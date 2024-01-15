@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.Holder;
+import static com.impllife.split.ui.custom.adapter.UniversalRVListAdapter.Holder;
 
-public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
+public class UniversalRVListAdapter extends RecyclerView.Adapter<Holder> {
     private final List<ModelViewData<?>> data;
-    public AltRecyclerViewListAdapter() {
+    public UniversalRVListAdapter() {
         this(new ArrayList<>());
     }
-    public AltRecyclerViewListAdapter(List<ModelViewData<?>> data) {
+    public UniversalRVListAdapter(List<ModelViewData<?>> data) {
         this.data = data;
     }
 
@@ -26,7 +26,7 @@ public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
     }
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewId) {
-        return new Holder(new BaseView(viewId, parent), viewId);
+        return new Holder(new BaseView(viewId, parent));
     }
     @Override
     public void onBindViewHolder(Holder holder, int position) {
@@ -99,29 +99,15 @@ public class AltRecyclerViewListAdapter extends RecyclerView.Adapter<Holder> {
         }
         public abstract void bindData(BaseView view);
     }
-    public static class Holder extends RecyclerView.ViewHolder {
-        protected int viewId;
-        private final BaseView view;
-        private ModelViewData<?> currentViewDataModel;
 
-        public Holder(BaseView view, int viewId) {
+    public static class Holder extends RecyclerView.ViewHolder {
+        private final BaseView view;
+        public Holder(BaseView view) {
             super(view.getRoot());
-            this.viewId = viewId;
             this.view = view;
         }
-
         public BaseView getView() {
             return view;
-        }
-        public int getViewId() {
-            return viewId;
-        }
-
-        public void setCurrentViewDataModel(ModelViewData<?> currentViewDataModel) {
-            this.currentViewDataModel = currentViewDataModel;
-        }
-        public ModelViewData<?> getCurrentViewDataModel() {
-            return currentViewDataModel;
         }
     }
 }

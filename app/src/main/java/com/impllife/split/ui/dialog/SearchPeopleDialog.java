@@ -11,7 +11,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.CustomDialog;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.CustomRecyclerView;
 import com.impllife.split.ui.view.SearchContactListItem;
 
@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
+import static com.impllife.split.ui.custom.adapter.UniversalRVListAdapter.ModelViewData;
 
 public class SearchPeopleDialog extends CustomDialog {
     private EditText fieldQuery;
 
     private CustomRecyclerView list;
-    private AltRecyclerViewListAdapter adapter;
+    private UniversalRVListAdapter adapter;
     private Consumer<People> callback;
 
     private List<People> dataForSearch;
@@ -73,7 +73,7 @@ public class SearchPeopleDialog extends CustomDialog {
         });
 
         list = findViewById(R.id.list);
-        adapter = new AltRecyclerViewListAdapter();
+        adapter = new UniversalRVListAdapter();
         list.setAdapter(adapter);
         adapter.replaceAll(dataForSearch.stream().map(e -> new SearchContactListItem(e, callback)).collect(Collectors.toList()));
     }

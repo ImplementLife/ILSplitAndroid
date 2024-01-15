@@ -6,7 +6,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.NotificationInfo;
 import com.impllife.split.service.DataService;
 import com.impllife.split.service.util.Formatters;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.dialog.NotifyProcessingDialog;
 import com.impllife.split.ui.fragment.NotifyListFragment;
@@ -14,7 +14,7 @@ import com.impllife.split.ui.fragment.NotifyListFragment;
 import static com.impllife.split.data.constant.Constant.*;
 import static com.impllife.split.service.util.Util.bundle;
 
-public class NotifyInfoListItem extends AltRecyclerViewListAdapter.ModelViewData<NotificationInfo> {
+public class NotifyInfoListItem extends UniversalRVListAdapter.ModelViewData<NotificationInfo> {
     private final DataService dataService = DataService.getInstance();
     private final NotifyListFragment ownerFragment;
 

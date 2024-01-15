@@ -1,11 +1,7 @@
 package com.impllife.split.ui.custom;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
+import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -13,7 +9,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.R;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     private final Paint clearPaint;
@@ -23,6 +21,8 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     private final int intrinsicWidth;
     private final int intrinsicHeight;
 
+    private final List<Integer> viewTypesIdToDelete;
+
     public SwipeToDeleteCallback(Context context) {
         this.clearPaint = new Paint();
         this.clearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
@@ -31,17 +31,27 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
         this.backgroundColor = Color.parseColor("#b80f0a");
         this.intrinsicWidth = deleteDrawable.getIntrinsicWidth();
         this.intrinsicHeight = deleteDrawable.getIntrinsicHeight();
+        this.viewTypesIdToDelete = new ArrayList<>();
+    }
+
+    public SwipeToDeleteCallback(Context context, int... viewTypesIdToDelete) {
+        this(context);
+        for (int flag : viewTypesIdToDelete) {
+            this.viewTypesIdToDelete.add(flag);
+        }
+    }
+    public SwipeToDeleteCallback(Context context, List<Integer> viewTypesIdToDelete) {
+        this(context);
+        this.viewTypesIdToDelete.addAll(viewTypesIdToDelete);
     }
 
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        if (viewHolder instanceof AltRecyclerViewListAdapter.Holder) {
-            int viewId = ((AltRecyclerViewListAdapter.Holder) viewHolder).getViewId();
-            if (viewId == R.layout.view_notify_list_item_date) {
-                return makeMovementFlags(0, 0);
-            }
+        if (viewTypesIdToDelete.contains(viewHolder.getItemViewType())) {
+            return makeMovementFlags(0, ItemTouchHelper.LEFT);
+        } else {
+            return makeMovementFlags(0, 0);
         }
-        return makeMovementFlags(0, ItemTouchHelper.LEFT);
     }
 
     @Override

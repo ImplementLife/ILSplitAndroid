@@ -3,13 +3,13 @@ package com.impllife.split.ui.view;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Budget;
 import com.impllife.split.ui.MainActivity;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
 import static com.impllife.split.service.util.Util.bundle;
 
-public class BudgetListItem extends AltRecyclerViewListAdapter.ModelViewData<Budget> {
+public class BudgetListItem extends UniversalRVListAdapter.ModelViewData<Budget> {
     public BudgetListItem(Budget data) {
         super(R.layout.view_budget_list_item, data);
     }

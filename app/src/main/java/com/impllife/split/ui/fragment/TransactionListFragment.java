@@ -12,7 +12,7 @@ import com.impllife.split.service.DataService;
 import com.impllife.split.service.util.Formatters;
 import com.impllife.split.service.util.date.DateRange;
 import com.impllife.split.service.util.date.DateUtil;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.custom.component.StatusBar;
@@ -35,7 +35,7 @@ public class TransactionListFragment extends NavFragment {
     private final BudgetDao budgetDao = DataService.getInstance().getDb().getBudgetDao();
     private final DataService dataService = DataService.getInstance();
     private RecyclerView listItems;
-    private AltRecyclerViewListAdapter adapter;
+    private UniversalRVListAdapter adapter;
 
     public TransactionListFragment() {
         super(R.layout.fragment_transaction_list, "Transactions");
@@ -44,7 +44,7 @@ public class TransactionListFragment extends NavFragment {
     @Override
     protected void init() {
         listItems = findViewById(R.id.list_items);
-        adapter = new AltRecyclerViewListAdapter();
+        adapter = new UniversalRVListAdapter();
         listItems.setAdapter(adapter);
         findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
 
@@ -95,7 +95,7 @@ public class TransactionListFragment extends NavFragment {
         Date getDay();
     }
 
-    public static class ListItemDataView extends AltRecyclerViewListAdapter.ModelViewData<Object> implements DataList {
+    public static class ListItemDataView extends UniversalRVListAdapter.ModelViewData<Object> implements DataList {
         private final Transaction transaction;
         private final NavController navController;
 
@@ -118,7 +118,7 @@ public class TransactionListFragment extends NavFragment {
         }
     }
 
-    public static class ListBudgetDataView extends AltRecyclerViewListAdapter.ModelViewData<Object> implements Comparable<ListBudgetDataView>, DataList {
+    public static class ListBudgetDataView extends UniversalRVListAdapter.ModelViewData<Object> implements Comparable<ListBudgetDataView>, DataList {
         private final Budget budget;
         private final DateRange dateRange;
         private BigDecimal sumTotal = BigDecimal.ZERO;
@@ -190,10 +190,10 @@ public class TransactionListFragment extends NavFragment {
     }
 
     private void newListView(List<Transaction> sortedTransactions, List<Budget> budgets) {
-        List<AltRecyclerViewListAdapter.ModelViewData<?>> listViewData = new LinkedList<>();
+        List<UniversalRVListAdapter.ModelViewData<?>> listViewData = new LinkedList<>();
         sortedTransactions.forEach(e -> listViewData.add(new ListItemDataView(e, navController)));
 
-        List<AltRecyclerViewListAdapter.ModelViewData<?>> budgetsViewList = new LinkedList<>();
+        List<UniversalRVListAdapter.ModelViewData<?>> budgetsViewList = new LinkedList<>();
         boolean isAddSimpleDaysStat = true;
         if (isAddSimpleDaysStat) { //adding simple elements for every day
             Budget simpleDay = new Budget();

@@ -5,8 +5,8 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Budget;
 import com.impllife.split.data.jpa.provide.BudgetDao;
 import com.impllife.split.service.DataService;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter.ModelViewData;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.BudgetListItem;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class BudgetListFragment extends NavFragment {
     private static final BudgetDao budgetDao = DataService.getInstance().getDb().getBudgetDao();
-    private AltRecyclerViewListAdapter adapter;
+    private UniversalRVListAdapter adapter;
     private RecyclerView recyclerView;
 
     public BudgetListFragment() {
@@ -28,7 +28,7 @@ public class BudgetListFragment extends NavFragment {
             navController.navigate(R.id.fragment_budget_setup);
         });
         recyclerView = findViewById(R.id.list);
-        adapter = new AltRecyclerViewListAdapter();
+        adapter = new UniversalRVListAdapter();
         recyclerView.setAdapter(adapter);
 
         updateList();

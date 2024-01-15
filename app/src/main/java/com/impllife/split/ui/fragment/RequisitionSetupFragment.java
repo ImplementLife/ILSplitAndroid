@@ -1,12 +1,12 @@
 package com.impllife.split.ui.fragment;
 
 import com.impllife.split.R;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.CustomRecyclerView;
 import com.impllife.split.ui.custom.component.NavFragment;
 
-import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
+import static com.impllife.split.ui.custom.adapter.UniversalRVListAdapter.ModelViewData;
 
 public class RequisitionSetupFragment extends NavFragment {
     public RequisitionSetupFragment() {
@@ -16,7 +16,7 @@ public class RequisitionSetupFragment extends NavFragment {
     @Override
     protected void init() {
         CustomRecyclerView rw = findViewById(R.id.list_item);
-        AltRecyclerViewListAdapter adapter = new AltRecyclerViewListAdapter();
+        UniversalRVListAdapter adapter = new UniversalRVListAdapter();
         rw.setAdapter(adapter);
         findViewById(R.id.btn_add).setOnClickListener(v -> {
             class Contact extends ModelViewData<String> {

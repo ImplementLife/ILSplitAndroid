@@ -23,7 +23,7 @@ import com.impllife.split.service.NotifyListener;
 import com.impllife.split.service.util.date.DateUtil;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.SwipeToDeleteCallback;
-import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
+import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.NotifyInfoListItem;
 import com.impllife.split.ui.view.NotifyInfoListItemDate;
@@ -36,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static androidx.core.app.NotificationManagerCompat.getEnabledListenerPackages;
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter.ModelViewData;
+import static com.impllife.split.ui.custom.adapter.UniversalRVListAdapter.ModelViewData;
 import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
@@ -50,7 +50,7 @@ public class NotifyListFragment extends NavFragment {
     private Switch btnWork;
     private boolean notifyListenPermit;
 
-    private AltRecyclerViewListAdapter adapter;
+    private UniversalRVListAdapter adapter;
     private RecyclerView recyclerView;
     private NotifyListFragment notifyListFragment;
 
@@ -103,7 +103,7 @@ public class NotifyListFragment extends NavFragment {
         refreshLayout.setOnRefreshListener(this::updateListContent);
 
         recyclerView = findViewById(R.id.list);
-        adapter = new AltRecyclerViewListAdapter();
+        adapter = new UniversalRVListAdapter();
         recyclerView.setAdapter(adapter);
         updateListContent();
         enableSwipeToDeleteAndUndo();
@@ -141,7 +141,7 @@ public class NotifyListFragment extends NavFragment {
     }
 
     private void enableSwipeToDeleteAndUndo() {
-        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext()) {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getContext(), R.layout.view_notify_info_list_item) {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int position = viewHolder.getAdapterPosition();
