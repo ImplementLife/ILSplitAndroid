@@ -129,24 +129,12 @@ public class TransactionListFragment extends NavFragment {
             this.dateRange = dateRange;
         }
 
-        public ListBudgetDataView(Date date) {
-            super(R.layout.view_transactoin_list_item_date);
-            dateRange = null;
-            budget = null;
-        }
-
         public void addSumTotal(BigDecimal sum) {
             this.sumTotal = this.sumTotal.add(sum);
         }
 
         public boolean inRange(Date date) {
             return dateRange.inRange(date);
-        }
-        public boolean isBefore(Date date) {
-            return dateRange.isBefore(date);
-        }
-        public boolean isAfter(Date date) {
-            return dateRange.isAfter(date);
         }
 
         @Override
@@ -169,6 +157,8 @@ public class TransactionListFragment extends NavFragment {
                 BigDecimal asPercent = sum.multiply(BigDecimal.valueOf(100)).divide(budget.getSumForPeriod(), RoundingMode.CEILING);
                 statusBar.setProgress(asPercent.intValue());
                 tvPercent.setText(asPercent.intValue() + "%");
+                statusBar.setVisibility(View.VISIBLE);
+                tvPercent.setVisibility(View.VISIBLE);
             } else {
                 statusBar.setVisibility(View.GONE);
                 tvPercent.setVisibility(View.GONE);
