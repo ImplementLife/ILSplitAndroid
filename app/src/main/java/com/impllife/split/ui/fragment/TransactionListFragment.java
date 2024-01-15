@@ -205,9 +205,12 @@ public class TransactionListFragment extends NavFragment {
         sortedTransactions.forEach(e -> listViewData.add(new ListItemDataView(e, navController)));
 
         List<AltRecyclerViewListAdapter.Data> budgetsViewList = new LinkedList<>();
-        Budget simpleDay = new Budget();
-        simpleDay.setPeriod(DAY);
-//        budgets.add(simpleDay);
+        boolean isAddSimpleDaysStat = true;
+        if (isAddSimpleDaysStat) { //adding simple elements for every day
+            Budget simpleDay = new Budget();
+            simpleDay.setPeriod(DAY);
+            budgets.add(simpleDay);
+        }
         for (Budget budget : budgets) {
             if (budget.isPeriod(DAY)) {
                 Date date = new Date();
