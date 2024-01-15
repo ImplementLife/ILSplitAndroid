@@ -95,7 +95,7 @@ public class TransactionListFragment extends NavFragment {
         Date getDay();
     }
 
-    public static class ListItemDataView extends AltRecyclerViewListAdapter.Data implements DataList {
+    public static class ListItemDataView extends AltRecyclerViewListAdapter.ModelViewData<Object> implements DataList {
         private final Transaction transaction;
         private final NavController navController;
 
@@ -116,14 +116,9 @@ public class TransactionListFragment extends NavFragment {
             view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
             view.setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup, bundle(ENTITY_ID, transaction.getId())));
         }
-
-        @Override
-        public Object getData() {
-            return null;
-        }
     }
 
-    public static class ListBudgetDataView extends AltRecyclerViewListAdapter.Data implements Comparable<ListBudgetDataView>, DataList {
+    public static class ListBudgetDataView extends AltRecyclerViewListAdapter.ModelViewData<Object> implements Comparable<ListBudgetDataView>, DataList {
         private final Budget budget;
         private final DateRange dateRange;
         private BigDecimal sumTotal = BigDecimal.ZERO;
@@ -187,12 +182,6 @@ public class TransactionListFragment extends NavFragment {
         }
 
         @Override
-        public Object getData() {
-            return null;
-        }
-
-
-        @Override
         public int compareTo(ListBudgetDataView o) {
             int otherKey = o.budget.getPeriod().getKey();
             int thisKey = budget.getPeriod().getKey();
@@ -201,10 +190,10 @@ public class TransactionListFragment extends NavFragment {
     }
 
     private void newListView(List<Transaction> sortedTransactions, List<Budget> budgets) {
-        List<AltRecyclerViewListAdapter.Data> listViewData = new LinkedList<>();
+        List<AltRecyclerViewListAdapter.ModelViewData<?>> listViewData = new LinkedList<>();
         sortedTransactions.forEach(e -> listViewData.add(new ListItemDataView(e, navController)));
 
-        List<AltRecyclerViewListAdapter.Data> budgetsViewList = new LinkedList<>();
+        List<AltRecyclerViewListAdapter.ModelViewData<?>> budgetsViewList = new LinkedList<>();
         boolean isAddSimpleDaysStat = true;
         if (isAddSimpleDaysStat) { //adding simple elements for every day
             Budget simpleDay = new Budget();
