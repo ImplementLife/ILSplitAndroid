@@ -53,6 +53,7 @@ public class NotifyListFragment extends NavFragment {
     private AltRecyclerViewListAdapter adapter;
     private RecyclerView recyclerView;
     private NotifyListFragment notifyListFragment;
+
     public NotifyListFragment() {
         super(R.layout.fragment_notify_list, "Notifications");
         notifyListFragment = this;

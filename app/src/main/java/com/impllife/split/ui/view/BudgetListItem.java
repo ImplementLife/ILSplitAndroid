@@ -20,5 +20,7 @@ public class BudgetListItem extends AltRecyclerViewListAdapter.ModelViewData<Bud
             MainActivity.getInstance().navController.navigate(R.id.fragment_budget_setup, bundle(ENTITY_ID, data.getId()));
         });
         view.setTextViewById(R.id.tv_name, data.getName());
+        view.setTextViewById(R.id.tv_sum, data.getSumForPeriod().toPlainString());
+        view.setTextViewById(R.id.tv_period, data.getPeriod().name());
     }
 }

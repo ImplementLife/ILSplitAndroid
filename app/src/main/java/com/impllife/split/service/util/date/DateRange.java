@@ -18,4 +18,16 @@ public class DateRange {
     public Date getEndDate() {
         return endDate;
     }
+
+    public boolean inRange(Date date) {
+        return !date.before(startDate) && !date.after(endDate);
+    }
+
+    public boolean isBefore(Date date) {
+        return startDate.before(date);
+    }
+
+    public boolean isAfter(Date date) {
+        return endDate.after(date);
+    }
 }

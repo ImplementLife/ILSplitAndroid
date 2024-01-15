@@ -9,6 +9,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.ui.custom.component.BaseView;
 
+@Deprecated
 public class TransactionListItem extends BaseView {
     private TextView tvDscr;
     private TextView tvSum;
