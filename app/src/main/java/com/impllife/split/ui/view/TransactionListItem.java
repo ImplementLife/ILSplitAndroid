@@ -12,6 +12,8 @@ import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.ui.custom.component.BaseView;
 
+import java.math.BigDecimal;
+
 import static com.impllife.split.service.util.Util.isBlank;
 
 public class TransactionListItem extends BaseView {
@@ -40,8 +42,6 @@ public class TransactionListItem extends BaseView {
     public void setData(Transaction transaction) {
         this.transaction = transaction;
         tvSum.setText(transaction.getSum());
-        tvDscr.setText(transaction.getDescription());
-
 
         People fromPeople = transaction.getFromPeople();
         Account fromAccount = transaction.getFromAccount();
@@ -60,6 +60,19 @@ public class TransactionListItem extends BaseView {
                     DefaultUserIcon.parse(iconName)
                         .ifPresent(userIcon -> image.setImageResource(userIcon.getResId()));
                 }
+            } else {
+                if (new BigDecimal(transaction.getSum()).compareTo(BigDecimal.ZERO) > 0) {
+                    image.setImageResource(R.drawable.ic_svg_transaction_alt);
+                } else {
+                    image.setImageResource(R.drawable.ic_svg_transaction);
+                }
+            }
+
+            if (isBlank(transaction.getDescription())) {
+                if (peopleForIcon != null) tvDscr.setText(peopleForIcon.getPseudonym());
+                else tvDscr.setText("");
+            } else {
+                tvDscr.setText(transaction.getDescription());
             }
         }
     }
