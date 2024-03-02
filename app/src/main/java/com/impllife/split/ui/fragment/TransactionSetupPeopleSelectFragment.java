@@ -4,12 +4,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.data.constant.DefaultUserIcon;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.component.BaseFragment;
 import com.impllife.split.ui.dialog.SearchPeopleDialog;
 
 import java.util.List;
+
+import static com.impllife.split.service.util.Util.isBlank;
 
 public class TransactionSetupPeopleSelectFragment extends BaseFragment {
     private final DataService dataService = DataService.getInstance();
@@ -35,9 +38,10 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
         //getView().setOnClickListener(v -> beginSearch());
         initDataView();
         if (people != null) {
-            String icon = people.getIcon();
-            if (icon != null && !icon.isEmpty()) {
-                img.setImageResource(Integer.parseInt(icon));
+            String iconName = people.getIcon();
+            if (!isBlank(iconName)) {
+                DefaultUserIcon.parse(iconName)
+                    .ifPresent(ico -> img.setImageResource(ico.getResId()));
             }
         }
     }
@@ -59,9 +63,10 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
                     if (callback != null) {
                         callback.run();
                     }
-                    String icon = people.getIcon();
-                    if (icon != null && !icon.isEmpty()) {
-                        img.setImageResource(Integer.parseInt(icon));
+                    String iconName = people.getIcon();
+                    if (!isBlank(iconName)) {
+                        DefaultUserIcon.parse(iconName)
+                            .ifPresent(ico -> img.setImageResource(ico.getResId()));
                     }
                 });
                 searchPeopleDialog.show();

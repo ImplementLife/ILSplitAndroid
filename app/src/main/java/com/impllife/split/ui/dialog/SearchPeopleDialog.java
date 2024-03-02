@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.EditText;
 import com.impllife.split.R;
+import com.impllife.split.data.constant.DefaultUserIcon;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.CustomDialog;
@@ -19,6 +20,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.impllife.split.service.util.Util.isBlank;
+
 public class SearchPeopleDialog extends CustomDialog {
     private EditText fieldQuery;
 
@@ -26,7 +29,7 @@ public class SearchPeopleDialog extends CustomDialog {
     private RecyclerViewListAdapter<People> adapter;
     private Runnable callback;
 
-    private List<People> dataForSearch;
+    private final List<People> dataForSearch;
     private People result;
 
     public SearchPeopleDialog(List<People> dataForSearch) {
@@ -60,10 +63,17 @@ public class SearchPeopleDialog extends CustomDialog {
         list = findViewById(R.id.list);
         adapter = new RecyclerViewListAdapter<>((data, view) -> {
             view.setTextViewById(R.id.tv_name, data.getPseudonym());
-            String icon = data.getIcon();
-            if (icon != null && !icon.isEmpty()) {
-                view.setImgResById(R.id.img_people_icon, Integer.parseInt(icon));
+
+            {
+                String iconName = data.getIcon();
+                if (!isBlank(iconName)) {
+                    DefaultUserIcon.parse(iconName).ifPresentOrElse(
+                        ico -> view.setImgResById(R.id.img_people_icon, ico.getResId()),
+                        () -> view.setImgResById(R.id.img_people_icon, DefaultUserIcon.ic_png_contact_default.getResId())
+                    );
+                }
             }
+
             view.setOnClickListener(v -> {
                 result = data;
                 if (callback != null) {

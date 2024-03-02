@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static com.impllife.split.data.constant.Constant.*;
-import static com.impllife.split.service.util.Util.*;
+import static com.impllife.split.service.util.Util.isBlank;
 
 public class TransactionSetupFragment extends NavFragment {
     private final TransactionDao transactionDao = new TransactionService();
@@ -301,6 +301,7 @@ public class TransactionSetupFragment extends NavFragment {
                     from.setPeople(trn.getFromPeople());
                     to.setAccount(trn.getToAccount());
                     to.setPeople(trn.getToPeople());
+                    from.setDefaultPos(0);
                     pagerFrom.setCurrentItem(from.getPos());
                     pagerTo.setCurrentItem(to.getPos());
                 }));

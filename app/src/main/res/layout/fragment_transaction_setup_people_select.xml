@@ -10,7 +10,7 @@
 >
     <ImageView
             android:id="@+id/img_people_icon"
-            android:src="@drawable/ic_png_default_user_1"
+            android:src="@drawable/ic_png_contact_default"
             android:layout_width="57dp"
             android:layout_height="57dp"
             app:layout_constraintTop_toTopOf="parent"

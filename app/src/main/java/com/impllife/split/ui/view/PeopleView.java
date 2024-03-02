@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.data.constant.DefaultUserIcon;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.component.BaseView;
@@ -13,13 +14,13 @@ import com.impllife.split.ui.dialog.ChooseImageDialog;
 
 import java.util.function.Consumer;
 
-import static java.util.concurrent.CompletableFuture.runAsync;
+import static com.impllife.split.service.util.Util.isBlank;
 
 public class PeopleView extends BaseView {
-    private DataService dataService = DataService.getInstance();
+    private final DataService dataService = DataService.getInstance();
     private Consumer<People> btnEditAction;
     private Runnable postDeleteAction;
-    private People people;
+    private final People people;
 
     public PeopleView(LayoutInflater inflater, ViewGroup rootForThis, Consumer<People> btnEditAction, People people) {
         super(inflater, R.layout.view_people, rootForThis);
@@ -66,11 +67,12 @@ public class PeopleView extends BaseView {
                 runAsync(() -> dataService.update(people));
             }).show();
         });
-        String icon = people.getIcon();
-        if (icon != null && !icon.isEmpty()) {
-            iconImage.setImageResource(Integer.parseInt(icon));
+        String iconName = people.getIcon();
+        if (!isBlank(iconName)) {
+            DefaultUserIcon.parse(iconName)
+                .ifPresent(ico -> iconImage.setImageResource(ico.getResId()));
         } else {
-            iconImage.setImageResource(R.drawable.ic_png_default_user_1);
+            iconImage.setImageResource(R.drawable.ic_png_contact_default);
         }
     }
 

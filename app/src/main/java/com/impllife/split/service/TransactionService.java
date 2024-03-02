@@ -7,7 +7,6 @@ import com.impllife.split.data.jpa.provide.PeopleDao;
 import com.impllife.split.data.jpa.provide.TransactionDao;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionService implements TransactionDao {
@@ -118,5 +117,12 @@ public class TransactionService implements TransactionDao {
     @Override
     public List<Transaction> getAll() {
         return trnDao.getAll();
+    }
+
+    @Override
+    public List<Transaction> getAllEager() {
+        List<Transaction> allEager = trnDao.getAllEager();
+        allEager.forEach(this::fillMappings);
+        return allEager;
     }
 }
