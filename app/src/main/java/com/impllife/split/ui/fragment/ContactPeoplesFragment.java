@@ -1,9 +1,6 @@
 package com.impllife.split.ui.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
@@ -16,8 +13,7 @@ import com.impllife.split.ui.view.PeopleView;
 import java.util.List;
 
 public class ContactPeoplesFragment extends NavFragment {
-    private DataService dataService = DataService.getInstance();
-    private View view;
+    private final DataService dataService = DataService.getInstance();
     private View btnNew;
     private LinearLayout listItems;
     private boolean isPeopleSetupShow;
@@ -26,23 +22,23 @@ public class ContactPeoplesFragment extends NavFragment {
     private int peopleSetupViewPosition;
     private PeopleView hiddenPeopleView;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setInflater(inflater);
-        view = inflater.inflate(R.layout.fragment_contact_people_list, container, false);
+    public ContactPeoplesFragment() {
+        super(R.layout.fragment_contact_people_list, false);
+    }
 
-        listItems = view.findViewById(R.id.list_items);
+    @Override
+    protected void init() {
+        listItems = findViewById(R.id.list_items);
         peopleSetupView = new PeopleSetupView(inflater, listItems);
         peopleSetupView.setPostOkAction(this::addNewContact);
 
-        btnNew = view.findViewById(R.id.btn_new);
+        btnNew = findViewById(R.id.btn_new);
         btnNew.setOnClickListener(v -> {
             peopleSetupView.setPostCancelAct(this::hidePeopleSetup);
             showOrHidePeopleSetup();
         });
 
         loadAndDrawAllPeoples();
-        return view;
     }
 
     private void showOrHidePeopleSetup() {
@@ -56,7 +52,7 @@ public class ContactPeoplesFragment extends NavFragment {
     private void loadAndDrawAllPeoples() {
         runAsync(() -> {
             allPeoples = dataService.getAllPeoples();
-            view.post(this::updateView);
+            post(this::updateView);
         });
     }
 
@@ -113,7 +109,7 @@ public class ContactPeoplesFragment extends NavFragment {
     }
 
     private void addNewContact() {
-        view.post(this::hidePeopleSetup);
+        post(this::hidePeopleSetup);
         loadAndDrawAllPeoples();
     }
 }

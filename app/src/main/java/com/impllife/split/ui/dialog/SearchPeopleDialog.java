@@ -2,7 +2,6 @@ package com.impllife.split.ui.dialog;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
@@ -11,6 +10,7 @@ import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.ui.MainActivity;
 import com.impllife.split.ui.custom.CustomDialog;
+import com.impllife.split.ui.custom.TextWatcherAdapter;
 import com.impllife.split.ui.custom.adapter.UniversalRVListAdapter;
 import com.impllife.split.ui.custom.component.CustomRecyclerView;
 import com.impllife.split.ui.view.SearchContactListItem;
@@ -29,7 +29,7 @@ public class SearchPeopleDialog extends CustomDialog {
     private UniversalRVListAdapter adapter;
     private Consumer<People> callback;
 
-    private List<People> dataForSearch;
+    private final List<People> dataForSearch;
     private People result;
 
     public SearchPeopleDialog(List<People> dataForSearch) {
@@ -43,7 +43,7 @@ public class SearchPeopleDialog extends CustomDialog {
         getWindow().setLayout(LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         fieldQuery = findViewById(R.id.field_query);
-        fieldQuery.addTextChangedListener(new TextWatcher() {
+        fieldQuery.addTextChangedListener(new TextWatcherAdapter() {
             @Override
             public void afterTextChanged(Editable s) {
                 String query = s.toString().toLowerCase();
@@ -64,12 +64,6 @@ public class SearchPeopleDialog extends CustomDialog {
                     });
                 adapter.sort(comparator);
             }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
         list = findViewById(R.id.list);
