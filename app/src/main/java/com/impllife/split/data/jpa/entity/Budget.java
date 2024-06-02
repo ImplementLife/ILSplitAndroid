@@ -33,6 +33,9 @@ public class Budget extends EntityWithId {
     public void setPeriod(BudgetPeriod period) {
         this.period = period;
     }
+    public boolean isPeriod(BudgetPeriod period) {
+        return this.period == period;
+    }
 
     public boolean isShowInTransaction() {
         return showInTransaction;
