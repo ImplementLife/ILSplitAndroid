@@ -16,6 +16,10 @@ import java.math.BigDecimal;
 
 import static com.impllife.split.service.util.Util.isBlank;
 
+/**
+ * now using com.impllife.split.ui.fragment.TransactionListFragment.ListItemDataView
+ */
+@Deprecated
 public class TransactionListItem extends BaseView {
     private TextView tvDscr;
     private TextView tvSum;
