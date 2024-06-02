@@ -43,7 +43,7 @@ public class AccountChooseImgFragment extends NavFragment {
             public View getView(int position, View convertView, ViewGroup parent) {
                 DefaultAccountImg item = getItem(position);
                 BaseView baseView = new BaseView(inflater, R.layout.view_account_card_grid_item, grid);
-                ImageView img = baseView.findViewById(R.id.img);
+                ImageView img = baseView.findViewById(R.id.img_people_icon);
                 img.setImageResource(item.id);
                 baseView.setOnClickListener(v -> {
                     imgPreview.setImageResource(item.id);

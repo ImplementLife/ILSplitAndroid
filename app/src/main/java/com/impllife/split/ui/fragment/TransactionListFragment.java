@@ -6,7 +6,9 @@ import com.impllife.split.data.jpa.entity.Budget;
 import com.impllife.split.data.jpa.entity.Transaction;
 import com.impllife.split.data.jpa.entity.type.BudgetPeriod;
 import com.impllife.split.data.jpa.provide.BudgetDao;
+import com.impllife.split.data.jpa.provide.TransactionDao;
 import com.impllife.split.service.DataService;
+import com.impllife.split.service.TransactionService;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.view.TransactionListItem;
@@ -23,7 +25,7 @@ import static com.impllife.split.service.util.Util.*;
 
 public class TransactionListFragment extends NavFragment {
     private final BudgetDao budgetDao = DataService.getInstance().getDb().getBudgetDao();
-    private DataService dataService = DataService.getInstance();
+    private final TransactionDao transactionDao = new TransactionService();
     private LinearLayout listItems;
     private List<Budget> budgets;
 
@@ -37,7 +39,7 @@ public class TransactionListFragment extends NavFragment {
         findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
 
         runAsync(() -> {
-            List<Transaction> allTransactions = dataService.getAllTransactions();
+            List<Transaction> allTransactions = transactionDao.getAllEager();
             budgets = budgetDao.getAllByShowInTrn(true);
             post(() -> updateView(createListView(allTransactions)));
         });
