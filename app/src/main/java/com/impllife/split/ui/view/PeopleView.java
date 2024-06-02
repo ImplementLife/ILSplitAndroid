@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.impllife.split.R;
 import com.impllife.split.data.constant.DefaultUserIcon;
 import com.impllife.split.data.jpa.entity.People;
+import com.impllife.split.data.jpa.provide.PeopleDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.dialog.ChooseImageDialog;
@@ -18,6 +19,7 @@ import static com.impllife.split.service.util.Util.isBlank;
 
 public class PeopleView extends BaseView {
     private final DataService dataService = DataService.getInstance();
+    private final PeopleDao peopleDao = DataService.getInstance().getDb().getPeopleDao();
     private Consumer<People> btnEditAction;
     private Runnable postDeleteAction;
     private final People people;
@@ -63,7 +65,13 @@ public class PeopleView extends BaseView {
         iconImage.setOnClickListener(v -> {
             new ChooseImageDialog(id -> {
                 iconImage.setImageResource(id);
-                people.setIcon(id.toString());
+                DefaultUserIcon.parse(id).ifPresentOrElse(
+                    i -> {
+                        people.setIcon(i.name);
+                        runAsync(() -> peopleDao.update(people));
+                    },
+                    () -> people.setIcon(DefaultUserIcon.ic_png_contact_default.name)
+                );
                 runAsync(() -> dataService.update(people));
             }).show();
         });

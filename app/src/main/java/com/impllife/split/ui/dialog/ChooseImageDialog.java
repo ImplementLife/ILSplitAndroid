@@ -5,12 +5,14 @@ import android.view.Window;
 import android.widget.GridView;
 import android.widget.ImageView;
 import com.impllife.split.R;
+import com.impllife.split.data.constant.DefaultUserIcon;
 import com.impllife.split.ui.custom.CustomDialog;
 import com.impllife.split.ui.custom.adapter.GridListAdapter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static android.view.ViewGroup.LayoutParams;
 
@@ -28,13 +30,9 @@ public class ChooseImageDialog extends CustomDialog {
         getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
         GridView grid = findViewById(R.id.grid);
-        List<Integer> dat = Arrays.asList(
-            R.drawable.ic_png_contact_icon_1,
-            R.drawable.ic_png_contact_icon_2,
-            R.drawable.ic_png_contact_icon_3,
-            R.drawable.ic_png_contact_icon_4,
-            R.drawable.ic_png_contact_icon_5
-        );
+        List<Integer> dat = Arrays.stream(DefaultUserIcon.values())
+            .filter(e -> e.id != R.drawable.ic_png_contact_default)
+            .map(e -> e.id).collect(Collectors.toList());
         GridListAdapter<Integer> adapter = new GridListAdapter<>(dat, (data, parent) -> {
             ImageView imageView = new ImageView(parent.getContext());
             imageView.setImageResource(data);

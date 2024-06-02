@@ -28,6 +28,7 @@ public class TransactionSetupPeopleSelectFragment extends BaseFragment {
         super(R.layout.fragment_transaction_setup_people_select);
     }
 
+    @Override
     protected void init() {
         img = findViewById(R.id.img_people_icon);
 
