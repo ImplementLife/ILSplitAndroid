@@ -69,12 +69,17 @@ public class DataService {
     public Optional<People> findPeopleById(Integer id) {
         return Optional.ofNullable(db.getPeopleDao().findById(id));
     }
+
     public Optional<Transaction> findTrnById(int trn_id) {
         return Optional.ofNullable(db.getTransactionDao().findById(trn_id));
     }
 
     public AppDatabase getDb() {
         return db;
+    }
+
+    public int getDbVersion() {
+        return db.getOpenHelper().getReadableDatabase().getVersion();
     }
 
     public Optional<Drawable> loadAppIcon(String pack) {
