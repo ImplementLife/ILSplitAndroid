@@ -5,47 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtil {
-    public static Date getPreviousDay(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        // Subtract one day from the given date
-        calendar.add(Calendar.DAY_OF_YEAR, -1);
-
-        return calendar.getTime();
-    }
-
-    public static DateRange getDayDateRange(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        // Set the time to the beginning of the day (midnight)
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        Date startDate = calendar.getTime();
-
-        // Set the time to the end of the day (23:59:59.999)
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        calendar.set(Calendar.MILLISECOND, 999);
-
-        Date endDate = calendar.getTime();
-
-        return new DateRange(startDate, endDate);
-    }
-
-    public static int getMaxWeekOfYear(int year) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, Calendar.DECEMBER);
-        calendar.set(Calendar.DAY_OF_MONTH, 31);
-
-        return calendar.get(Calendar.WEEK_OF_YEAR);
-    }
 
     public static DateRange getCurrentWeekDateRange() {
         return getWeekDateRange(getCurrentYear(), getCurrentWeek());
@@ -55,93 +14,14 @@ public final class DateUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.WEEK_OF_YEAR, weekNumber);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         Date startDate = calendar.getTime();
 
-        calendar.add(Calendar.DAY_OF_YEAR, 6); // End of the week
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        calendar.set(Calendar.MILLISECOND, 999);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
         Date endDate = calendar.getTime();
 
         return new DateRange(startDate, endDate);
-    }
-
-    public static DateRange getMonthDateRange(int year, int monthNumber) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, monthNumber);
-        // Set the day of the month to the first day
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date startDate = calendar.getTime();
-
-        // Set the day of the month to the last day
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND, 59);
-        calendar.set(Calendar.MILLISECOND, 999);
-        Date endDate = calendar.getTime();
-
-        return new DateRange(startDate, endDate);
-    }
-
-    public static DateRange getQuarterDateRange(int year, int quarterNumber) {
-        if (quarterNumber < 1 || quarterNumber > 4) {
-            throw new IllegalArgumentException("Quarter number must be between 1 and 4");
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-
-        // Calculate the start and end months of the quarter
-        int startMonth = (quarterNumber - 1) * 3; // 0-based index
-        int endMonth = startMonth + 2;
-
-        calendar.set(Calendar.MONTH, startMonth);
-        // Set the day of the month to the first day
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        Date startDate = calendar.getTime();
-
-        // Set the month to the last month of the quarter
-        calendar.set(Calendar.MONTH, endMonth);
-
-        // Set the day of the month to the last day
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        Date endDate = calendar.getTime();
-
-        return new DateRange(startDate, endDate);
-    }
-
-    public static int getCurrentQuarter() {
-        Calendar calendar = Calendar.getInstance();
-        int currentMonth = calendar.get(Calendar.MONTH); // 0-based index
-
-        // Quarters are 1-based index
-        if (currentMonth >= Calendar.JANUARY && currentMonth <= Calendar.MARCH) {
-            return 1;
-        } else if (currentMonth >= Calendar.APRIL && currentMonth <= Calendar.JUNE) {
-            return 2;
-        } else if (currentMonth >= Calendar.JULY && currentMonth <= Calendar.SEPTEMBER) {
-            return 3;
-        } else {
-            return 4;
-        }
-    }
-
-    public static int getCurrentMonth() {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.MONTH);
     }
 
     public static int getCurrentWeek() {

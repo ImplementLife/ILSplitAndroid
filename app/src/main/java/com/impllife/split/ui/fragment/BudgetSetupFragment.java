@@ -48,7 +48,7 @@ public class BudgetSetupFragment extends NavFragment {
     @Override
     protected void argumentProcessing(Bundle args) {
         int trnId = args.getInt(ENTITY_ID, -1);
-        if (trnId >= 0) load(trnId);
+        load(trnId);
     }
 
     private void load(int id) {
