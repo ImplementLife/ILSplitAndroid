@@ -1,16 +1,14 @@
 package com.impllife.split.ui.fragment;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
+import android.widget.LinearLayout;
 import com.impllife.split.R;
-import com.impllife.split.data.constant.DefaultUserIcon;
-import com.impllife.split.data.jpa.entity.Account;
 import com.impllife.split.data.jpa.entity.Budget;
-import com.impllife.split.data.jpa.entity.People;
 import com.impllife.split.data.jpa.entity.Transaction;
+import com.impllife.split.data.jpa.entity.type.BudgetPeriod;
 import com.impllife.split.data.jpa.provide.BudgetDao;
 import com.impllife.split.data.jpa.provide.TransactionDao;
 import com.impllife.split.service.DataService;
@@ -22,9 +20,12 @@ import com.impllife.split.ui.custom.adapter.AltRecyclerViewListAdapter;
 import com.impllife.split.ui.custom.component.BaseView;
 import com.impllife.split.ui.custom.component.NavFragment;
 import com.impllife.split.ui.custom.component.StatusBar;
+import com.impllife.split.ui.view.TransactionListItem;
+import com.impllife.split.ui.view.TransactionListItemDate;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,8 +33,7 @@ import java.util.stream.Collectors;
 
 import static com.impllife.split.data.constant.Constant.ENTITY_ID;
 import static com.impllife.split.data.jpa.entity.type.BudgetPeriod.*;
-import static com.impllife.split.service.util.Util.bundle;
-import static com.impllife.split.service.util.Util.isBlank;
+import static com.impllife.split.service.util.Util.*;
 
 public class TransactionListFragment extends NavFragment {
     private final BudgetDao budgetDao = DataService.getInstance().getDb().getBudgetDao();
@@ -85,46 +85,8 @@ public class TransactionListFragment extends NavFragment {
         @Override
         public void bindData(BaseView view) {
             view.setTextViewById(R.id.tv_sum, transaction.getSum());
-//            view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
+            view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
             view.setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup, bundle(ENTITY_ID, transaction.getId())));
-
-            People fromPeople = transaction.getFromPeople();
-            Account fromAccount = transaction.getFromAccount();
-
-            People toPeople = transaction.getToPeople();
-            Account toAccount = transaction.getToAccount();
-
-            {
-                ImageView imageView = view.findViewById(R.id.image);
-                People peopleForIcon = null;
-                if (fromPeople != null) peopleForIcon = fromPeople;
-                if (toPeople != null) peopleForIcon = toPeople;
-
-                if (peopleForIcon != null) {
-                    String iconName = peopleForIcon.getIcon();
-                    if (!isBlank(iconName)) {
-                        DefaultUserIcon.parse(iconName)
-                            .ifPresent(userIcon -> imageView.setImageResource(userIcon.getResId()));
-                    }
-                } else {
-                    if (new BigDecimal(transaction.getSum()).compareTo(BigDecimal.ZERO) > 0) {
-                        imageView.setImageResource(R.drawable.ic_svg_transaction);
-                    } else {
-                        imageView.setImageResource(R.drawable.ic_svg_transaction_alt);
-                    }
-                }
-
-                if (isBlank(transaction.getDescription())) {
-                    if (peopleForIcon != null) {
-                        view.setTextViewById(R.id.tv_dscr, peopleForIcon.getPseudonym());
-                    } else {
-                        view.setTextViewById(R.id.tv_dscr, "");
-                    }
-                } else {
-                    view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
-                }
-            }
-
         }
 
         @Override

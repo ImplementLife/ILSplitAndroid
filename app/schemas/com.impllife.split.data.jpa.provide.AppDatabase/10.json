@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 9,
-    "identityHash": "5d32c3c878a63ab5a9a36649d12f0e89",
+    "version": 10,
+    "identityHash": "f234d15d388f9df18f3f1865da59ba30",
     "entities": [
       {
         "tableName": "il_transaction",
@@ -79,7 +79,7 @@
       },
       {
         "tableName": "il_people",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`accountId` INTEGER NOT NULL, `pseudonym` TEXT, `dateUpdate` INTEGER, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `serverId` INTEGER DEFAULT -1)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`accountId` INTEGER NOT NULL, `pseudonym` TEXT, `dateUpdate` INTEGER, `icon` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `serverId` INTEGER DEFAULT -1)",
         "fields": [
           {
             "fieldPath": "accountId",
@@ -97,6 +97,12 @@
             "fieldPath": "dateUpdate",
             "columnName": "dateUpdate",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -329,7 +335,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d32c3c878a63ab5a9a36649d12f0e89')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f234d15d388f9df18f3f1865da59ba30')"
     ]
   }
 }
