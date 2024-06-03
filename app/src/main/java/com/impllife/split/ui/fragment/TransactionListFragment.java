@@ -85,7 +85,6 @@ public class TransactionListFragment extends NavFragment {
         @Override
         public void bindData(BaseView view) {
             view.setTextViewById(R.id.tv_sum, transaction.getSum());
-//            view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
             view.setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup, bundle(ENTITY_ID, transaction.getId())));
 
             People fromPeople = transaction.getFromPeople();
@@ -95,7 +94,7 @@ public class TransactionListFragment extends NavFragment {
             Account toAccount = transaction.getToAccount();
 
             {
-                ImageView imageView = view.findViewById(R.id.image);
+                ImageView image = view.findViewById(R.id.image);
                 People peopleForIcon = null;
                 if (fromPeople != null) peopleForIcon = fromPeople;
                 if (toPeople != null) peopleForIcon = toPeople;
@@ -104,13 +103,13 @@ public class TransactionListFragment extends NavFragment {
                     String iconName = peopleForIcon.getIcon();
                     if (!isBlank(iconName)) {
                         DefaultUserIcon.parse(iconName)
-                            .ifPresent(userIcon -> imageView.setImageResource(userIcon.getResId()));
+                            .ifPresent(userIcon -> image.setImageResource(userIcon.getResId()));
                     }
                 } else {
                     if (new BigDecimal(transaction.getSum()).compareTo(BigDecimal.ZERO) > 0) {
-                        imageView.setImageResource(R.drawable.ic_svg_transaction);
+                        image.setImageResource(R.drawable.ic_svg_transaction);
                     } else {
-                        imageView.setImageResource(R.drawable.ic_svg_transaction_alt);
+                        image.setImageResource(R.drawable.ic_svg_transaction_alt);
                     }
                 }
 
@@ -124,7 +123,6 @@ public class TransactionListFragment extends NavFragment {
                     view.setTextViewById(R.id.tv_dscr, transaction.getDescription());
                 }
             }
-
         }
 
         @Override
