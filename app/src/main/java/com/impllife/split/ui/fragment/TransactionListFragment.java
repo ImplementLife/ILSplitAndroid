@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.impllife.split.R;
 import com.impllife.split.data.jpa.entity.Budget;
 import com.impllife.split.data.jpa.entity.Transaction;
+import com.impllife.split.data.jpa.entity.type.BudgetPeriod;
 import com.impllife.split.data.jpa.provide.BudgetDao;
+import com.impllife.split.data.jpa.provide.TransactionDao;
 import com.impllife.split.service.DataService;
+import com.impllife.split.service.TransactionService;
 import com.impllife.split.service.util.Formatters;
 import com.impllife.split.service.util.date.DateRange;
 import com.impllife.split.service.util.date.DateUtil;
@@ -33,7 +36,7 @@ import static com.impllife.split.service.util.Util.*;
 
 public class TransactionListFragment extends NavFragment {
     private final BudgetDao budgetDao = DataService.getInstance().getDb().getBudgetDao();
-    private final DataService dataService = DataService.getInstance();
+    private final TransactionDao transactionDao = new TransactionService();
     private RecyclerView listItems;
     private AltRecyclerViewListAdapter adapter;
 
@@ -49,7 +52,9 @@ public class TransactionListFragment extends NavFragment {
         findViewById(R.id.btn_new).setOnClickListener(v -> navController.navigate(R.id.fragment_transaction_setup));
 
         runAsync(() -> {
-            List<Transaction> allTransactions = dataService.getAllTransactions().stream().filter(e -> !e.getSum().equals("0.00")).collect(Collectors.toList());
+            List<Transaction> allTransactions = transactionDao.getAllEager().stream()
+                .filter(e -> !e.getSum().equals("0.00"))
+                .collect(Collectors.toList());
             List<Budget> budgets = budgetDao.getAllByShowInTrn(true);
             runAsync(() -> {
                 newListView(allTransactions, budgets);

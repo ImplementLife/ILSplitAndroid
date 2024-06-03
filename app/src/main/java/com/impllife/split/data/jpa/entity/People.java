@@ -9,6 +9,7 @@ public class People extends EntityWithId {
     private int accountId;
     private String pseudonym;
     private Date dateUpdate;
+    private String icon;
 
     //region get & set
 
@@ -33,5 +34,11 @@ public class People extends EntityWithId {
         this.dateUpdate = dateUpdate;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
     //endregion
 }

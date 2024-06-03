@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         navController = navHostFragment.getNavController();
         findViewById(R.id.btn_back).setOnClickListener(v -> navController.navigateUp());
+
+        String filesPath = getFilesDir().toString();
     }
 
     @Override

@@ -6,19 +6,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.impllife.split.R;
+import com.impllife.split.data.constant.DefaultUserIcon;
 import com.impllife.split.data.jpa.entity.People;
+import com.impllife.split.data.jpa.provide.PeopleDao;
 import com.impllife.split.service.DataService;
 import com.impllife.split.ui.custom.component.BaseView;
+import com.impllife.split.ui.dialog.ChooseImageDialog;
 
 import java.util.function.Consumer;
 
-import static java.util.concurrent.CompletableFuture.runAsync;
+import static com.impllife.split.service.util.Util.isBlank;
 
 public class PeopleView extends BaseView {
-    private DataService dataService = DataService.getInstance();
+    private final DataService dataService = DataService.getInstance();
+    private final PeopleDao peopleDao = DataService.getInstance().getDb().getPeopleDao();
     private Consumer<People> btnEditAction;
     private Runnable postDeleteAction;
-    private People people;
+    private final People people;
 
     public PeopleView(LayoutInflater inflater, ViewGroup rootForThis, Consumer<People> btnEditAction, People people) {
         super(inflater, R.layout.view_people, rootForThis);
@@ -56,6 +60,28 @@ public class PeopleView extends BaseView {
 
         TextView textView = findViewById(R.id.tv_name);
         textView.setText(people.getPseudonym());
+
+        ImageView iconImage = findViewById(R.id.img_people_icon);
+        iconImage.setOnClickListener(v -> {
+            new ChooseImageDialog(id -> {
+                iconImage.setImageResource(id);
+                DefaultUserIcon.parse(id).ifPresentOrElse(
+                    i -> {
+                        people.setIcon(i.name);
+                        runAsync(() -> peopleDao.update(people));
+                    },
+                    () -> people.setIcon(DefaultUserIcon.ic_png_contact_default.name)
+                );
+                runAsync(() -> dataService.update(people));
+            }).show();
+        });
+        String iconName = people.getIcon();
+        if (!isBlank(iconName)) {
+            DefaultUserIcon.parse(iconName)
+                .ifPresent(ico -> iconImage.setImageResource(ico.getResId()));
+        } else {
+            iconImage.setImageResource(R.drawable.ic_png_contact_default);
+        }
     }
 
     public void setBtnEditAction(Consumer<People> btnEditAction) {
